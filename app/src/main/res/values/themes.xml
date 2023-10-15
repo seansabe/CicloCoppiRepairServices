@@ -1,9 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.CicloCoppiRepairServices" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.RepairServicesApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.CicloCoppiRepairServices" parent="Base.Theme.CicloCoppiRepairServices" />
+    <style name="Theme.RepairServicesApp" parent="Base.Theme.RepairServicesApp" />
 </resources>

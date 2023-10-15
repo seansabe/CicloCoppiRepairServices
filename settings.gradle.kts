@@ -13,5 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CicloCoppiRepairServices"
+rootProject.name = "RepairServicesApp"
 include(":app")
+ 
