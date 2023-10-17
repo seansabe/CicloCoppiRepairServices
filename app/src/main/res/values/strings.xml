@@ -1,3 +1,57 @@
 <resources>
     <string name="app_name">RepairServicesApp</string>
+    <string name="imgDesc">Ciclo Coppi</string>
+
+    <string name="editEmailPlaceholder">Email</string>
+    <string name="editPasswordPlaceholder">Password</string>
+    <string name="editConfirmPassPlaceholder">Confirm Password</string>
+    <string name="editProfileCurrentPasswordPlaceholder">Current Password</string>
+    <string name="editProfileNewPasswordPlaceholder">New Password</string>
+    <string name="editFirstNamePlaceholder">First Name</string>
+    <string name="editLastNamePlaceholder">Last Name</string>
+    <string name="editAddressPlaceholder">Address</string>
+    <string name="editPhonePlaceholder">Phone Number</string>
+
+    <string name="btnRegister">Register</string>
+    <string name="btnLogin">Sign In</string>
+    <string name="btnLogOut">Sign Out</string>
+    <string name="btnCancel">Cancel</string>
+    <string name="btnProfileSave">Save</string>
+    <string name="btnProfileAddTechnician">Add Technician</string>
+    <string name="btnAddTechnician">Add</string>
+
+    <string name="txtNoAccount">Don\'t have an account?</string>
+    <string name="txtPrivacyPolicy">By registering, you accept all our terms and conditions.</string>
+    <string name="txtRegisterLink">Register here.</string>
+    <string name="txtScheduleItem">Schedule</string>
+    <string name="txtHistoryItem">Service History</string>
+    <string name="txtProfileItem">Profile</string>
+    <string name="txtBookItem">Book a Service</string>
+    <string name="txtProfileUpdated">Profile Updated</string>
+
+    <string name="txtErrorLogin">Invalid email or password</string>
+    <string name="txtErrorPassMismatch">Password doesn\'t match!</string>
+    <string name="txtErrorAccountExists">An account already exists with this email</string>
+
+    <string name="txtErrorValidEmail">Invalid email address</string>
+    <string name="txtErrorValidPhone">Invalid phone number</string>
+    <string name="txtErrorValidPassword">Password must be at least 6 characters</string>
+    <string name="txtErrorValidName">Name must be at least 2 characters</string>
+    <string name="txtErrorValidAddress">Address must be at least 5 characters</string>
+    <string name="txtErrorValidLastName">Last name must be at least 2 characters</string>
+    <string name="txtErrorValidCurrentPassword">Current password must be at least 6 characters</string>
+    <string name="txtErrorValidNewPassword">New password must be at least 6 characters</string>
+    <string name="txtErrorValidConfirmPassword">Confirm password must be at least 6 characters</string>
+
+    <string name="txtErrorEmptyEmail">Email Required</string>
+    <string name="txtErrorEmptyPassword">Password Required</string>
+    <string name="txtErrorEmptyConfirmPassword">Confirm Password Required</string>
+    <string name="txtErrorEmptyFirstName">First Name Required</string>
+    <string name="txtErrorEmptyLastName">Last Name Required</string>
+    <string name="txtErrorEmptyAddress">Address Required</string>
+    <string name="txtErrorEmptyPhone">Phone Number Required</string>
+    <string name="txtErrorEmptyCurrentPassword">Current Password Required</string>
+    <string name="txtErrorEmptyNewPassword">New Password Required</string>
+    <string name="txtErrorEmptyConfirmNewPassword">Confirm New Password Required</string>
+
 </resources>

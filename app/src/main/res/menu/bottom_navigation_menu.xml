@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/itemSchedule"
+        android:enabled="true"
+        android:icon="@drawable/outline_edit_calendar_24"
+        android:title="@string/txtScheduleItem"/>
+    <item
+        android:id="@+id/itemHistory"
+        android:enabled="true"
+        android:icon="@drawable/outline_history_24"
+        android:title="@string/txtHistoryItem"/>
+    <item
+        android:id="@+id/itemProfile"
+        android:enabled="true"
+        android:icon="@drawable/outline_account_circle_24"
+        android:title="@string/txtProfileItem"/>
+</menu>

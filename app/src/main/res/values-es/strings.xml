@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">RepairServicesApp</string>
+    <string name="imgDesc">Ciclo Coppi</string>
+
+    <string name="editEmailPlaceholder">Email</string>
+    <string name="editPasswordPlaceholder">Contraseña</string>
+    <string name="editConfirmPassPlaceholder">Confirmar Contraseña</string>
+    <string name="editProfileCurrentPasswordPlaceholder">Contraseña Actual</string>
+    <string name="editProfileNewPasswordPlaceholder">Nueva Contraseña</string>
+    <string name="editFirstNamePlaceholder">Nombre</string>
+    <string name="editLastNamePlaceholder">Apellido</string>
+    <string name="editAddressPlaceholder">Dirección</string>
+    <string name="editPhonePlaceholder">Número Telefónico</string>
+
+    <string name="btnRegister">Registrar</string>
+    <string name="btnLogin">Iniciar Sesión</string>
+    <string name="btnLogOut">Cerrar Sesión</string>
+    <string name="btnCancel">Cancelar</string>
+    <string name="btnProfileSave">Guardar</string>
+    <string name="btnProfileAddTechnician">Agregar Técnico</string>
+    <string name="btnAddTechnician">Agregar</string>
+
+    <string name="txtNoAccount">No tienes una cuenta?</string>
+    <string name="txtPrivacyPolicy">Al registrate, estás aceptando nuestros términos y condiciones.</string>
+    <string name="txtRegisterLink">Regístrate aquí.</string>
+    <string name="txtScheduleItem">Calendario</string>
+    <string name="txtHistoryItem">Historial de Servicio</string>
+    <string name="txtProfileItem">Perfil</string>
+    <string name="txtBookItem">Agendar Servicio</string>
+    <string name="txtProfileUpdated">Perfil Actualizado</string>
+
+    <string name="txtErrorLogin">Correo o contraseña incorrectos</string>
+    <string name="txtErrorPassMismatch">Contraseña no coincide!</string>
+    <string name="txtErrorAccountExists">Ya existe una cuenta con este correo</string>
+
+    <string name="txtErrorValidEmail">Correo inválido</string>
+    <string name="txtErrorValidPhone">Número telefónico inválido</string>
+    <string name="txtErrorValidPassword">Contraseña debe tener al menos 6 caracteres</string>
+    <string name="txtErrorValidName">Nombre debe tener al menos 2 caracteres</string>
+    <string name="txtErrorValidAddress">Dirección debe tener al menos 5 caracteres</string>
+    <string name="txtErrorValidLastName">Apellido debe tener al menos 2 caracteres</string>
+    <string name="txtErrorValidCurrentPassword">Contraseña actual debe tener al menos 6 caracteres</string>
+    <string name="txtErrorValidNewPassword">Nueva contraseña debe tener al menos 6 caracteres</string>
+    <string name="txtErrorValidConfirmPassword">Confirmar contraseña debe tener al menos 6 caracteres</string>
+
+    <string name="txtErrorEmptyEmail">Correo Requerido</string>
+    <string name="txtErrorEmptyPassword">Contraseña Requerida</string>
+    <string name="txtErrorEmptyConfirmPassword">Confirmar Contraseña Requerida</string>
+    <string name="txtErrorEmptyFirstName">Nombre Requerido</string>
+    <string name="txtErrorEmptyLastName">Apellido Requerido</string>
+    <string name="txtErrorEmptyAddress">Dirección Requerida</string>
+    <string name="txtErrorEmptyPhone">Número Telefónico Requerido</string>
+    <string name="txtErrorEmptyCurrentPassword">Contraseña Actual Requerida</string>
+    <string name="txtErrorEmptyNewPassword">Nueva Contraseña Requerida</string>
+    <string name="txtErrorEmptyConfirmNewPassword">Confirmar Nueva Contraseña Requerida</string>
+
+</resources>
