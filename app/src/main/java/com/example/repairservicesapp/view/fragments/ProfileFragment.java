@@ -3,9 +3,6 @@ package com.example.repairservicesapp.view.fragments;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.repairservicesapp.R;
 import com.example.repairservicesapp.app.AppManager;
 import com.example.repairservicesapp.database.DatabaseHelper;
 import com.example.repairservicesapp.model.User;
+import com.example.repairservicesapp.util.KeyboardUtils;
 import com.example.repairservicesapp.view.LoginActivity;
 
 public class ProfileFragment extends Fragment {
@@ -30,13 +30,9 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ProfileFragment newInstance() {
-        return new ProfileFragment();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_profile, container, false);
         loadUserData(view);
         loadEvents();
         updateUserData();
@@ -66,7 +62,10 @@ public class ProfileFragment extends Fragment {
 
     private void loadEvents() {
         btnLogOut.setOnClickListener(v -> logout());
-        btnSave.setOnClickListener(v -> updateUserData());
+        btnSave.setOnClickListener(v -> {
+            updateUserData();
+            Toast.makeText(getActivity(), getString(R.string.txtProfileUpdated), Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void updateUserData() {
@@ -76,17 +75,32 @@ public class ProfileFragment extends Fragment {
             String address = edTxtAddress.getText().toString();
             String phone = edTxtPhone.getText().toString();
             String email = edTxtEmail.getText().toString();
-            String password = edTxtNewPass.getText().toString();
             dbHelper = new DatabaseHelper(getActivity().getApplicationContext());
             user.setFirstName(fName);
             user.setLastName(lName);
             user.setAddress(address);
             user.setPhoneNumber(phone);
             user.setEmail(email);
-            user.setPassword(password);
             dbHelper.updateUserData(user);
-            Toast.makeText(getActivity(), getString(R.string.txtProfileUpdated), Toast.LENGTH_SHORT).show();
         }
+
+        if (edTxtCurrentPass.getText().toString().equals(user.getPassword())) {
+            String newPassword = edTxtNewPass.getText().toString();
+            String passwordConf = edTxtConfirmPass.getText().toString();
+            if (newPassword.equals(passwordConf)) {
+                user.setPassword(newPassword);
+                dbHelper.updateUserPassword(user);
+                edTxtCurrentPass.setText(null);
+                edTxtCurrentPass.clearFocus();
+            } else {
+                edTxtConfirmPass.setError(getString(R.string.txtErrorPassMismatch));
+            }
+            edTxtNewPass.setText(null);
+            edTxtNewPass.clearFocus();
+            edTxtConfirmPass.setText(null);
+            edTxtConfirmPass.clearFocus();
+        }
+        KeyboardUtils.hideKeyboard(view);
     }
 
     private void logout() {
@@ -102,7 +116,6 @@ public class ProfileFragment extends Fragment {
 
     private boolean checkTextUtils() {
         boolean isValid = true;
-        String newPassword, passwordConf;
         if (TextUtils.isEmpty(edTxtFirstName.getText().toString())) {
             edTxtFirstName.setError(getString(R.string.txtErrorEmptyFirstName));
             isValid = false;
@@ -122,22 +135,6 @@ public class ProfileFragment extends Fragment {
         if (TextUtils.isEmpty(edTxtEmail.getText().toString())) {
             edTxtEmail.setError(getString(R.string.txtErrorEmptyEmail));
             isValid = false;
-        }
-        if (isValid) {
-            newPassword = edTxtNewPass.getText().toString();
-            passwordConf = edTxtConfirmPass.getText().toString();
-            if (edTxtCurrentPass.getText().toString().equals(user.getPassword())) {
-                edTxtCurrentPass.setError(getString(R.string.txtErrorEmptyCurrentPassword));
-                isValid = false;
-            }
-            if (!newPassword.equals(passwordConf)) {
-                edTxtConfirmPass.setError(getString(R.string.txtErrorPassMismatch));
-                isValid = false;
-                edTxtNewPass.setText(null);
-                edTxtNewPass.clearFocus();
-                edTxtConfirmPass.setText(null);
-                edTxtConfirmPass.clearFocus();
-            }
         }
         return isValid;
     }

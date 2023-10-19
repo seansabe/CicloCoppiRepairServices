@@ -1,14 +1,13 @@
 package com.example.repairservicesapp.view;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.os.Bundle;
-
 import com.example.repairservicesapp.R;
-import com.example.repairservicesapp.databinding.ActivityMainBinding;
 import com.example.repairservicesapp.util.StatusBarUtils;
 import com.example.repairservicesapp.view.fragments.ProfileFragment;
 import com.example.repairservicesapp.view.fragments.ScheduleFragment;
