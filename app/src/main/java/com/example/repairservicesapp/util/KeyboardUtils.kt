@@ -1,17 +1,18 @@
-package com.example.repairservicesapp.util;
+package com.example.repairservicesapp.util
 
-import android.content.Context;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 
-public class KeyboardUtils {
-    public static void hideKeyboard(View view) {
+object KeyboardUtils {
+    @JvmStatic
+    fun hideKeyboard(view: View) {
         try {
-            InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+            val imm =
+                view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

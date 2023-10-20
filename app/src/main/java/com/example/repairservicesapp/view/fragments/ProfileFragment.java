@@ -1,5 +1,6 @@
 package com.example.repairservicesapp.view.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import com.example.repairservicesapp.database.DatabaseHelper;
 import com.example.repairservicesapp.model.User;
 import com.example.repairservicesapp.util.KeyboardUtils;
 import com.example.repairservicesapp.view.LoginActivity;
+
+import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
     View view;
@@ -51,13 +54,11 @@ public class ProfileFragment extends Fragment {
         btnLogOut = view.findViewById(R.id.btnProfileLogOut);
         btnSave = view.findViewById(R.id.btnProfileSave);
         user = AppManager.instance.user;
-        if (user != null) {
-            edTxtFirstName.setText(user.getFirstName());
-            edTxtLastName.setText(user.getLastName());
-            edTxtEmail.setText(user.getEmail());
-            edTxtPhone.setText(user.getPhoneNumber());
-            edTxtAddress.setText(user.getAddress());
-        }
+        edTxtFirstName.setText(user.firstName);
+        edTxtLastName.setText(user.lastName);
+        edTxtEmail.setText(user.email);
+        edTxtPhone.setText(user.phoneNumber);
+        edTxtAddress.setText(user.address);
     }
 
     private void loadEvents() {
@@ -75,20 +76,20 @@ public class ProfileFragment extends Fragment {
             String address = edTxtAddress.getText().toString();
             String phone = edTxtPhone.getText().toString();
             String email = edTxtEmail.getText().toString();
-            dbHelper = new DatabaseHelper(getActivity().getApplicationContext());
-            user.setFirstName(fName);
-            user.setLastName(lName);
-            user.setAddress(address);
-            user.setPhoneNumber(phone);
-            user.setEmail(email);
+            dbHelper = new DatabaseHelper(requireActivity().getApplicationContext());
+            user.firstName = fName;
+            user.lastName = lName;
+            user.address = address;
+            user.phoneNumber = phone;
+            user.email = email;
             dbHelper.updateUserData(user);
         }
 
-        if (edTxtCurrentPass.getText().toString().equals(user.getPassword())) {
+        if (edTxtCurrentPass.getText().toString().equals(user.password)) {
             String newPassword = edTxtNewPass.getText().toString();
             String passwordConf = edTxtConfirmPass.getText().toString();
             if (newPassword.equals(passwordConf)) {
-                user.setPassword(newPassword);
+                user.password = newPassword;
                 dbHelper.updateUserPassword(user);
                 edTxtCurrentPass.setText(null);
                 edTxtCurrentPass.clearFocus();
@@ -104,14 +105,14 @@ public class ProfileFragment extends Fragment {
     }
 
     private void logout() {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPrefs", getActivity().MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
         AppManager.instance.user = null;
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
-        getActivity().finish();
+        requireActivity().finish();
     }
 
     private boolean checkTextUtils() {

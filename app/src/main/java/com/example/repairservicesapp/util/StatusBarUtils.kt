@@ -1,16 +1,15 @@
-package com.example.repairservicesapp.util;
+package com.example.repairservicesapp.util
 
-import android.view.View;
-import android.view.Window;
+import android.view.Window
+import androidx.core.view.WindowInsetsControllerCompat
 
-import androidx.core.view.WindowInsetsControllerCompat;
-
-public class StatusBarUtils {
-    public static void setStatusBarColor(Window window, int statusBarColor, int navigationBarColor) {
-        View decorView = window.getDecorView();
-        WindowInsetsControllerCompat wic = new WindowInsetsControllerCompat(window, decorView);
-        wic.setAppearanceLightStatusBars(true);
-        window.setStatusBarColor(statusBarColor);
-        window.setNavigationBarColor(navigationBarColor);
+object StatusBarUtils {
+    @JvmStatic
+    fun setStatusBarColor(window: Window, statusBarColor: Int, navigationBarColor: Int) {
+        val decorView = window.decorView
+        val wic = WindowInsetsControllerCompat(window, decorView)
+        wic.isAppearanceLightStatusBars = true
+        window.statusBarColor = statusBarColor
+        window.navigationBarColor = navigationBarColor
     }
 }

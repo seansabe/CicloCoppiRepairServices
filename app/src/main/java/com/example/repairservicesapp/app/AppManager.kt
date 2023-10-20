@@ -1,13 +1,16 @@
-package com.example.repairservicesapp.app;
+package com.example.repairservicesapp.app
 
-import com.example.repairservicesapp.model.User;
+import com.example.repairservicesapp.model.User
 
-public class AppManager {
+class AppManager private constructor() {
+    @JvmField
+    var user = User()
+    fun setUser(user: User) {
+        this.user = user
+    }
 
-    public static AppManager instance = new AppManager();
-    public User user = new User();
-
-    private AppManager() { }
-
-    public void setUser(User user) { this.user = user; }
+    companion object {
+        @JvmField
+        var instance = AppManager()
+    }
 }

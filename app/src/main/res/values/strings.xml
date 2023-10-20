@@ -17,8 +17,9 @@
     <string name="btnLogOut">Sign Out</string>
     <string name="btnCancel">Cancel</string>
     <string name="btnProfileSave">Save</string>
-    <string name="btnProfileAddTechnician">Add Technician</string>
-    <string name="btnAddTechnician">Add</string>
+    <string name="btnAddTechnician">Add Technician</string>
+    <string name="btnAdd">Add</string>
+    <string name="btnAddDate">Add Date</string>
 
     <string name="txtNoAccount">Don\'t have an account?</string>
     <string name="txtPrivacyPolicy">By registering, you accept all our terms and conditions.</string>
@@ -28,6 +29,9 @@
     <string name="txtProfileItem">Profile</string>
     <string name="txtBookItem">Book a Service</string>
     <string name="txtProfileUpdated">Profile Updated</string>
+    <string name="txtAvailability">Availability</string>
+    <string name="txtAddServiceHour">Add a date</string>
+    <string name="txtSelectTechnician">Select a technician</string>
 
     <string name="txtErrorLogin">Invalid email or password</string>
     <string name="txtErrorPassMismatch">Password doesn\'t match!</string>
@@ -53,5 +57,7 @@
     <string name="txtErrorEmptyCurrentPassword">Current Password Required</string>
     <string name="txtErrorEmptyNewPassword">New Password Required</string>
     <string name="txtErrorEmptyConfirmNewPassword">Confirm New Password Required</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

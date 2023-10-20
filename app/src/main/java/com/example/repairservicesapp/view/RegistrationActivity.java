@@ -73,8 +73,8 @@ public class RegistrationActivity extends AppCompatActivity {
                         AppManager.instance.setUser(newUser);
                         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("email", newUser.getEmail());
-                        editor.putString("password", newUser.getPassword());
+                        editor.putString("email", newUser.email);
+                        editor.putString("password", newUser.password);
                         editor.apply();
                         finish();
                     }

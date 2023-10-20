@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".view.RegistrationActivity">
+    tools:context=".view.fragments.AddTechnicianFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,7 +20,7 @@
             android:paddingBottom="24dp">
 
             <EditText
-                android:id="@+id/editFirstName"
+                android:id="@+id/edTxtTechnicianFirstName"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:autofillHints=""
@@ -37,7 +36,7 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editLastName"
+                android:id="@+id/edTxtTechnicianLastName"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
@@ -54,7 +53,7 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editAddress"
+                android:id="@+id/edTxtTechnicianAddress"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
@@ -71,7 +70,7 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editPhone"
+                android:id="@+id/edTxtTechnicianPhone"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
@@ -88,7 +87,7 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editRegEmail"
+                android:id="@+id/edTxtTechnicianEmail"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
@@ -105,7 +104,7 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editRegPass"
+                android:id="@+id/edTxtTechnicianPass"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
@@ -122,7 +121,7 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editRegPassConfirm"
+                android:id="@+id/edTxtTechnicianPassConfirm"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
@@ -139,15 +138,6 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/txtLine"
-                android:layout_width="280dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/txtPrivacyPolicy"
-                android:textColor="@color/gray"
-                android:textSize="16sp" />
-
-            <TextView
                 android:id="@+id/txtErrorAccountExists"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -158,13 +148,13 @@
                 android:visibility="gone" />
 
             <Button
-                android:id="@+id/btnRegister"
+                android:id="@+id/btnAdd"
                 style="@style/ButtonTextNoCaps"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/button_enabled"
-                android:text="@string/btnRegister"
+                android:text="@string/btnAdd"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />

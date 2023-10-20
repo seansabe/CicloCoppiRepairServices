@@ -1,9 +1,11 @@
 package com.example.repairservicesapp.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
@@ -11,6 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.repairservicesapp.model.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private final Context context;
@@ -76,6 +81,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /** USER DB METHODS **/
 
+    // Get all technicians
+    public List<User> getAllTechnicians() {
+        List<User> users = new ArrayList<>();
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            String query = "SELECT u.* " +
+                    "FROM USERS u " +
+                    "WHERE u.user_type = 'TECHNICIAN'";
+            String[] selectionArgs = {};
+            Cursor cursor = db.rawQuery(query, selectionArgs);
+            while (cursor.moveToNext()) {
+                int userId = cursor.getInt(0);
+                String firstName = cursor.getString(1);
+                String lastName = cursor.getString(2);
+                String phoneNumber = cursor.getString(3);
+                String address = cursor.getString(4);
+                String email = cursor.getString(5);
+                String password = cursor.getString(6);
+                String userType = cursor.getString(7);
+                User user = new User(userId, firstName, lastName, address, phoneNumber, email, password, userType);
+                users.add(user);
+            }
+            cursor.close();
+            db.close();
+        } catch (SQLiteException e) {
+            Log.e("DatabaseError", "Error on database: " + e.getMessage());
+        }
+        return users;
+    }
+
     public User getUserByEmail(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = { U_COLUMN_ID, U_COLUMN_FNAME, U_COLUMN_LNAME, U_COLUMN_ADDRESS, U_COLUMN_PHONE, U_COLUMN_PASSWORD, U_COLUMN_TYPE };
@@ -98,16 +133,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
+    // Get user by user type
+    public User getUserByType(String userType) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = { U_COLUMN_ID, U_COLUMN_FNAME, U_COLUMN_LNAME, U_COLUMN_ADDRESS, U_COLUMN_PHONE, U_COLUMN_EMAIL, U_COLUMN_PASSWORD };
+        String selection = U_COLUMN_TYPE + " = ?";
+        String[] selectionArgs = { userType };
+        Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
+        User user = null;
+        if (cursor.moveToFirst()) {
+            int userId = cursor.getInt(0);
+            String firstName = cursor.getString(1);
+            String lastName = cursor.getString(2);
+            String address = cursor.getString(3);
+            String phoneNumber = cursor.getString(4);
+            String email = cursor.getString(5);
+            String password = cursor.getString(6);
+            user = new User(userId, firstName, lastName, address, phoneNumber, email, password, userType);
+        }
+        cursor.close();
+        //db.close();
+        return user;
+    }
+
     public void addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(U_COLUMN_FNAME, user.getFirstName());
-        cv.put(U_COLUMN_LNAME, user.getLastName());
-        cv.put(U_COLUMN_ADDRESS, user.getAddress());
-        cv.put(U_COLUMN_PHONE, user.getPhoneNumber());
-        cv.put(U_COLUMN_EMAIL, user.getEmail());
-        cv.put(U_COLUMN_PASSWORD, user.getPassword());
-        cv.put(U_COLUMN_TYPE, user.getUserType().toString());
+        cv.put(U_COLUMN_FNAME, user.firstName);
+        cv.put(U_COLUMN_LNAME, user.lastName);
+        cv.put(U_COLUMN_ADDRESS, user.address);
+        cv.put(U_COLUMN_PHONE, user.phoneNumber);
+        cv.put(U_COLUMN_EMAIL, user.email);
+        cv.put(U_COLUMN_PASSWORD, user.password);
+        cv.put(U_COLUMN_TYPE, user.userType.toString());
         long result = db.insert(TABLE_USERS, null, cv);
         if(result == -1) {
             Toast.makeText(context, "Unexpected error in adding user.", Toast.LENGTH_SHORT).show();
@@ -119,13 +177,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long updateUserData(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(U_COLUMN_FNAME, user.getFirstName());
-        cv.put(U_COLUMN_LNAME, user.getLastName());
-        cv.put(U_COLUMN_ADDRESS, user.getAddress());
-        cv.put(U_COLUMN_PHONE, user.getPhoneNumber());
-        cv.put(U_COLUMN_EMAIL, user.getEmail());
+        cv.put(U_COLUMN_FNAME, user.firstName);
+        cv.put(U_COLUMN_LNAME, user.lastName);
+        cv.put(U_COLUMN_ADDRESS, user.address);
+        cv.put(U_COLUMN_PHONE, user.phoneNumber);
+        cv.put(U_COLUMN_EMAIL, user.email);
         String selection = U_COLUMN_EMAIL + " = ?";
-        String[] selectionArgs = { String.valueOf(user.getEmail()) };
+        String[] selectionArgs = { String.valueOf(user.email) };
         long result = db.update(TABLE_USERS, cv, selection, selectionArgs);
         return result;
     }
@@ -133,9 +191,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long updateUserPassword(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(U_COLUMN_PASSWORD, user.getPassword());
+        cv.put(U_COLUMN_PASSWORD, user.password);
         String selection = U_COLUMN_EMAIL + " = ?";
-        String[] selectionArgs = { String.valueOf(user.getEmail()) };
+        String[] selectionArgs = { String.valueOf(user.email) };
         long result = db.update(TABLE_USERS, cv, selection, selectionArgs);
         return result;
     }

@@ -86,8 +86,8 @@ public class LoginActivity extends AppCompatActivity {
                 User user = dbHelper.getUserByEmail(email);
                 SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("email", user.getEmail());
-                editor.putString("password", user.getPassword());
+                editor.putString("email", user.email);
+                editor.putString("password", user.password);
                 editor.apply();
                 AppManager.instance.setUser(user); //Singleton class to hold logged user for whole app life cycle
                 startActivity(new Intent(LoginActivity.this, NavigationActivity.class));

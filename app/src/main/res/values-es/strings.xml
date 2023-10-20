@@ -17,8 +17,9 @@
     <string name="btnLogOut">Cerrar Sesión</string>
     <string name="btnCancel">Cancelar</string>
     <string name="btnProfileSave">Guardar</string>
-    <string name="btnProfileAddTechnician">Agregar Técnico</string>
-    <string name="btnAddTechnician">Agregar</string>
+    <string name="btnAddTechnician">Agregar Técnico</string>
+    <string name="btnAdd">Agregar</string>
+    <string name="btnAddDate">Agregar Fecha</string>
 
     <string name="txtNoAccount">No tienes una cuenta?</string>
     <string name="txtPrivacyPolicy">Al registrate, estás aceptando nuestros términos y condiciones.</string>
@@ -28,6 +29,9 @@
     <string name="txtProfileItem">Perfil</string>
     <string name="txtBookItem">Agendar Servicio</string>
     <string name="txtProfileUpdated">Perfil Actualizado</string>
+    <string name="txtAvailability">Disponibilidad</string>
+    <string name="txtAddServiceHour">Agregar una hora</string>
+    <string name="txtSelectTechnician">Selecciona un técnico</string>
 
     <string name="txtErrorLogin">Correo o contraseña incorrectos</string>
     <string name="txtErrorPassMismatch">Contraseña no coincide!</string>
