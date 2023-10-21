@@ -72,12 +72,12 @@ class ScheduleFragment : Fragment() {
         }
 
         txtDateTime.setOnClickListener {
-            showMaterialTimePicker()
+            showDatePicker()
         }
 
     }
 
-    private fun showMaterialDatePicker() {
+    private fun showDatePicker() {
         // Makes only dates from today forward selectable.
         val constraintsBuilder = CalendarConstraints.Builder()
             .setValidator(DateValidatorPointForward.now()).build()
@@ -96,12 +96,12 @@ class ScheduleFragment : Fragment() {
             val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             var formattedDate: String = sdf.format(calendar.time)
             txtDateTime.setText(formattedDate)
-            showMaterialTimePicker()
+            showTimePicker()
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showMaterialTimePicker() {
+    private fun showTimePicker() {
         val timePicker = MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_12H)
             .setTheme(R.style.ThemeOverlay_App_TimePicker)
