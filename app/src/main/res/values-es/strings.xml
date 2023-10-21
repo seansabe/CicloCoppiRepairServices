@@ -32,6 +32,8 @@
     <string name="txtAvailability">Disponibilidad</string>
     <string name="txtAddServiceHour">Agregar una hora</string>
     <string name="txtSelectTechnician">Selecciona un técnico</string>
+    <string name="txtSelectDate">Selecciona una fecha</string>
+    <string name="txtSelectTime">Selecciona una hora</string>
 
     <string name="txtErrorLogin">Correo o contraseña incorrectos</string>
     <string name="txtErrorPassMismatch">Contraseña no coincide!</string>

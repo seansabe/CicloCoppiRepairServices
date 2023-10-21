@@ -47,19 +47,20 @@
             <EditText
                 android:id="@+id/edTxtDatePicker"
                 android:drawableStart="@drawable/outline_calendar_month_24"
+                android:drawableEnd="@drawable/outline_delete_24"
                 android:drawablePadding="10dp"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edit_field"
                 android:hint="-- / -- / ---- - 00:00"
-                android:inputType="date"
+                android:text="-- / -- / ---- - 00:00"
+                android:focusable="false"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:textColor="@color/blue"
                 android:textColorHint="@color/gray"
-                android:textSize="16sp"
-                android:enabled="false"/>
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/btnAddDate"

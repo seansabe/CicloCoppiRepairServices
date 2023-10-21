@@ -11,6 +11,8 @@
         <item name="colorOnSecondaryContainer">@color/blue</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="materialCalendarTheme">@style/ThemeOverlay.App.DatePicker</item>
+        <item name="materialTimePickerTheme">@style/ThemeOverlay.App.TimePicker</item>
     </style>
 
     <style name="ButtonTextNoCaps" parent="Widget.AppCompat.Button">
@@ -21,6 +23,33 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+
+    <style name="ThemeOverlay.App.DatePicker" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
+        <item name="colorSurface">@color/blue</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorOnPrimary">@color/blue</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorOnSurfaceVariant">@color/white</item>
+        <item name="colorSecondaryContainer">@color/blue</item>
+    </style>
+
+    <style name="ThemeOverlay.App.TimePicker" parent="@style/ThemeOverlay.Material3.MaterialTimePicker">
+        <item name="colorSurface">@color/blue</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorSecondaryContainer">@color/blue</item>
+        <item name="colorTertiaryContainer">@color/white</item>
+        <item name="colorOnTertiaryContainer">@color/blue</item>
+        <item name="colorOutline">@color/white</item>
+        <item name="chipStyle">@style/TimePicker.Chip</item>
+    </style>
+
+    <style name="TimePicker.Chip" parent="Widget.Material3.MaterialTimePicker.Display">
+        <item name="chipBackgroundColor">@color/white</item>
+        <item name="android:textColor">@color/blue</item>
     </style>
 
 </resources>

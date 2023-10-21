@@ -32,6 +32,8 @@
     <string name="txtAvailability">Availability</string>
     <string name="txtAddServiceHour">Add a date</string>
     <string name="txtSelectTechnician">Select a technician</string>
+    <string name="txtSelectDate">Select a date</string>
+    <string name="txtSelectTime">Select a time</string>
 
     <string name="txtErrorLogin">Invalid email or password</string>
     <string name="txtErrorPassMismatch">Password doesn\'t match!</string>
