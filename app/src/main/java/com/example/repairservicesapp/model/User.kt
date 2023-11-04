@@ -20,6 +20,8 @@ class User {
     var password: String? = null
     @JvmField
     var userType: UserType? = null
+    @JvmField
+    var userAvailability = 1
 
     constructor()
     constructor(
@@ -29,7 +31,27 @@ class User {
         phoneNumber: String?,
         email: String?,
         password: String?,
-        userType: UserType?
+        userType: UserType?,
+        userAvailability: Int
+    ) {
+        this.firstName = firstName
+        this.lastName = lastName
+        this.address = address
+        this.phoneNumber = phoneNumber
+        this.email = email
+        this.password = password
+        this.userType = userType
+        this.userAvailability = userAvailability
+    }
+
+    constructor(
+        firstName: String?,
+        lastName: String?,
+        address: String?,
+        phoneNumber: String?,
+        email: String?,
+        password: String?,
+        userType: UserType?,
     ) {
         this.firstName = firstName
         this.lastName = lastName
@@ -48,7 +70,8 @@ class User {
         phoneNumber: String?,
         email: String?,
         password: String?,
-        userType: String?
+        userType: String?,
+        userAvailability: Int
     ) {
         this.userId = userId
         this.firstName = firstName
@@ -58,6 +81,7 @@ class User {
         this.email = email
         this.password = password
         this.userType = UserType.valueOf(userType!!)
+        this.userAvailability = userAvailability
     }
 
     constructor(
@@ -96,4 +120,7 @@ class User {
         get() = userType == UserType.TECHNICIAN
     val isAdmin: Boolean
         get() = userType == UserType.ADMIN
+    fun getUserId(): Int {
+        return userId
+    }
 }

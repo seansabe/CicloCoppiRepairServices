@@ -28,63 +28,27 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/custom_spinner"
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:autofillHints=""
-                android:background="@drawable/edit_field"
-                android:gravity="center"
-                android:hint="@string/txtSelectTechnician"
-                android:inputType="text"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:textColor="@color/blue"
-                android:textColorHint="@color/gray"
-                android:textSize="16sp" />
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="30dp">
 
-            <EditText
-                android:id="@+id/edTxtDatePicker"
-                android:drawableStart="@drawable/outline_calendar_month_24"
-                android:drawableEnd="@drawable/outline_delete_24"
-                android:drawablePadding="10dp"
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/edit_field"
-                android:hint="-- / -- / ---- - 00:00"
-                android:text="-- / -- / ---- - 00:00"
-                android:focusable="false"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:textColor="@color/blue"
-                android:textColorHint="@color/gray"
-                android:textSize="16sp" />
+                <RadioButton
+                    android:id="@+id/rdAvailable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtRadioAvailable"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp" />
 
-            <Button
-                android:id="@+id/btnAddDate"
-                style="@style/ButtonTextNoCaps"
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_enabled"
-                android:text="@string/btnAddDate"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btnAddTechnician"
-                style="@style/ButtonTextNoCaps"
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_enabled"
-                android:text="@string/btnAddTechnician"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                <RadioButton
+                    android:id="@+id/rdUnavailable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtRadioUnavailable"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp" />
+            </RadioGroup>
 
             <Button
                 android:id="@+id/btnSaveAvailability"
@@ -97,6 +61,26 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edTxtDatePicker"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_field"
+                android:drawableStart="@drawable/outline_calendar_month_24"
+                android:drawableEnd="@drawable/outline_delete_24"
+                android:drawablePadding="10dp"
+                android:focusable="false"
+                android:hint="-- / -- / ---- - 00:00"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="-- / -- / ---- - 00:00"
+                android:textColor="@color/blue"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

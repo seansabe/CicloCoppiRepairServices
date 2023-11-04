@@ -11,6 +11,10 @@
     <string name="editLastNamePlaceholder">Apellido</string>
     <string name="editAddressPlaceholder">Dirección</string>
     <string name="editPhonePlaceholder">Número Telefónico</string>
+    <string name="editServiceNamePlaceholder">Nombre del Servicio</string>
+    <string name="editServiceDescriptionPlaceholder">Descripción del Servicio</string>
+    <string name="editServicePricePlaceholder">Precio del Servicio</string>
+    <string name="editServiceDurationPlaceholder">Duración del Servicio (Horas)</string>
 
     <string name="btnRegister">Registrar</string>
     <string name="btnLogin">Iniciar Sesión</string>
@@ -20,6 +24,8 @@
     <string name="btnAddTechnician">Agregar Técnico</string>
     <string name="btnAdd">Agregar</string>
     <string name="btnAddDate">Agregar Fecha</string>
+    <string name="btnAddService">Agregar Servicio</string>
+    <string name="btnUpdateService">Actualizar Servicio</string>
 
     <string name="txtNoAccount">No tienes una cuenta?</string>
     <string name="txtPrivacyPolicy">Al registrate, estás aceptando nuestros términos y condiciones.</string>
@@ -27,13 +33,19 @@
     <string name="txtScheduleItem">Calendario</string>
     <string name="txtHistoryItem">Historial de Servicio</string>
     <string name="txtProfileItem">Perfil</string>
+    <string name="txtHomeItem">Administración</string>
     <string name="txtBookItem">Agendar Servicio</string>
     <string name="txtProfileUpdated">Perfil Actualizado</string>
     <string name="txtAvailability">Disponibilidad</string>
     <string name="txtAddServiceHour">Agregar una hora</string>
     <string name="txtSelectTechnician">Selecciona un técnico</string>
+    <string name="txtSelectService">Selecciona un servicio</string>
     <string name="txtSelectDate">Selecciona una fecha</string>
     <string name="txtSelectTime">Selecciona una hora</string>
+    <string name="txtTitleTechnicians">Técnicos</string>
+    <string name="txtTitleServices">Servicios</string>
+    <string name="txtRadioAvailable">Disponible</string>
+    <string name="txtRadioUnavailable">No Disponible</string>
 
     <string name="txtErrorLogin">Correo o contraseña incorrectos</string>
     <string name="txtErrorPassMismatch">Contraseña no coincide!</string>

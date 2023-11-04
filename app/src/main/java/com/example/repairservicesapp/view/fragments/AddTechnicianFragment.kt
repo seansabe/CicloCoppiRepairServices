@@ -56,8 +56,8 @@ class AddTechnicianFragment : Fragment() {
                 val address = edTxtAddress.text.toString()
                 val password = edTxtPassword.text.toString()
                 dbhelper = DatabaseHelper(requireContext())
-                dbhelper.addUser(User(firstName, lastName, address, phone, email, password, userType = User.UserType.TECHNICIAN))
-                val fragment = ScheduleFragment()
+                dbhelper.addUser(User(firstName, lastName, address, phone, email, password, userType = User.UserType.TECHNICIAN, 100))
+                val fragment = AdminFragment()
                 val fragmentManager = requireActivity().supportFragmentManager
                 val fragmentTransaction = fragmentManager.beginTransaction()
                 fragmentTransaction.replace(R.id.fragment_container_view, fragment)
@@ -66,7 +66,7 @@ class AddTechnicianFragment : Fragment() {
             }
         }
         btnCancel.setOnClickListener {
-            val fragment = ScheduleFragment()
+            val fragment = AdminFragment()
             val fragmentManager = requireActivity().supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment_container_view, fragment)

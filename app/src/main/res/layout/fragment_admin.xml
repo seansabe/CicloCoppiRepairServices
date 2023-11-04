@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragments.ScheduleFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="24dp"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:id="@+id/txtTitleTechnicians"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/txtTitleTechnicians"
+                android:textColor="@color/blue"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/custom_spinner_technicians"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:autofillHints=""
+                android:background="@drawable/edit_field"
+                android:gravity="center"
+                android:hint="@string/txtSelectTechnician"
+                android:inputType="text"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/blue"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnAddTechnician"
+                style="@style/ButtonTextNoCaps"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_enabled"
+                android:text="@string/btnAddTechnician"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtTitleServices"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/txtTitleServices"
+                android:textColor="@color/blue"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"/>
+
+            <Spinner
+                android:id="@+id/custom_spinner_services"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:autofillHints=""
+                android:background="@drawable/edit_field"
+                android:gravity="center"
+                android:hint="@string/txtSelectService"
+                android:inputType="text"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/blue"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnUpdateService"
+                style="@style/ButtonTextNoCaps"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_enabled"
+                android:text="@string/btnUpdateService"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnAddService"
+                style="@style/ButtonTextNoCaps"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_enabled"
+                android:text="@string/btnAddService"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

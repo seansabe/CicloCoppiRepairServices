@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".view.fragments.AddServiceFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="24dp"
+            android:paddingBottom="24dp">
+
+            <EditText
+                android:id="@+id/edTxtServiceName"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:autofillHints=""
+                android:background="@drawable/edit_field"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/editServiceNamePlaceholder"
+                android:inputType="text"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/blue"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edTxtServiceDescription"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:autofillHints=""
+                android:background="@drawable/edit_field"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/editServiceDescriptionPlaceholder"
+                android:inputType="text"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/blue"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edTxtServicePrice"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:autofillHints=""
+                android:background="@drawable/edit_field"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/editServicePricePlaceholder"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/blue"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edTxtServiceDuration"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:autofillHints=""
+                android:background="@drawable/edit_field"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/editServiceDurationPlaceholder"
+                android:inputType="number"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/blue"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnAdd"
+                style="@style/ButtonTextNoCaps"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_enabled"
+                android:text="@string/btnAdd"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnCancel"
+                style="@style/ButtonTextNoCaps"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_enabled"
+                android:text="@string/btnCancel"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

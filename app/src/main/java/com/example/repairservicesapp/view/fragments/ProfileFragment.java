@@ -38,7 +38,6 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         loadUserData(view);
         loadEvents();
-        updateUserData();
         return view;
     }
 
@@ -76,7 +75,7 @@ public class ProfileFragment extends Fragment {
             String address = edTxtAddress.getText().toString();
             String phone = edTxtPhone.getText().toString();
             String email = edTxtEmail.getText().toString();
-            dbHelper = new DatabaseHelper(requireActivity().getApplicationContext());
+            dbHelper = new DatabaseHelper(requireContext());
             user.firstName = fName;
             user.lastName = lName;
             user.address = address;

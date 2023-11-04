@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/itemAdminHome"
+        android:enabled="true"
+        android:icon="@drawable/outline_admin_panel_settings_24"
+        android:title="@string/txtHomeItem"/>
+    <item
+        android:id="@+id/itemAdminHistory"
+        android:enabled="true"
+        android:icon="@drawable/outline_history_24"
+        android:title="@string/txtHistoryItem"/>
+    <item
+        android:id="@+id/itemAdminProfile"
+        android:enabled="true"
+        android:icon="@drawable/outline_account_circle_24"
+        android:title="@string/txtProfileItem"/>
+</menu>

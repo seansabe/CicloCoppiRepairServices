@@ -1,16 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/itemSchedule"
+        android:id="@+id/itemCustomerBooking"
         android:enabled="true"
         android:icon="@drawable/outline_edit_calendar_24"
-        android:title="@string/txtScheduleItem"/>
+        android:title="@string/txtBookItem"/>
     <item
-        android:id="@+id/itemHistory"
+        android:id="@+id/itemCustomerHistory"
         android:enabled="true"
         android:icon="@drawable/outline_history_24"
         android:title="@string/txtHistoryItem"/>
     <item
-        android:id="@+id/itemProfile"
+        android:id="@+id/itemCustomerProfile"
         android:enabled="true"
         android:icon="@drawable/outline_account_circle_24"
         android:title="@string/txtProfileItem"/>

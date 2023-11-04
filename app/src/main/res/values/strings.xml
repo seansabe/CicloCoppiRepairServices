@@ -11,6 +11,10 @@
     <string name="editLastNamePlaceholder">Last Name</string>
     <string name="editAddressPlaceholder">Address</string>
     <string name="editPhonePlaceholder">Phone Number</string>
+    <string name="editServiceNamePlaceholder">Service Name</string>
+    <string name="editServiceDescriptionPlaceholder">Service Description</string>
+    <string name="editServicePricePlaceholder">Service Price</string>
+    <string name="editServiceDurationPlaceholder">Service Duration (Hours)</string>
 
     <string name="btnRegister">Register</string>
     <string name="btnLogin">Sign In</string>
@@ -20,6 +24,8 @@
     <string name="btnAddTechnician">Add Technician</string>
     <string name="btnAdd">Add</string>
     <string name="btnAddDate">Add Date</string>
+    <string name="btnAddService">Add Service</string>
+    <string name="btnUpdateService">Update Service</string>
 
     <string name="txtNoAccount">Don\'t have an account?</string>
     <string name="txtPrivacyPolicy">By registering, you accept all our terms and conditions.</string>
@@ -27,13 +33,19 @@
     <string name="txtScheduleItem">Schedule</string>
     <string name="txtHistoryItem">Service History</string>
     <string name="txtProfileItem">Profile</string>
+    <string name="txtHomeItem">Administration</string>
     <string name="txtBookItem">Book a Service</string>
     <string name="txtProfileUpdated">Profile Updated</string>
     <string name="txtAvailability">Availability</string>
     <string name="txtAddServiceHour">Add a date</string>
     <string name="txtSelectTechnician">Select a technician</string>
+    <string name="txtSelectService">Select a service</string>
     <string name="txtSelectDate">Select a date</string>
     <string name="txtSelectTime">Select a time</string>
+    <string name="txtTitleTechnicians">Technicians</string>
+    <string name="txtTitleServices">Services</string>
+    <string name="txtRadioAvailable">Available</string>
+    <string name="txtRadioUnavailable">Unavailable</string>
 
     <string name="txtErrorLogin">Invalid email or password</string>
     <string name="txtErrorPassMismatch">Password doesn\'t match!</string>

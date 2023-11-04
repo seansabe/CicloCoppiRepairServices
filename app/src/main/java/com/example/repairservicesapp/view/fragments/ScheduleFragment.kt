@@ -1,34 +1,25 @@
 package com.example.repairservicesapp.view.fragments
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.RadioButton
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
+import com.example.repairservicesapp.app.AppManager
 import com.example.repairservicesapp.database.DatabaseHelper
-import com.example.repairservicesapp.model.User
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointForward
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 
 class ScheduleFragment : Fragment() {
-    private lateinit var technicians : ArrayList<User>
-    private lateinit var dbhelper : DatabaseHelper
-    private lateinit var btnAddTechnician : Button
-    private lateinit var btnAddDatePicker: Button
-    private lateinit var txtDateTime : EditText
+    private lateinit var dbHelper : DatabaseHelper
+    private lateinit var btnSave: Button
+    private lateinit var rdAvailable: RadioButton
+    private lateinit var rdUnavailable: RadioButton
+    //private lateinit var txtDateTime : EditText
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,47 +27,53 @@ class ScheduleFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_schedule, container, false)
         loadUI(view)
         loadEvents()
-        dbhelper = DatabaseHelper(requireContext())
-        technicians = dbhelper.allTechnicians as ArrayList<User>
-        var technicianNames = ArrayList<String>()
-        for (technician in technicians) {
-            technicianNames.add(technician.firstName + " " + technician.lastName)
-        }
-
-        val spinner = view.findViewById<Spinner>(R.id.custom_spinner)
-        val adapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_item, technicianNames)
-        spinner.adapter = adapter
-
+        dbHelper = DatabaseHelper(requireContext())
         return view
     }
 
     private fun loadUI(view: View) {
-        btnAddTechnician = view.findViewById(R.id.btnAddTechnician)
-        btnAddDatePicker = view.findViewById(R.id.btnAddDate)
-        txtDateTime = view.findViewById(R.id.edTxtDatePicker)
+        btnSave = view.findViewById(R.id.btnSaveAvailability)
+        rdAvailable = view.findViewById(R.id.rdAvailable)
+        rdUnavailable = view.findViewById(R.id.rdUnavailable)
+        // Change the color of the radio buttons to match the theme of the app.
+        val colorStateList = ColorStateList(
+            arrayOf(
+                intArrayOf(-android.R.attr.state_checked),
+                intArrayOf(android.R.attr.state_checked)
+            ), intArrayOf(
+                view.context.getColor(R.color.gray),  // Unchecked color
+                view.context.getColor(R.color.blue) // Checked color
+            )
+        )
+        rdAvailable.buttonTintList = colorStateList
+        rdUnavailable.buttonTintList = colorStateList
+        if (AppManager.instance.user.userAvailability == 100) {
+            rdAvailable.isChecked = true
+        } else {
+            rdUnavailable.isChecked = true
+        }
+
+        //txtDateTime = view.findViewById(R.id.edTxtDatePicker)
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun loadEvents() {
-        btnAddTechnician.setOnClickListener {
-            val fragment = AddTechnicianFragment()
-            val fragmentManager = requireActivity().supportFragmentManager
-            val fragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragment_container_view, fragment)
-            fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commit()
+        btnSave.setOnClickListener {
+            if (rdAvailable.isChecked) {
+                AppManager.instance.user.userAvailability = 100
+            } else {
+                AppManager.instance.user.userAvailability = 0
+            }
+            dbHelper.updateTechnicianAvailability(AppManager.instance.user.getUserId(), AppManager.instance.user.userAvailability)
         }
-
-        btnAddDatePicker.setOnClickListener {
-
-        }
-
+        /*
         txtDateTime.setOnClickListener {
             showDatePicker()
         }
-
+        */
     }
 
+    /*
     private fun showDatePicker() {
         // Makes only dates from today forward selectable.
         val constraintsBuilder = CalendarConstraints.Builder()
@@ -128,5 +125,5 @@ class ScheduleFragment : Fragment() {
             // Set the text in the EditText
             txtDateTime.setText(txtDateTime.text.toString() + " - " + formattedTime)
         }
-    }
+    }*/
 }
