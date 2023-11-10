@@ -2,6 +2,26 @@
     <string name="app_name">RepairServicesApp</string>
     <string name="imgDesc">Ciclo Coppi</string>
 
+    <string name="txtColorBlack">Negro</string>
+    <string name="txtColorBlue">Azul</string>
+    <string name="txtColorBrown">Café</string>
+    <string name="txtColorGray">Gris</string>
+    <string name="txtColorGreen">Verde</string>
+    <string name="txtColorOrange">Naranja</string>
+    <string name="txtColorPink">Rosado</string>
+    <string name="txtColorPurple">Morado</string>
+    <string name="txtColorRed">Rojo</string>
+    <string name="txtColorWhite">Blanco</string>
+    <string name="txtColorYellow">Amarillo</string>
+    <string name="txtColorMagenta">Magenta</string>
+    <string name="txtColorGold">Dorado</string>
+    <string name="txtColorSilver">Plateado</string>
+    <string name="txtColorFuchsia">Fucsia</string>
+    <string name="txtColorCyan">Cian</string>
+    <string name="txtColorLime">Lima</string>
+    <string name="txtColorMaroon">Marrón</string>
+    <string name="txtColorAqua">Acuamarina</string>
+
     <string name="editEmailPlaceholder">Email</string>
     <string name="editPasswordPlaceholder">Contraseña</string>
     <string name="editConfirmPassPlaceholder">Confirmar Contraseña</string>
@@ -15,6 +35,7 @@
     <string name="editServiceDescriptionPlaceholder">Descripción del Servicio</string>
     <string name="editServicePricePlaceholder">Precio del Servicio</string>
     <string name="editServiceDurationPlaceholder">Duración del Servicio (Horas)</string>
+    <string name="editCommentPlaceholder">Comentarios</string>
 
     <string name="btnRegister">Registrar</string>
     <string name="btnLogin">Iniciar Sesión</string>
@@ -26,6 +47,17 @@
     <string name="btnAddDate">Agregar Fecha</string>
     <string name="btnAddService">Agregar Servicio</string>
     <string name="btnUpdateService">Actualizar Servicio</string>
+    <string name="btnDeleteService">Eliminar Servicio</string>
+    <string name="btnBook">Agendar</string>
+
+    <string name="txtBikeTypeMTB">MTB</string>
+    <string name="txtBikeTypeRoad">Ruta</string>
+    <string name="txtBikeTypeBMX">Cross</string>
+    <string name="txtBikeTypeElectric">Eléctrica</string>
+    <string name="txtBikeTypeKids">Niño(a)</string>
+    <string name="txtBikeTypeUrban">Urbana</string>
+    <string name="txtBikeTypeAmateur">Novato</string>
+    <string name="txtBikeTypeOther">Otra</string>
 
     <string name="txtNoAccount">No tienes una cuenta?</string>
     <string name="txtPrivacyPolicy">Al registrate, estás aceptando nuestros términos y condiciones.</string>
@@ -46,6 +78,19 @@
     <string name="txtTitleServices">Servicios</string>
     <string name="txtRadioAvailable">Disponible</string>
     <string name="txtRadioUnavailable">No Disponible</string>
+    <string name="txtDropInTime">Hora de Llegada</string>
+    <string name="txtMorning">Mañana</string>
+    <string name="txtAfternoon">Tarde</string>
+    <string name="txtBikeInfo">Información de la Bicicleta</string>
+    <string name="txtBicycleType">Tipo de Bicicleta</string>
+    <string name="txtBicycleColor">Color</string>
+    <string name="txtBicycleSize">Tamaño de la Rueda</string>
+    <string name="txtEstimatedCostTitle">Costo Total Aprox.</string>
+    <string name="txtEstimatedServiceTimeTitle">Tiempo de Servicio Aprox.</string>
+    <string name="txtHours">Horas</string>
+
+    <string name="txtServiceDropInTimeDesc">Los clientes deben llevar sus bicicletas a la tienda. \n\nUna hora será asignada para la jornada seleccionada disponible más cercano dentro de las próximas 12 horas.</string>
+    <string name="txtServiceTimeDesc">Services are only performed during business hours. \n\nEl costo del servicio es estimado. Sin embargo, el costo total es validado al momento de llevar la bicicleta.</string>
 
     <string name="txtErrorLogin">Correo o contraseña incorrectos</string>
     <string name="txtErrorPassMismatch">Contraseña no coincide!</string>

@@ -2,65 +2,90 @@ package com.example.repairservicesapp.model
 
 class Booking {
     enum class BookingStatus {
-        PENDING, ACCEPTED, DECLINED, COMPLETED
+        PENDING, ASSIGNED, IN_PROCESS, ACCEPTED, DECLINED, COMPLETED
     }
 
-    private var bookingId = 0
     @JvmField
     var bookingDate: String? = null
     @JvmField
     var bookingTime: String? = null
     @JvmField
+    var dropInTime: String? = null
+    @JvmField
     var bookingStatus: BookingStatus? = null
     @JvmField
-    var bookingPrice = 0.0
+    var bookingCost = 0.0
     @JvmField
     var bookingDuration = 0
     @JvmField
+    var bikeType = ""
+    @JvmField
+    var bikeColor = ""
+    @JvmField
+    var bikeWheelSize = ""
+    @JvmField
+    var comments = ""
+    @JvmField
     var services: ArrayList<Service>? = null
     @JvmField
-    var user: User? = null
+    var customer: User? = null
     @JvmField
     var technician: User? = null
+    @JvmField
+    var rating = 0.0
 
     constructor()
     constructor(
-        bookingDate: String?,
-        bookingTime: String?,
+        dropInTime: String?,
         bookingStatus: BookingStatus?,
-        bookingPrice: Double,
+        bookingCost: Double,
         bookingDuration: Int,
+        bikeType: String,
+        bikeColor: String,
+        bikeWheelSize: String,
+        comments: String,
         services: ArrayList<Service>?,
-        user: User
+        customer: User
     ) {
-        this.bookingDate = bookingDate
-        this.bookingTime = bookingTime
+        this.dropInTime = dropInTime
         this.bookingStatus = bookingStatus
-        this.bookingPrice = bookingPrice
+        this.bookingCost = bookingCost
         this.bookingDuration = bookingDuration
+        this.bikeType = bikeType
+        this.bikeColor = bikeColor
+        this.bikeWheelSize = bikeWheelSize
+        this.comments = comments
         this.services = services
-        this.user = user
+        this.customer = customer
     }
 
     constructor(
-        bookingId: Int,
+        dropInTime: String?,
         bookingDate: String?,
         bookingTime: String?,
         bookingStatus: BookingStatus?,
-        bookingPrice: Double,
+        bookingCost: Double,
         bookingDuration: Int,
+        bikeType: String,
+        bikeColor: String,
+        bikeWheelSize: String,
+        comments: String,
         services: ArrayList<Service>?,
-        user: User,
+        customer: User,
         technician: User
     ) {
-        this.bookingId = bookingId
+        this.dropInTime = dropInTime
         this.bookingDate = bookingDate
         this.bookingTime = bookingTime
         this.bookingStatus = bookingStatus
-        this.bookingPrice = bookingPrice
+        this.bookingCost = bookingCost
         this.bookingDuration = bookingDuration
+        this.bikeType = bikeType
+        this.bikeColor = bikeColor
+        this.bikeWheelSize = bikeWheelSize
+        this.comments = comments
         this.services = services
-        this.user = user
+        this.customer = customer
         this.technician = technician
     }
 
@@ -76,7 +101,29 @@ class Booking {
     val isCompleted: Boolean
         get() = bookingStatus == BookingStatus.COMPLETED
 
-    fun getBookingId(): Int {
-        return bookingId
+    val isInProcess: Boolean
+        get() = bookingStatus == BookingStatus.IN_PROCESS
+
+    val isAssigned: Boolean
+        get() = bookingStatus == BookingStatus.ASSIGNED
+
+    fun setBookingStatus(bookingStatus: BookingStatus?) {
+        this.bookingStatus = bookingStatus
+    }
+
+    fun setBookingTechnician(technician: User?) {
+        this.technician = technician
+    }
+
+    fun setBookingDate(bookingDate: String?) {
+        this.bookingDate = bookingDate
+    }
+
+    fun setBookingTime(bookingTime: String?) {
+        this.bookingTime = bookingTime
+    }
+
+    fun setBookingRating(rating: Double) {
+        this.rating = rating
     }
 }

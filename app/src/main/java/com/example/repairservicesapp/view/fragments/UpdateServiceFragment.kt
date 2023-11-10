@@ -2,7 +2,6 @@ package com.example.repairservicesapp.view.fragments
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,7 +47,7 @@ class UpdateServiceFragment : Fragment() {
             serviceId = service?.getServiceId()!!
             edTxtServiceName.setText(service.serviceName)
             edTxtServiceDescription.setText(service.serviceDescription)
-            edTxtServicePrice.setText(service.servicePrice.toString())
+            edTxtServicePrice.setText(service.serviceCost.toString())
             edTxtServiceDuration.setText(service.serviceDuration.toString())
         }
     }

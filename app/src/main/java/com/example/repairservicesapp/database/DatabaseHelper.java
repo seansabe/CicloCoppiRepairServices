@@ -1,6 +1,5 @@
 package com.example.repairservicesapp.database;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -309,7 +308,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(S_COLUMN_NAME, service.serviceName);
         cv.put(S_COLUMN_DESCRIPTION, service.serviceDescription);
-        cv.put(S_COLUMN_PRICE, service.servicePrice);
+        cv.put(S_COLUMN_PRICE, service.serviceCost);
         cv.put(S_COLUMN_DURATION, service.serviceDuration);
         long result = db.insert(TABLE_SERVICES, null, cv);
         if(result == -1) {
@@ -324,7 +323,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(S_COLUMN_NAME, service.serviceName);
         cv.put(S_COLUMN_DESCRIPTION, service.serviceDescription);
-        cv.put(S_COLUMN_PRICE, service.servicePrice);
+        cv.put(S_COLUMN_PRICE, service.serviceCost);
         cv.put(S_COLUMN_DURATION, service.serviceDuration);
         String selection = S_COLUMN_ID + " = ?";
         String[] selectionArgs = { String.valueOf(service.getServiceId()) };

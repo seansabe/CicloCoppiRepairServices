@@ -29,7 +29,7 @@ import java.util.Locale
 class AdminFragment : Fragment() {
     private lateinit var technicians : ArrayList<User>
     private lateinit var services : ArrayList<Service>
-    private lateinit var dbhelper : DatabaseHelper
+    private lateinit var dbHelper : DatabaseHelper
     private lateinit var btnAddTechnician : Button
     private lateinit var btnAddService : Button
     private lateinit var btnUpdateService : Button
@@ -41,9 +41,9 @@ class AdminFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_admin, container, false)
         loadUI(view)
         loadEvents()
-        dbhelper = DatabaseHelper(requireContext())
-        technicians = dbhelper.allTechnicians as ArrayList<User>
-        services = dbhelper.allServices as ArrayList<Service>
+        dbHelper = DatabaseHelper(requireContext())
+        technicians = dbHelper.allTechnicians as ArrayList<User>
+        services = dbHelper.allServices as ArrayList<Service>
         var techniciansNames = ArrayList<String>()
         for (technician in technicians) {
             techniciansNames.add(technician.userFirstAndLastName)

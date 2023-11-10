@@ -2,6 +2,27 @@
     <string name="app_name">RepairServicesApp</string>
     <string name="imgDesc">Ciclo Coppi</string>
 
+    <string name="txtColorBlack">Black</string>
+    <string name="txtColorBlue">Blue</string>
+    <string name="txtColorBrown">Brown</string>
+    <string name="txtColorGray">Gray</string>
+    <string name="txtColorGreen">Green</string>
+    <string name="txtColorOrange">Orange</string>
+    <string name="txtColorPink">Pink</string>
+    <string name="txtColorPurple">Purple</string>
+    <string name="txtColorRed">Red</string>
+    <string name="txtColorWhite">White</string>
+    <string name="txtColorYellow">Yellow</string>
+    <string name="txtColorMagenta">Magenta</string>
+    <string name="txtColorGold">Gold</string>
+    <string name="txtColorSilver">Silver</string>
+    <string name="txtColorFuchsia">Fuchsia</string>
+    <string name="txtColorCyan">Cyan</string>
+    <string name="txtColorLime">Lime</string>
+    <string name="txtColorMaroon">Maroon</string>
+    <string name="txtColorAqua">Aqua</string>
+
+
     <string name="editEmailPlaceholder">Email</string>
     <string name="editPasswordPlaceholder">Password</string>
     <string name="editConfirmPassPlaceholder">Confirm Password</string>
@@ -15,6 +36,7 @@
     <string name="editServiceDescriptionPlaceholder">Service Description</string>
     <string name="editServicePricePlaceholder">Service Price</string>
     <string name="editServiceDurationPlaceholder">Service Duration (Hours)</string>
+    <string name="editCommentPlaceholder">Comments</string>
 
     <string name="btnRegister">Register</string>
     <string name="btnLogin">Sign In</string>
@@ -26,6 +48,17 @@
     <string name="btnAddDate">Add Date</string>
     <string name="btnAddService">Add Service</string>
     <string name="btnUpdateService">Update Service</string>
+    <string name="btnDeleteService">Delete Service</string>
+    <string name="btnBook">Book</string>
+
+    <string name="txtBikeTypeMTB">MTB</string>
+    <string name="txtBikeTypeRoad">Road</string>
+    <string name="txtBikeTypeBMX">BMX</string>
+    <string name="txtBikeTypeElectric">Electric</string>
+    <string name="txtBikeTypeKids">Kids</string>
+    <string name="txtBikeTypeUrban">Urban</string>
+    <string name="txtBikeTypeAmateur">Amateur</string>
+    <string name="txtBikeTypeOther">Other</string>
 
     <string name="txtNoAccount">Don\'t have an account?</string>
     <string name="txtPrivacyPolicy">By registering, you accept all our terms and conditions.</string>
@@ -46,6 +79,19 @@
     <string name="txtTitleServices">Services</string>
     <string name="txtRadioAvailable">Available</string>
     <string name="txtRadioUnavailable">Unavailable</string>
+    <string name="txtDropInTime">Drop In Time</string>
+    <string name="txtMorning">Morning</string>
+    <string name="txtAfternoon">Afternoon</string>
+    <string name="txtBikeInfo">Bicycle Information</string>
+    <string name="txtBicycleType">Bicycle type</string>
+    <string name="txtBicycleColor">Color</string>
+    <string name="txtBicycleSize">Wheel size</string>
+    <string name="txtEstimatedCostTitle">Estimated Total Cost</string>
+    <string name="txtEstimatedServiceTimeTitle">Estimated Service Time</string>
+    <string name="txtHours">Hours</string>
+
+    <string name="txtServiceDropInTimeDesc">Customers must bring the bikes to the store. \n\nA time will be assigned for the closest available space frame you selected within the next 12 hours.</string>
+    <string name="txtServiceTimeDesc">All services are validated at the store and only performed during business hours.</string>
 
     <string name="txtErrorLogin">Invalid email or password</string>
     <string name="txtErrorPassMismatch">Password doesn\'t match!</string>

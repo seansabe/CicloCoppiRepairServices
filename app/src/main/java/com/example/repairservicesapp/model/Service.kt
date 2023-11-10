@@ -7,7 +7,7 @@ class Service {
     @JvmField
     var serviceDescription: String? = null
     @JvmField
-    var servicePrice = 0.0
+    var serviceCost = 0.0
     @JvmField
     var serviceDuration = 0
 
@@ -20,7 +20,7 @@ class Service {
     ) {
         this.serviceName = serviceName
         this.serviceDescription = serviceDescription
-        this.servicePrice = servicePrice
+        this.serviceCost = servicePrice
         this.serviceDuration = serviceDuration
     }
 
@@ -34,7 +34,7 @@ class Service {
         this.serviceId = serviceId
         this.serviceName = serviceName
         this.serviceDescription = serviceDescription
-        this.servicePrice = servicePrice
+        this.serviceCost = servicePrice
         this.serviceDuration = serviceDuration
     }
 
