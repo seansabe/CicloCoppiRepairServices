@@ -15,7 +15,8 @@ import com.example.repairservicesapp.view.fragments.AdminFragment;
 import com.example.repairservicesapp.view.fragments.BookingFragment;
 import com.example.repairservicesapp.view.fragments.ProfileFragment;
 import com.example.repairservicesapp.view.fragments.ScheduleFragment;
-import com.example.repairservicesapp.view.fragments.ServiceHistoryFragment;
+import com.example.repairservicesapp.view.fragments.ServiceHistoryCustomerFragment;
+import com.example.repairservicesapp.view.fragments.ServiceHistoryTechnicianFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class NavigationActivity extends AppCompatActivity {
@@ -59,7 +60,7 @@ public class NavigationActivity extends AppCompatActivity {
             if (itemId == R.id.itemAdminHome) {
                 loadFragment(new AdminFragment());
             } else if (itemId == R.id.itemAdminHistory) {
-                loadFragment(new ServiceHistoryFragment());
+                loadFragment(new ServiceHistoryTechnicianFragment());
             } else if (itemId == R.id.itemAdminProfile) {
                 loadFragment(new ProfileFragment());
             }
@@ -71,7 +72,7 @@ public class NavigationActivity extends AppCompatActivity {
             if (itemId == R.id.itemAdminHome) {
                 loadFragment(new AdminFragment());
             } else if (itemId == R.id.itemAdminHistory) {
-                loadFragment(new ServiceHistoryFragment());
+                loadFragment(new ServiceHistoryTechnicianFragment());
             } else if (itemId == R.id.itemAdminProfile) {
                 loadFragment(new ProfileFragment());
             }
@@ -85,7 +86,7 @@ public class NavigationActivity extends AppCompatActivity {
             if (itemId == R.id.itemCustomerBooking) {
                 loadFragment(new BookingFragment());
             } else if (itemId == R.id.itemCustomerHistory) {
-                loadFragment(new ServiceHistoryFragment());
+                loadFragment(new ServiceHistoryCustomerFragment());
             } else if (itemId == R.id.itemCustomerProfile) {
                 loadFragment(new ProfileFragment());
             }
@@ -97,7 +98,7 @@ public class NavigationActivity extends AppCompatActivity {
             if (itemId == R.id.itemCustomerBooking) {
                 loadFragment(new BookingFragment());
             } else if (itemId == R.id.itemCustomerHistory) {
-                loadFragment(new ServiceHistoryFragment());
+                loadFragment(new ServiceHistoryCustomerFragment());
             } else if (itemId == R.id.itemCustomerProfile) {
                 loadFragment(new ProfileFragment());
             }
@@ -111,7 +112,7 @@ public class NavigationActivity extends AppCompatActivity {
             if (itemId == R.id.itemTechnicianSchedule) {
                 loadFragment(new ScheduleFragment());
             } else if (itemId == R.id.itemTechnicianHistory) {
-                loadFragment(new ServiceHistoryFragment());
+                loadFragment(new ServiceHistoryTechnicianFragment());
             } else if (itemId == R.id.itemTechnicianProfile) {
                 loadFragment(new ProfileFragment());
             }
@@ -123,7 +124,7 @@ public class NavigationActivity extends AppCompatActivity {
             if (itemId == R.id.itemTechnicianSchedule) {
                 loadFragment(new ScheduleFragment());
             } else if (itemId == R.id.itemTechnicianHistory) {
-                loadFragment(new ServiceHistoryFragment());
+                loadFragment(new ServiceHistoryTechnicianFragment());
             } else if (itemId == R.id.itemTechnicianProfile) {
                 loadFragment(new ProfileFragment());
             }

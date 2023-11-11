@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.BookingFragment">
+    tools:context=".view.fragments.EditBookingFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,9 +17,36 @@
             android:paddingVertical="24dp">
 
             <TextView
-                android:id="@+id/txtTitleServices"
+                android:id="@+id/txtAvailabilityTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/txtAvailability"
+                android:textColor="@color/blue"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/custom_spinner_technicians"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:autofillHints=""
+                android:background="@drawable/edit_field"
+                android:gravity="center"
+                android:hint="@string/txtSelectTechnician"
+                android:inputType="text"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/blue"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtTitleServices2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="@string/txtTitleServices"
                 android:textColor="@color/blue"
@@ -90,15 +117,45 @@
 
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/txtLine3"
+            <LinearLayout
                 android:layout_width="300dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:text="@string/txtServiceDropInTimeDesc"
-                android:textAlignment="center"
-                android:textColor="@color/gray"
-                android:textSize="16sp" />
+                android:gravity="clip_horizontal|center_horizontal"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edTxtAssignedDate"
+                    android:layout_width="145dp"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="2.5dp"
+                    android:autofillHints=""
+                    android:background="@drawable/edit_field"
+                    android:gravity="center"
+                    android:hint="@string/editAssignedDatePlaceholder"
+                    android:inputType="date"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/blue"
+                    android:textColorHint="@color/gray"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/edTxtAssignedTime"
+                    android:layout_width="145dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="2.5dp"
+                    android:autofillHints=""
+                    android:background="@drawable/edit_field"
+                    android:gravity="center"
+                    android:hint="@string/editAssignedTimePlaceholder"
+                    android:inputType="time"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/blue"
+                    android:textColorHint="@color/gray"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/txtBicycleTitle"
@@ -176,6 +233,22 @@
                 android:textColorHint="@color/gray"
                 android:textSize="16sp" />
 
+            <Spinner
+                android:id="@+id/custom_spinner_status"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:autofillHints=""
+                android:background="@drawable/edit_field"
+                android:gravity="center"
+                android:hint="@string/txtStatusTitle"
+                android:inputType="text"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/blue"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
             <TextView
                 android:id="@+id/txtTitleServices3"
                 android:layout_width="match_parent"
@@ -220,16 +293,6 @@
                 android:textSize="48sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/txtLine2"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/txtServiceTimeDesc"
-                android:textAlignment="center"
-                android:textColor="@color/gray"
-                android:textSize="16sp" />
-
             <Button
                 android:id="@+id/btnUpdateBooking"
                 style="@style/ButtonTextNoCaps"
@@ -237,7 +300,19 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/button_enabled"
-                android:text="@string/btnBook"
+                android:text="@string/btnProfileSave"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnCancel"
+                style="@style/ButtonTextNoCaps"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_enabled"
+                android:text="@string/btnCancel"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />

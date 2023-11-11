@@ -129,6 +129,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return users;
     }
 
+    // Get a user by name and last name of type Technician
+    public User getTechnicianByName(String firstName, String lastName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = { U_COLUMN_ID, U_COLUMN_ADDRESS, U_COLUMN_PHONE, U_COLUMN_EMAIL, U_COLUMN_PASSWORD, U_COLUMN_TYPE, U_COLUMN_AVAILABILITY };
+        String selection = U_COLUMN_FNAME + " = ? AND " + U_COLUMN_LNAME + " = ? AND " + U_COLUMN_TYPE + " = ?";
+        String[] selectionArgs = { firstName, lastName, "TECHNICIAN" };
+        Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
+        User user = null;
+        if (cursor.moveToFirst()) {
+            int userId = cursor.getInt(0);
+            String address = cursor.getString(1);
+            String phoneNumber = cursor.getString(2);
+            String email = cursor.getString(3);
+            String password = cursor.getString(4);
+            String userType = cursor.getString(5);
+            int availability = cursor.getInt(6);
+            user = new User(userId, firstName, lastName, address, phoneNumber, email, password, userType, availability);
+        }
+        cursor.close();
+        //db.close();
+        return user;
+    }
+
     public User getUserByEmail(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = { U_COLUMN_ID, U_COLUMN_FNAME, U_COLUMN_LNAME, U_COLUMN_ADDRESS, U_COLUMN_PHONE, U_COLUMN_PASSWORD, U_COLUMN_TYPE, U_COLUMN_AVAILABILITY };

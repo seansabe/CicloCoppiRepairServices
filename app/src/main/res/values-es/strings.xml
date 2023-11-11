@@ -2,6 +2,14 @@
     <string name="app_name">RepairServicesApp</string>
     <string name="imgDesc">Ciclo Coppi</string>
 
+    <string name="pending">PENDIENTE</string>
+    <string name="assigned">ASIGNADO</string>
+    <string name="awaitingBike">ESPERANDO BICICLETA</string>
+    <string name="inProcess">EN PROCESO</string>
+    <string name="accepted">ACEPTADO</string>
+    <string name="cancelled">CANCELADO</string>
+    <string name="completed">COMPLETADO</string>
+
     <string name="txtColorBlack">Negro</string>
     <string name="txtColorBlue">Azul</string>
     <string name="txtColorBrown">Café</string>
@@ -36,6 +44,8 @@
     <string name="editServicePricePlaceholder">Precio del Servicio</string>
     <string name="editServiceDurationPlaceholder">Duración del Servicio (Horas)</string>
     <string name="editCommentPlaceholder">Comentarios</string>
+    <string name="editAssignedDatePlaceholder">Fecha</string>
+    <string name="editAssignedTimePlaceholder">Hora</string>
 
     <string name="btnRegister">Registrar</string>
     <string name="btnLogin">Iniciar Sesión</string>
@@ -88,9 +98,20 @@
     <string name="txtEstimatedCostTitle">Costo Total Aprox.</string>
     <string name="txtEstimatedServiceTimeTitle">Tiempo de Servicio Aprox.</string>
     <string name="txtHours">Horas</string>
+    <string name="txtDateTitle">Fecha</string>
+    <string name="txtTimeTitle">Hora</string>
+    <string name="txtServicesTitle">Servicios</string>
+    <string name="txtTechnicianTitle">Técnico</string>
+    <string name="txtCustomerTitle">Cliente</string>
+    <string name="txtCommentTitle">Comentarios</string>
+    <string name="txtBicycleTitle">Bicicleta</string>
+    <string name="txtTotalCostTitle">Costo aprox.</string>
+    <string name="txtTotalTimeTitle">Tiempo aprox.</string>
+    <string name="txtStatusTitle">Estado</string>
 
     <string name="txtServiceDropInTimeDesc">Los clientes deben llevar sus bicicletas a la tienda. \n\nUna hora será asignada para la jornada seleccionada disponible más cercano dentro de las próximas 12 horas.</string>
     <string name="txtServiceTimeDesc">Services are only performed during business hours. \n\nEl costo del servicio es estimado. Sin embargo, el costo total es validado al momento de llevar la bicicleta.</string>
+    <string name="txtAppointmentDesc">Las reservas se cancelarán automáticamente si la bicicleta no ha sido recibida por el técnico en la hora establecida. Los clientes pueden cancelar los servicios hasta 2 horas antes de la llegada.</string>
 
     <string name="txtErrorLogin">Correo o contraseña incorrectos</string>
     <string name="txtErrorPassMismatch">Contraseña no coincide!</string>

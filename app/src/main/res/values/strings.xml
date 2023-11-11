@@ -2,6 +2,14 @@
     <string name="app_name">RepairServicesApp</string>
     <string name="imgDesc">Ciclo Coppi</string>
 
+    <string name="pending">PENDING</string>
+    <string name="assigned">ASSIGNED</string>
+    <string name="awaitingBike">AWAITING_BIKE</string>
+    <string name="inProcess">IN_PROCESS</string>
+    <string name="accepted">ACCEPTED</string>
+    <string name="cancelled">CANCELLED</string>
+    <string name="completed">COMPLETED</string>
+
     <string name="txtColorBlack">Black</string>
     <string name="txtColorBlue">Blue</string>
     <string name="txtColorBrown">Brown</string>
@@ -37,6 +45,8 @@
     <string name="editServicePricePlaceholder">Service Price</string>
     <string name="editServiceDurationPlaceholder">Service Duration (Hours)</string>
     <string name="editCommentPlaceholder">Comments</string>
+    <string name="editAssignedDatePlaceholder">Date</string>
+    <string name="editAssignedTimePlaceholder">Time</string>
 
     <string name="btnRegister">Register</string>
     <string name="btnLogin">Sign In</string>
@@ -89,9 +99,20 @@
     <string name="txtEstimatedCostTitle">Estimated Total Cost</string>
     <string name="txtEstimatedServiceTimeTitle">Estimated Service Time</string>
     <string name="txtHours">Hours</string>
+    <string name="txtDateTitle">Date</string>
+    <string name="txtTimeTitle">Time</string>
+    <string name="txtServicesTitle">Services</string>
+    <string name="txtTechnicianTitle">Technician</string>
+    <string name="txtCustomerTitle">Customer</string>
+    <string name="txtCommentTitle">Comments</string>
+    <string name="txtBicycleTitle">Bicycle</string>
+    <string name="txtTotalCostTitle">Est. Cost</string>
+    <string name="txtTotalTimeTitle">Est. Time</string>
+    <string name="txtStatusTitle">Status</string>
 
     <string name="txtServiceDropInTimeDesc">Customers must bring the bikes to the store. \n\nA time will be assigned for the closest available space frame you selected within the next 12 hours.</string>
     <string name="txtServiceTimeDesc">All services are validated at the store and only performed during business hours.</string>
+    <string name="txtAppointmentDesc">Bookings will be automatically cancel if the bike hasn\’t been received by the technician. \n\nCustomers are able to cancel services up to 2 hours prior the drop in.</string>
 
     <string name="txtErrorLogin">Invalid email or password</string>
     <string name="txtErrorPassMismatch">Password doesn\'t match!</string>
