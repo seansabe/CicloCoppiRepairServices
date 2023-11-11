@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
+import com.example.repairservicesapp.app.AppManager
 import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Booking
 import com.example.repairservicesapp.model.Service
@@ -30,6 +31,22 @@ class ServiceHistoryCustomerFragment : Fragment() {
         return view
     }
 
+    private fun isBookingCreatedByCurrentUser(customerData: Map<String, Any>): Boolean {
+        val loggedInUser = AppManager.instance.user
+        val customerFirstName = customerData["customerFirstName"] as String
+        val customerLastName = customerData["customerLastName"] as String
+        val customerAddress = customerData["customerAddress"] as String
+        val customerPhoneNumber = customerData["customerPhoneNumber"] as String
+        val customerEmail = customerData["customerEmail"] as String
+
+
+        return loggedInUser?.firstName == customerFirstName &&
+                loggedInUser.lastName == customerLastName &&
+                loggedInUser.address == customerAddress &&
+                loggedInUser.phoneNumber == customerPhoneNumber &&
+                loggedInUser.email == customerEmail
+    }
+
     private fun loadUI(view: View) {
         container = view.findViewById(R.id.layoutCards)
         // Retrieving Bookings from Firebase
@@ -44,76 +61,79 @@ class ServiceHistoryCustomerFragment : Fragment() {
                     val servicesData = bookingData["services"] as? List<Map<String, Any>> ?: emptyList()
                     val customer = bookingData["customer"] as Map<String, Any>
                     val technician = bookingData["technician"] as? Map<String, Any>
-                    val servicesList = ArrayList<Service>()
-                    for (serviceMap in servicesData) {
-                        val service = Service(
-                            (serviceMap["serviceId"] as Long).toInt(),
-                            serviceMap["serviceName"].toString(),
-                            serviceMap["serviceDescription"].toString(),
-                            (serviceMap["servicePrice"] as? Double) ?: 0.0,
-                            (serviceMap["serviceDuration"] as? Long)?.toInt() ?: 0
-                        )
-                        servicesList.add(service)
-                    }
+                    if (isBookingCreatedByCurrentUser(customer)) {
+                        val servicesList = ArrayList<Service>()
+                        for (serviceMap in servicesData) {
+                            val service = Service(
+                                (serviceMap["serviceId"] as Long).toInt(),
+                                serviceMap["serviceName"].toString(),
+                                serviceMap["serviceDescription"].toString(),
+                                (serviceMap["servicePrice"] as? Double) ?: 0.0,
+                                (serviceMap["serviceDuration"] as? Long)?.toInt() ?: 0
+                            )
+                            servicesList.add(service)
+                        }
 
-                    if (technician == null) {
-                        // Convert bookingData to Booking object and add to bookingsList
-                        val booking = Booking(
-                            bookingId,
-                            bookingData["dropInTime"] as String,
-                            Booking.BookingStatus.valueOf(bookingData["bookingStatus"] as String),
-                            bookingData["bookingCost"] as Double,
-                            (bookingData["bookingDuration"] as Long).toInt(),
-                            bookingData["bikeType"] as String,
-                            bookingData["bikeColor"] as String,
-                            bookingData["bikeWheelSize"] as String,
-                            bookingData["comments"] as String,
-                            servicesList,
-                            User(
-                                customer["customerFirstName"] as String,
-                                customer["customerLastName"] as String,
-                                customer["customerAddress"] as String,
-                                customer["customerPhoneNumber"] as String,
-                                customer["customerEmail"] as String
+                        if (technician == null) {
+                            // Convert bookingData to Booking object and add to bookingsList
+                            val booking = Booking(
+                                bookingId,
+                                bookingData["dropInTime"] as String,
+                                Booking.BookingStatus.valueOf(bookingData["bookingStatus"] as String),
+                                bookingData["bookingCost"] as Double,
+                                (bookingData["bookingDuration"] as Long).toInt(),
+                                bookingData["bikeType"] as String,
+                                bookingData["bikeColor"] as String,
+                                bookingData["bikeWheelSize"] as String,
+                                bookingData["comments"] as String,
+                                servicesList,
+                                User(
+                                    customer["customerFirstName"] as String,
+                                    customer["customerLastName"] as String,
+                                    customer["customerAddress"] as String,
+                                    customer["customerPhoneNumber"] as String,
+                                    customer["customerEmail"] as String
+                                )
                             )
-                        )
-                        bookingsList.add(booking)
-                    } else {
-                        // Convert bookingData to Booking object and add to bookingsList
-                        val booking = Booking(
-                            bookingId,
-                            bookingData["dropInTime"] as String,
-                            bookingData["bookingDate"] as String,
-                            bookingData["bookingTime"] as String,
-                            Booking.BookingStatus.valueOf(bookingData["bookingStatus"] as String),
-                            bookingData["bookingCost"] as Double,
-                            (bookingData["bookingDuration"] as Long).toInt(),
-                            bookingData["bikeType"] as String,
-                            bookingData["bikeColor"] as String,
-                            bookingData["bikeWheelSize"] as String,
-                            bookingData["comments"] as String,
-                            servicesList,
-                            User(
-                                customer["customerFirstName"] as String,
-                                customer["customerLastName"] as String,
-                                customer["customerAddress"] as String,
-                                customer["customerPhoneNumber"] as String,
-                                customer["customerEmail"] as String
-                            ),
-                            User(
-                                technician["technicianFirstName"] as? String,
-                                technician["technicianLastName"] as? String,
-                                technician["technicianAddress"] as? String,
-                                technician["technicianPhoneNumber"] as? String,
-                                technician["technicianEmail"] as? String
+                            bookingsList.add(booking)
+                        } else {
+                            // Convert bookingData to Booking object and add to bookingsList
+                            val booking = Booking(
+                                bookingId,
+                                bookingData["dropInTime"] as String,
+                                bookingData["bookingDate"] as String,
+                                bookingData["bookingTime"] as String,
+                                Booking.BookingStatus.valueOf(bookingData["bookingStatus"] as String),
+                                bookingData["bookingCost"] as Double,
+                                (bookingData["bookingDuration"] as Long).toInt(),
+                                bookingData["bikeType"] as String,
+                                bookingData["bikeColor"] as String,
+                                bookingData["bikeWheelSize"] as String,
+                                bookingData["comments"] as String,
+                                servicesList,
+                                User(
+                                    customer["customerFirstName"] as String,
+                                    customer["customerLastName"] as String,
+                                    customer["customerAddress"] as String,
+                                    customer["customerPhoneNumber"] as String,
+                                    customer["customerEmail"] as String
+                                ),
+                                User(
+                                    technician["technicianFirstName"] as? String,
+                                    technician["technicianLastName"] as? String,
+                                    technician["technicianAddress"] as? String,
+                                    technician["technicianPhoneNumber"] as? String,
+                                    technician["technicianEmail"] as? String
+                                )
                             )
-                        )
-                        bookingsList.add(booking)
+                            bookingsList.add(booking)
+                        }
                     }
                 }
 
                 // Display Bookings Using Cards
-                for (booking in bookingsList) {
+                for (i in bookingsList.size - 1 downTo 0) {
+                    val booking = bookingsList[i]
                     val layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
@@ -178,7 +198,6 @@ class ServiceHistoryCustomerFragment : Fragment() {
                         layoutActionButtons.visibility = View.GONE
                     }
 
-                    // Add the cardView to the layout
                     container.addView(cardView)
                 }
             }

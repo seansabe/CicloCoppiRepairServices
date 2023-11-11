@@ -113,7 +113,8 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                 }
 
                 // Display Bookings Using Cards
-                for (booking in bookingsList) {
+                for (i in bookingsList.size - 1 downTo 0) {
+                    val booking = bookingsList[i]
                     val layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
