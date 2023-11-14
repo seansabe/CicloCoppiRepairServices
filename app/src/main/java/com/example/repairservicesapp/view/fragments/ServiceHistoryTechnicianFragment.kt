@@ -113,8 +113,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                 }
 
                 // Display Bookings Using Cards
-                for (i in bookingsList.size - 1 downTo 0) {
-                    val booking = bookingsList[i]
+                for (booking in bookingsList) {
                     val layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
@@ -149,7 +148,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     txtEstDuration.text = "${booking.bookingDuration} h"
                     txtStatus.text = booking.bookingStatus?.getStatusValue(requireContext())
 
-                    val btnCancelAppointment = cardView.findViewById<ImageButton>(R.id.btnCancelAppointment)
+                    val btnCancelAppointment = cardView.findViewById<ImageButton>(R.id.btnCancelBooking)
                     btnCancelAppointment.setOnClickListener {
                         Toast.makeText(requireContext(), "Cancel Appointment", Toast.LENGTH_SHORT).show()
                     }

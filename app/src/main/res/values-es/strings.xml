@@ -108,6 +108,10 @@
     <string name="txtTotalCostTitle">Costo aprox.</string>
     <string name="txtTotalTimeTitle">Tiempo aprox.</string>
     <string name="txtStatusTitle">Estado</string>
+    <string name="txtHistoryTitle">Historial de Servicios</string>
+    <string name="txtUpcomingBookings">Próximos Servicios</string>
+    <string name="txtNothingHereYet">Nada por aquí todavía</string>
+    <string name="txtBookingCancelled">Reserva Cancelada</string>
 
     <string name="txtServiceDropInTimeDesc">Los clientes deben llevar sus bicicletas a la tienda. \n\nUna hora será asignada para la jornada seleccionada disponible más cercano dentro de las próximas 12 horas.</string>
     <string name="txtServiceTimeDesc">Services are only performed during business hours. \n\nEl costo del servicio es estimado. Sin embargo, el costo total es validado al momento de llevar la bicicleta.</string>

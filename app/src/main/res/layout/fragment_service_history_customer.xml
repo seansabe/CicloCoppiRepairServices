@@ -24,6 +24,17 @@
                 android:gravity="center_horizontal"
                 android:text="@string/txtAppointmentDesc" />
 
+            <TextView
+                android:id="@+id/txtTitleServices5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="@string/txtUpcomingBookings"
+                android:textColor="@color/blue"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:id="@+id/layoutCards"
                 android:layout_width="match_parent"
@@ -32,6 +43,42 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingHorizontal="24dp" />
+
+            <TextView
+                android:id="@+id/txtNothingHereYetBookings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:text="@string/txtNothingHereYet" />
+
+            <TextView
+                android:id="@+id/txtTitleServices4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="@string/txtHistoryTitle"
+                android:textColor="@color/blue"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/layoutCardsHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp" />
+
+            <TextView
+                android:id="@+id/txtNothingHereYetHistory"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:text="@string/txtNothingHereYet" />
 
         </LinearLayout>
     </ScrollView>

@@ -239,6 +239,8 @@ class BookingFragment : Fragment() {
 
         return hashMapOf(
             "dropInTime" to booking.dropInTime!!,
+            "bookingDate" to null,
+            "bookingTime" to null,
             "bookingStatus" to booking.bookingStatus!!.name,
             "bookingCost" to booking.bookingCost,
             "bookingDuration" to booking.bookingDuration,
@@ -247,7 +249,8 @@ class BookingFragment : Fragment() {
             "bikeWheelSize" to booking.bikeWheelSize,
             "services" to mappedServices,
             "comments" to booking.comments,
-            "customer" to mappedCustomer
+            "customer" to mappedCustomer,
+            "technician" to null
         )
     }
 
