@@ -1,5 +1,7 @@
 package com.example.repairservicesapp.view.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -34,7 +36,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
         loadUI(view)
         return view
     }
-
+    /*
     private fun isBookingCreatedByCurrentUser(customerData: Map<String, Any>): Boolean {
         val loggedInUser = AppManager.instance.user
         val customerFirstName = customerData["customerFirstName"] as String
@@ -48,7 +50,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
                 loggedInUser.address == customerAddress &&
                 loggedInUser.phoneNumber == customerPhoneNumber &&
                 loggedInUser.email == customerEmail
-    }
+    }*/
 
     private fun loadUI(view: View) {
         container = view.findViewById(R.id.layoutCards)
@@ -61,6 +63,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
 
     private fun getFirebaseData() {
         FirebaseUtils.fireStoreDatabase.collection("bookings")
+            .whereEqualTo("customer.customerId", AppManager.instance.user.getUserId())
             .orderBy("bookingDate")
             .orderBy("bookingTime")
             .get()
@@ -73,7 +76,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
             }
     }
 
-    private fun buildCards(result: QuerySnapshot) {
+    private fun buildCards(result : QuerySnapshot) {
         // Convert each booking to Booking object and add to bookingsList
         for (document in result) {
             val bookingId = document.id
@@ -81,7 +84,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
             val servicesData = bookingData["services"] as? List<Map<String, Any>> ?: emptyList()
             val customer = bookingData["customer"] as Map<String, Any>
             val technician = bookingData["technician"] as? Map<String, Any>
-            if (isBookingCreatedByCurrentUser(customer)) {
+            //if (isBookingCreatedByCurrentUser(customer)) {
                 val servicesList = ArrayList<Service>()
                 for (serviceMap in servicesData) {
                     val service = Service(
@@ -148,7 +151,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
                     )
                     bookingsList.add(booking)
                 }
-            }
+            //}
         }
 
         // Display Bookings Using Cards
@@ -197,27 +200,24 @@ class ServiceHistoryCustomerFragment : Fragment() {
 
             val btnOpenChatRead = cardView.findViewById<ImageButton>(R.id.btnOpenChatRead)
             btnOpenChatRead.setOnClickListener {
-
+                Toast.makeText(requireContext(), "Opening Chat", Toast.LENGTH_SHORT).show()
             }
 
             val btnCallTechnician = cardView.findViewById<ImageButton>(R.id.btnCall)
             btnCallTechnician.setOnClickListener {
-                Toast.makeText(requireContext(), "Calling Technician", Toast.LENGTH_SHORT).show()
-            }
-
-            if (booking.isCompleted) {
-                val btnRate = cardView.findViewById<ImageButton>(R.id.btnRate)
-                btnRate.setOnClickListener {
-                    Toast.makeText(requireContext(), "Rate the Service", Toast.LENGTH_SHORT).show()
+                if(booking.technician != null) {
+                    booking.technician?.phoneNumber?.let { phoneNumber -> initiateCall(phoneNumber) }
+                } else {
+                    Toast.makeText(requireContext(), requireContext().getString(R.string.txtTechnicianNotAssignedYet), Toast.LENGTH_SHORT).show()
                 }
             }
 
             if (booking.isCancelled) {
-                cardView.findViewById<TextView>(R.id.txtDate).text = Booking.BookingStatus.CANCELLED.getStatusValue(requireContext())
-                cardView.findViewById<TextView>(R.id.txtTechnician).text = Booking.BookingStatus.CANCELLED.getStatusValue(requireContext())
+                txtDate.text = if (booking.bookingDate != null) "${booking.bookingDate}, ${booking.bookingTime}" else Booking.BookingStatus.CANCELLED.getStatusValue(requireContext())
+                txtTechnician.text = booking.technician?.let { "${it.firstName} ${it.lastName}" } ?: Booking.BookingStatus.CANCELLED.getStatusValue(requireContext())
                 booking.setBookingStatus(Booking.BookingStatus.CANCELLED)
                 txtNothingHereYetHistory.visibility = View.GONE
-                cardView.findViewById<TextView>(R.id.txtStatus).text = booking.bookingStatus?.getStatusValue(requireContext())
+                txtStatus.text = booking.bookingStatus?.getStatusValue(requireContext())
                 val layoutActionButtons = cardView.findViewById<LinearLayout>(R.id.layoutActionButtons)
                 layoutActionButtons.visibility = View.GONE
             }
@@ -233,6 +233,10 @@ class ServiceHistoryCustomerFragment : Fragment() {
             }
 
             if (booking.isCompleted) {
+                val btnRate = cardView.findViewById<ImageButton>(R.id.btnRate)
+                btnRate.setOnClickListener {
+                    Toast.makeText(requireContext(), "Rate the Service", Toast.LENGTH_SHORT).show()
+                }
                 cardView.findViewById<ImageButton>(R.id.btnOpenChatRead).visibility = View.GONE
                 cardView.findViewById<ImageButton>(R.id.btnCall).visibility = View.GONE
                 cardView.findViewById<ImageButton>(R.id.btnCancelBooking).visibility = View.GONE
@@ -259,5 +263,12 @@ class ServiceHistoryCustomerFragment : Fragment() {
             .addOnFailureListener { exception ->
                 Log.d("Firebase", "Error updating booking status", exception)
             }
+    }
+
+    private fun initiateCall(phoneNumber: String) {
+        // Call the phone number
+        val intent = Intent(Intent.ACTION_DIAL)
+        intent.data = Uri.parse("tel:$phoneNumber")
+        startActivity(intent)
     }
 }

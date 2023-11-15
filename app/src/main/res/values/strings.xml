@@ -113,6 +113,8 @@
     <string name="txtUpcomingBookings">Upcoming Bookings</string>
     <string name="txtNothingHereYet">Nothing here yet</string>
     <string name="txtBookingCancelled">Booking Cancelled</string>
+    <string name="txtTechnicianNotAssignedYet">Technician not assigned yet</string>
+    <string name="txtPhoneAppNotAvailable">Phone app not available</string>
 
     <string name="txtServiceDropInTimeDesc">Customers must bring the bikes to the store. \n\nA time will be assigned for the closest available space frame you selected within the next 12 hours.</string>
     <string name="txtServiceTimeDesc">All services are validated at the store and only performed during business hours.</string>
