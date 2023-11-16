@@ -47,6 +47,7 @@
     <string name="editCommentPlaceholder">Comments</string>
     <string name="editAssignedDatePlaceholder">Date</string>
     <string name="editAssignedTimePlaceholder">Time</string>
+    <string name="editMessagePlaceholder">Type a message</string>
 
     <string name="btnRegister">Register</string>
     <string name="btnLogin">Sign In</string>

@@ -1,6 +1,10 @@
 package com.example.repairservicesapp.model
 
-class User {
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+class User() : Parcelable {
     enum class UserType {
         CUSTOMER, TECHNICIAN, ADMIN
     }
@@ -23,7 +27,6 @@ class User {
     @JvmField
     var userAvailability = 1
 
-    constructor()
     constructor(
         firstName: String?,
         lastName: String?,
@@ -33,7 +36,7 @@ class User {
         password: String?,
         userType: UserType?,
         userAvailability: Int
-    ) {
+    ) : this() {
         this.firstName = firstName
         this.lastName = lastName
         this.address = address
@@ -52,7 +55,7 @@ class User {
         email: String?,
         password: String?,
         userType: UserType?,
-    ) {
+    ) : this() {
         this.firstName = firstName
         this.lastName = lastName
         this.address = address
@@ -72,7 +75,7 @@ class User {
         password: String?,
         userType: String?,
         userAvailability: Int
-    ) {
+    ) : this() {
         this.userId = userId
         this.firstName = firstName
         this.lastName = lastName
@@ -90,7 +93,7 @@ class User {
         lastName: String?,
         address: String?,
         phoneNumber: String?
-    ) {
+    ) : this() {
         this.userId = userId
         this.firstName = firstName
         this.lastName = lastName
@@ -104,7 +107,7 @@ class User {
         address: String?,
         phoneNumber: String?,
         email: String?
-    ) {
+    ) : this() {
         this.firstName = firstName
         this.lastName = lastName
         this.address = address

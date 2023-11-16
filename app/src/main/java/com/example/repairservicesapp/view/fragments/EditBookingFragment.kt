@@ -48,14 +48,14 @@ class EditBookingFragment : Fragment() {
     private lateinit var edTxtComments : EditText
     private var spinnerCount = 0
     private lateinit var container : LinearLayout
-    private lateinit var rdMorning: RadioButton
-    private lateinit var rdAfternoon: RadioButton
+    private lateinit var rdMorning : RadioButton
+    private lateinit var rdAfternoon : RadioButton
     private lateinit var spinnerTechnicians : Spinner
     private lateinit var spinnerBikeType : Spinner
     private lateinit var spinnerBikeColor : Spinner
     private lateinit var spinnerBikeWheelSize : Spinner
     private lateinit var spinnerStatus : Spinner
-    private lateinit var booking: Booking
+    private lateinit var booking : Booking
     private var estimatedCost = 0.0
     private var estimatedDuration = 0
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)

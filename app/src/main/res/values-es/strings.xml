@@ -46,6 +46,7 @@
     <string name="editCommentPlaceholder">Comentarios</string>
     <string name="editAssignedDatePlaceholder">Fecha</string>
     <string name="editAssignedTimePlaceholder">Hora</string>
+    <string name="editMessagePlaceholder">Escribe un mensaje</string>
 
     <string name="btnRegister">Registrar</string>
     <string name="btnLogin">Iniciar Sesión</string>

@@ -36,21 +36,6 @@ class ServiceHistoryCustomerFragment : Fragment() {
         loadUI(view)
         return view
     }
-    /*
-    private fun isBookingCreatedByCurrentUser(customerData: Map<String, Any>): Boolean {
-        val loggedInUser = AppManager.instance.user
-        val customerFirstName = customerData["customerFirstName"] as String
-        val customerLastName = customerData["customerLastName"] as String
-        val customerAddress = customerData["customerAddress"] as String
-        val customerPhoneNumber = customerData["customerPhoneNumber"] as String
-        val customerEmail = customerData["customerEmail"] as String
-
-        return loggedInUser.firstName == customerFirstName &&
-                loggedInUser.lastName == customerLastName &&
-                loggedInUser.address == customerAddress &&
-                loggedInUser.phoneNumber == customerPhoneNumber &&
-                loggedInUser.email == customerEmail
-    }*/
 
     private fun loadUI(view: View) {
         container = view.findViewById(R.id.layoutCards)
@@ -84,74 +69,72 @@ class ServiceHistoryCustomerFragment : Fragment() {
             val servicesData = bookingData["services"] as? List<Map<String, Any>> ?: emptyList()
             val customer = bookingData["customer"] as Map<String, Any>
             val technician = bookingData["technician"] as? Map<String, Any>
-            //if (isBookingCreatedByCurrentUser(customer)) {
-                val servicesList = ArrayList<Service>()
-                for (serviceMap in servicesData) {
-                    val service = Service(
-                        (serviceMap["serviceId"] as Long).toInt(),
-                        serviceMap["serviceName"].toString(),
-                        serviceMap["serviceDescription"].toString(),
-                        (serviceMap["servicePrice"] as? Double) ?: 0.0,
-                        (serviceMap["serviceDuration"] as? Long)?.toInt() ?: 0
-                    )
-                    servicesList.add(service)
-                }
+            val servicesList = ArrayList<Service>()
+            for (serviceMap in servicesData) {
+                val service = Service(
+                    (serviceMap["serviceId"] as Long).toInt(),
+                    serviceMap["serviceName"].toString(),
+                    serviceMap["serviceDescription"].toString(),
+                    (serviceMap["servicePrice"] as? Double) ?: 0.0,
+                    (serviceMap["serviceDuration"] as? Long)?.toInt() ?: 0
+                )
+                servicesList.add(service)
+            }
 
-                if (technician == null) {
-                    // Convert bookingData to Booking object and add to bookingsList
-                    val booking = Booking(
-                        bookingId,
-                        bookingData["dropInTime"] as String,
-                        Booking.BookingStatus.valueOf(bookingData["bookingStatus"] as String),
-                        bookingData["bookingCost"] as Double,
-                        (bookingData["bookingDuration"] as Long).toInt(),
-                        bookingData["bikeType"] as String,
-                        bookingData["bikeColor"] as String,
-                        bookingData["bikeWheelSize"] as String,
-                        bookingData["comments"] as String,
-                        servicesList,
-                        User(
-                            customer["customerFirstName"] as String,
-                            customer["customerLastName"] as String,
-                            customer["customerAddress"] as String,
-                            customer["customerPhoneNumber"] as String,
-                            customer["customerEmail"] as String
-                        )
+            if (technician == null) {
+                // Convert bookingData to Booking object and add to bookingsList
+                val booking = Booking(
+                    bookingId,
+                    bookingData["dropInTime"] as String,
+                    Booking.BookingStatus.valueOf(bookingData["bookingStatus"] as String),
+                    bookingData["bookingCost"] as Double,
+                    (bookingData["bookingDuration"] as Long).toInt(),
+                    bookingData["bikeType"] as String,
+                    bookingData["bikeColor"] as String,
+                    bookingData["bikeWheelSize"] as String,
+                    bookingData["comments"] as String,
+                    servicesList,
+                    User(
+                        customer["customerFirstName"] as String,
+                        customer["customerLastName"] as String,
+                        customer["customerAddress"] as String,
+                        customer["customerPhoneNumber"] as String,
+                        customer["customerEmail"] as String
                     )
-                    bookingsList.add(booking)
-                } else {
-                    // Convert bookingData to Booking object and add to bookingsList
-                    val booking = Booking(
-                        bookingId,
-                        bookingData["dropInTime"] as String,
-                        bookingData["bookingDate"] as String,
-                        bookingData["bookingTime"] as String,
-                        Booking.BookingStatus.valueOf(bookingData["bookingStatus"] as String),
-                        bookingData["bookingCost"] as Double,
-                        (bookingData["bookingDuration"] as Long).toInt(),
-                        bookingData["bikeType"] as String,
-                        bookingData["bikeColor"] as String,
-                        bookingData["bikeWheelSize"] as String,
-                        bookingData["comments"] as String,
-                        servicesList,
-                        User(
-                            customer["customerFirstName"] as String,
-                            customer["customerLastName"] as String,
-                            customer["customerAddress"] as String,
-                            customer["customerPhoneNumber"] as String,
-                            customer["customerEmail"] as String
-                        ),
-                        User(
-                            technician["technicianFirstName"] as? String,
-                            technician["technicianLastName"] as? String,
-                            technician["technicianAddress"] as? String,
-                            technician["technicianPhoneNumber"] as? String,
-                            technician["technicianEmail"] as? String
-                        )
+                )
+                bookingsList.add(booking)
+            } else {
+                // Convert bookingData to Booking object and add to bookingsList
+                val booking = Booking(
+                    bookingId,
+                    bookingData["dropInTime"] as String,
+                    bookingData["bookingDate"] as String,
+                    bookingData["bookingTime"] as String,
+                    Booking.BookingStatus.valueOf(bookingData["bookingStatus"] as String),
+                    bookingData["bookingCost"] as Double,
+                    (bookingData["bookingDuration"] as Long).toInt(),
+                    bookingData["bikeType"] as String,
+                    bookingData["bikeColor"] as String,
+                    bookingData["bikeWheelSize"] as String,
+                    bookingData["comments"] as String,
+                    servicesList,
+                    User(
+                        customer["customerFirstName"] as String,
+                        customer["customerLastName"] as String,
+                        customer["customerAddress"] as String,
+                        customer["customerPhoneNumber"] as String,
+                        customer["customerEmail"] as String
+                    ),
+                    User(
+                        technician["technicianFirstName"] as? String,
+                        technician["technicianLastName"] as? String,
+                        technician["technicianAddress"] as? String,
+                        technician["technicianPhoneNumber"] as? String,
+                        technician["technicianEmail"] as? String
                     )
-                    bookingsList.add(booking)
-                }
-            //}
+                )
+                bookingsList.add(booking)
+            }
         }
 
         // Display Bookings Using Cards
@@ -181,12 +164,10 @@ class ServiceHistoryCustomerFragment : Fragment() {
             txtDate.text = if (booking.bookingDate != null) "${booking.bookingDate}, ${booking.bookingTime}" else Booking.BookingStatus.PENDING.getStatusValue(requireContext())
             txtTechnician.text = booking.technician?.let { "${it.firstName} ${it.lastName}" } ?: Booking.BookingStatus.PENDING.getStatusValue(requireContext())
             //txtCustomer.text = "${booking.customer?.firstName} ${booking.customer?.lastName}"
-            txtBicycle.text =
-                "${booking.bikeType} ${booking.bikeWheelSize}, ${booking.bikeColor}\n${booking.comments}"
+            txtBicycle.text = "${booking.bikeType} ${booking.bikeWheelSize}, ${booking.bikeColor}\n${booking.comments}"
             txtServices.text = ""
             for (service in booking.services!!) {
-                txtServices.text =
-                    txtServices.text.toString() + "${service.serviceName}, "
+                txtServices.text = txtServices.text.toString() + "${service.serviceName}, "
             }
 
             txtEstCost.text = "$${booking.bookingCost}"

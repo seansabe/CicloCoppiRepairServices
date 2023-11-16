@@ -2,6 +2,7 @@ package com.example.repairservicesapp.view.fragments
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,14 +12,17 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
 import com.example.repairservicesapp.app.AppManager
+import com.example.repairservicesapp.data.PassUserAsIntent
 import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Booking
 import com.example.repairservicesapp.model.Service
 import com.example.repairservicesapp.model.User
 import com.example.repairservicesapp.util.UnitsUtils
+import com.example.repairservicesapp.view.ChatActivity
 import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.QuerySnapshot
 
@@ -79,6 +83,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun buildCards(result : QuerySnapshot) {
         for (document in result) {
             val bookingId = document.id
@@ -178,33 +183,38 @@ class ServiceHistoryTechnicianFragment : Fragment() {
             txtDate.text = if (booking.bookingDate != null) "${booking.bookingDate}, ${booking.bookingTime}" else Booking.BookingStatus.PENDING.getStatusValue(requireContext())
             txtTechnician.text = booking.technician?.let { "${it.firstName} ${it.lastName}" } ?: Booking.BookingStatus.PENDING.getStatusValue(requireContext())
             txtCustomer.text = "${booking.customer?.firstName} ${booking.customer?.lastName}"
-            txtBicycle.text =
-                "${booking.bikeType} ${booking.bikeWheelSize}, ${booking.bikeColor}\n${booking.comments}"
+            txtBicycle.text = "${booking.bikeType} ${booking.bikeWheelSize}, ${booking.bikeColor}\n${booking.comments}"
             txtServices.text = ""
             for (service in booking.services!!) {
-                txtServices.text =
-                    txtServices.text.toString() + "${service.serviceName}, "
+                txtServices.text = txtServices.text.toString() + "${service.serviceName}, "
             }
 
             txtEstCost.text = "$${booking.bookingCost}"
             txtEstDuration.text = "${booking.bookingDuration} h"
             txtStatus.text = booking.bookingStatus?.getStatusValue(requireContext())
 
+            // Button to cancel the booking
             val btnCancelAppointment = cardView.findViewById<ImageButton>(R.id.btnCancelBooking)
             btnCancelAppointment.setOnClickListener {
                 handleBookingCancellation(booking, cardView)
             }
 
+            // Button to open the chat with the customer
             val btnOpenChatRead = cardView.findViewById<ImageButton>(R.id.btnOpenChatRead)
             btnOpenChatRead.setOnClickListener {
-                Toast.makeText(requireContext(), "Chat with " + booking.customer?.firstName, Toast.LENGTH_SHORT).show()
+                // Pass the customer object to the ChatActivity and start it
+                val intent = Intent(requireContext(), ChatActivity::class.java)
+                PassUserAsIntent.send(intent, booking.customer!!)
+                startActivity(intent)
             }
 
+            // Button to call the customer
             val btnCallCustomer = cardView.findViewById<ImageButton>(R.id.btnCall)
             btnCallCustomer.setOnClickListener {
                 booking.customer?.phoneNumber?.let { phoneNumber -> initiateCall(phoneNumber) }
             }
 
+            // Button to edit the booking
             val btnEdit = cardView.findViewById<ImageButton>(R.id.btnRate)
             btnEdit.setImageResource(R.drawable.outline_edit_24)
             btnEdit.setOnClickListener {
@@ -218,16 +228,19 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     .commit()
             }
 
+            // If the booking is cancelled will be displayed in the history container
             if (booking.isCancelled) {
                 txtDate.text = if (booking.bookingDate != null) "${booking.bookingDate}, ${booking.bookingTime}" else Booking.BookingStatus.CANCELLED.getStatusValue(requireContext())
                 txtTechnician.text = booking.technician?.let { "${it.firstName} ${it.lastName}" } ?: Booking.BookingStatus.CANCELLED.getStatusValue(requireContext())
                 booking.setBookingStatus(Booking.BookingStatus.CANCELLED)
             }
 
+            // If the booking is pending, accepted, assigned, awaiting bike or in process will be displayed in the bookings container
             if (booking.isPending || booking.isAccepted || booking.isAssigned || booking.isAwaitingBike || booking.isInProcess) {
                 txtNothingHereYetBookings.visibility = View.GONE
             }
 
+            // If the booking is completed or cancelled the buttons will be hidden
             if (booking.isCancelled || booking.isCompleted) {
                 txtNothingHereYetHistory.visibility = View.GONE
                 txtStatus.text = booking.bookingStatus?.getStatusValue(requireContext())
@@ -261,6 +274,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
             }
     }
 
+    // This function is used to call the customer
     private fun initiateCall(phoneNumber: String) {
         // Call the phone number
         val intent = Intent(Intent.ACTION_DIAL)
