@@ -14,11 +14,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
 import com.example.repairservicesapp.app.AppManager
+import com.example.repairservicesapp.data.PassUserAsIntent
 import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Booking
 import com.example.repairservicesapp.model.Service
 import com.example.repairservicesapp.model.User
 import com.example.repairservicesapp.util.UnitsUtils
+import com.example.repairservicesapp.view.ChatActivity
 import com.google.firebase.firestore.QuerySnapshot
 
 class ServiceHistoryCustomerFragment : Fragment() {
@@ -181,7 +183,14 @@ class ServiceHistoryCustomerFragment : Fragment() {
 
             val btnOpenChatRead = cardView.findViewById<ImageButton>(R.id.btnOpenChatRead)
             btnOpenChatRead.setOnClickListener {
-                Toast.makeText(requireContext(), "Opening Chat", Toast.LENGTH_SHORT).show()
+                if (booking.technician != null) {
+                    // Pass the customer object to the ChatActivity and start it
+                    val intent = Intent(requireContext(), ChatActivity::class.java)
+                    PassUserAsIntent.send(intent, booking.technician!!)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(requireContext(), requireContext().getString(R.string.txtTechnicianNotAssignedYet), Toast.LENGTH_SHORT).show()
+                }
             }
 
             val btnCallTechnician = cardView.findViewById<ImageButton>(R.id.btnCall)

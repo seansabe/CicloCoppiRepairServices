@@ -117,6 +117,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     bookingData["comments"] as String,
                     servicesList,
                     User(
+                        (customer["customerId"] as Long).toInt(),
                         customer["customerFirstName"] as String,
                         customer["customerLastName"] as String,
                         customer["customerAddress"] as String,
@@ -130,8 +131,8 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                 val booking = Booking(
                     bookingId,
                     bookingData["dropInTime"] as String,
-                    bookingData["bookingDate"] as String,
-                    bookingData["bookingTime"] as String,
+                    bookingData["bookingDate"] as? String,
+                    bookingData["bookingTime"] as? String,
                     Booking.BookingStatus.valueOf(bookingData["bookingStatus"] as String),
                     bookingData["bookingCost"] as Double,
                     (bookingData["bookingDuration"] as Long).toInt(),
@@ -141,6 +142,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     bookingData["comments"] as String,
                     servicesList,
                     User(
+                        (customer["customerId"] as Long).toInt(),
                         customer["customerFirstName"] as String,
                         customer["customerLastName"] as String,
                         customer["customerAddress"] as String,
@@ -148,6 +150,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                         customer["customerEmail"] as String
                     ),
                     User(
+                        (technician["technicianId"] as Long).toInt(),
                         technician["technicianFirstName"] as? String,
                         technician["technicianLastName"] as? String,
                         technician["technicianAddress"] as? String,
@@ -202,10 +205,14 @@ class ServiceHistoryTechnicianFragment : Fragment() {
             // Button to open the chat with the customer
             val btnOpenChatRead = cardView.findViewById<ImageButton>(R.id.btnOpenChatRead)
             btnOpenChatRead.setOnClickListener {
-                // Pass the customer object to the ChatActivity and start it
-                val intent = Intent(requireContext(), ChatActivity::class.java)
-                PassUserAsIntent.send(intent, booking.customer!!)
-                startActivity(intent)
+                if (booking.technician != null) {
+                    // Pass the customer object to the ChatActivity and start it
+                    val intent = Intent(requireContext(), ChatActivity::class.java)
+                    PassUserAsIntent.send(intent, booking.customer!!)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(requireContext(), context?.getString(R.string.txtTechnicianNotAssignedYet), Toast.LENGTH_SHORT).show()
+                }
             }
 
             // Button to call the customer

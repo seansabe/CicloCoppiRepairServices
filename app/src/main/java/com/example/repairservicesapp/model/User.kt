@@ -102,6 +102,22 @@ class User() : Parcelable {
     }
 
     constructor(
+        userId: Int,
+        firstName: String?,
+        lastName: String?,
+        address: String?,
+        phoneNumber: String?,
+        email: String?,
+    ) : this() {
+        this.userId = userId
+        this.firstName = firstName
+        this.lastName = lastName
+        this.address = address
+        this.phoneNumber = phoneNumber
+        this.email = email
+    }
+
+    constructor(
         firstName: String?,
         lastName: String?,
         address: String?,

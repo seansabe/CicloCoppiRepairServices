@@ -34,22 +34,21 @@ class AdminFragment : Fragment() {
     private lateinit var btnAddService : Button
     private lateinit var btnUpdateService : Button
     private lateinit var spinnerServices : Spinner
+    private var servicesNames = ArrayList<String>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_admin, container, false)
-        loadUI(view)
-        loadEvents()
+
         dbHelper = DatabaseHelper(requireContext())
         technicians = dbHelper.allTechnicians as ArrayList<User>
         services = dbHelper.allServices as ArrayList<Service>
-        var techniciansNames = ArrayList<String>()
+        val techniciansNames = ArrayList<String>()
         for (technician in technicians) {
             techniciansNames.add(technician.userFirstAndLastName)
         }
 
-        var servicesNames = ArrayList<String>()
         for (service in services) {
             servicesNames.add(service.serviceName!!)
         }
@@ -61,7 +60,8 @@ class AdminFragment : Fragment() {
         val spinnerTechnicians = view.findViewById<Spinner>(R.id.custom_spinner_technicians)
         val adapterTechnicians = ArrayAdapter(requireContext(), R.layout.custom_spinner_item, techniciansNames)
         spinnerTechnicians.adapter = adapterTechnicians
-
+        loadUI(view)
+        loadEvents()
         return view
     }
 
@@ -69,6 +69,15 @@ class AdminFragment : Fragment() {
         btnAddTechnician = view.findViewById(R.id.btnAddTechnician)
         btnAddService = view.findViewById(R.id.btnAddService)
         btnUpdateService = view.findViewById(R.id.btnUpdateService)
+
+        btnUpdateService.isEnabled = servicesNames.size > 0
+        if (btnUpdateService.isEnabled) {
+            btnUpdateService.setBackgroundResource(R.drawable.button_enabled)
+            context?.let { btnUpdateService.setTextColor(it.getColor(R.color.white)) }
+        } else {
+            btnUpdateService.setBackgroundResource(R.drawable.button_disabled)
+            context?.let { btnUpdateService.setTextColor(it.getColor(R.color.light_gray)) }
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -90,9 +99,9 @@ class AdminFragment : Fragment() {
         }
 
         btnUpdateService.setOnClickListener {
-            val fragment = UpdateServiceFragment()
             val bundle = Bundle()
             bundle.putString("selectedService", spinnerServices.selectedItem.toString())
+            val fragment = UpdateServiceFragment()
             fragment.arguments = bundle
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container_view, fragment)

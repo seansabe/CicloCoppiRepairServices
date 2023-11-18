@@ -83,18 +83,6 @@
                 android:textSize="16sp" />
 
             <Button
-                android:id="@+id/btnUpdateService"
-                style="@style/ButtonTextNoCaps"
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_enabled"
-                android:text="@string/btnUpdateService"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <Button
                 android:id="@+id/btnAddService"
                 style="@style/ButtonTextNoCaps"
                 android:layout_width="300dp"
@@ -102,6 +90,18 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/button_enabled"
                 android:text="@string/btnAddService"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnUpdateService"
+                style="@style/ButtonTextNoCaps"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_enabled"
+                android:text="@string/btnUpdateService"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />

@@ -68,7 +68,6 @@ class EditBookingFragment : Fragment() {
         services = dbHelper.allServices as ArrayList<Service>
         technicians = dbHelper.allTechnicians as ArrayList<User>
         booking = arguments?.getParcelable("selectedBooking", Booking::class.java)!!
-
         for (technician in technicians) {
             techniciansNames.add(technician.userFirstAndLastName)
         }
@@ -266,7 +265,7 @@ class EditBookingFragment : Fragment() {
         val selectedBikeType = spinnerBikeType.selectedItem.toString()
         val selectedBikeColor = spinnerBikeColor.selectedItem.toString()
         val selectedBikeWheelSize = spinnerBikeWheelSize.selectedItem.toString()
-        val comments = edTxtComments.text.toString().ifEmpty { "No comments" }
+        val comments = edTxtComments.text.toString().ifEmpty { "" }
         val customer = this.booking.customer!!
         // Split the technician's name into first and last name to use in dbHelper.getTechnicianByName()
         val technicianName = spinnerTechnicians.selectedItem.toString().split(" ")
@@ -282,8 +281,8 @@ class EditBookingFragment : Fragment() {
 
         val booking = Booking(
             selectedDropInTime,
-            selectedDate,
-            selectedTime,
+            selectedDate.ifEmpty { null },
+            selectedTime.ifEmpty { null },
             Booking.BookingStatus.valueOf(selectedStatus),
             estimatedCost,
             estimatedDuration,
@@ -326,8 +325,8 @@ class EditBookingFragment : Fragment() {
 
         return hashMapOf(
             "dropInTime" to booking.dropInTime!!,
-            "bookingDate" to booking.bookingDate!!,
-            "bookingTime" to booking.bookingTime!!,
+            "bookingDate" to booking.bookingDate?.ifEmpty { null },
+            "bookingTime" to booking.bookingTime?.ifEmpty { null },
             "bookingStatus" to booking.bookingStatus!!.name,
             "bookingCost" to booking.bookingCost,
             "bookingDuration" to booking.bookingDuration,

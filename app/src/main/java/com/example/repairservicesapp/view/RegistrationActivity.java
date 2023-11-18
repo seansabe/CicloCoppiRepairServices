@@ -68,9 +68,8 @@ public class RegistrationActivity extends AppCompatActivity {
                         User newUser = new User(fName,lName,address,phone,email,password, User.UserType.CUSTOMER);
                         dbHelper = new DatabaseHelper(getApplicationContext());
                         dbHelper.addUser(newUser);
-
+                        AppManager.instance.setUser(dbHelper.getUserByEmail(newUser.email));
                         startActivity(new Intent(RegistrationActivity.this, NavigationActivity.class));
-                        AppManager.instance.setUser(newUser);
                         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("email", newUser.email);
