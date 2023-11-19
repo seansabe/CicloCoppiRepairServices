@@ -14,4 +14,5 @@ object FirebaseUtils {
     }
 
     fun getChatRoomReference(chatRoomId: String) = fireStoreDatabase.collection("chatRooms").document(chatRoomId)
+    fun getChatRoomMessageReference(chatRoomId: String) = getChatRoomReference(chatRoomId).collection("messages")
 }

@@ -226,13 +226,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(U_COLUMN_ADDRESS, user.address);
         cv.put(U_COLUMN_PHONE, user.phoneNumber);
         cv.put(U_COLUMN_EMAIL, user.email);
-        String selection = U_COLUMN_EMAIL + " = ?";
-        String[] selectionArgs = { String.valueOf(user.email) };
+        String selection = U_COLUMN_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(user.getUserId()) };
         long result = db.update(TABLE_USERS, cv, selection, selectionArgs);
         if (result == -1) {
-            Toast.makeText(context, "Unexpected error in updating user data.", Toast.LENGTH_SHORT).show();
+            Log.d("DATABASE", "Unexpected error in updating user data.");
         } else {
-            Toast.makeText(context, "User data has been updated successfully.", Toast.LENGTH_SHORT).show();
+            Log.d("DATABASE", "User data has been updated successfully.");
         }
     }
 

@@ -1,5 +1,7 @@
 package com.example.repairservicesapp.view.fragments;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -69,6 +71,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateUserData() {
+        SharedPreferences preferences = requireContext().getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
         if (checkTextUtils()) {
             String fName = edTxtFirstName.getText().toString();
             String lName = edTxtLastName.getText().toString();
@@ -82,6 +86,7 @@ public class ProfileFragment extends Fragment {
             user.phoneNumber = phone;
             user.email = email;
             dbHelper.updateUserData(user);
+            editor.putString("email", user.email);
         }
 
         if (edTxtCurrentPass.getText().toString().equals(user.password)) {
@@ -90,6 +95,7 @@ public class ProfileFragment extends Fragment {
             if (newPassword.equals(passwordConf)) {
                 user.password = newPassword;
                 dbHelper.updateUserPassword(user);
+                editor.putString("password", user.password);
                 edTxtCurrentPass.setText(null);
                 edTxtCurrentPass.clearFocus();
             } else {
@@ -100,11 +106,12 @@ public class ProfileFragment extends Fragment {
             edTxtConfirmPass.setText(null);
             edTxtConfirmPass.clearFocus();
         }
+        editor.apply();
         KeyboardUtils.hideKeyboard(view);
     }
 
     private void logout() {
-        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();

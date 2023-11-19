@@ -97,6 +97,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
                     bookingData["comments"] as String,
                     servicesList,
                     User(
+                        (customer["customerId"] as Long).toInt(),
                         customer["customerFirstName"] as String,
                         customer["customerLastName"] as String,
                         customer["customerAddress"] as String,
@@ -110,8 +111,8 @@ class ServiceHistoryCustomerFragment : Fragment() {
                 val booking = Booking(
                     bookingId,
                     bookingData["dropInTime"] as String,
-                    bookingData["bookingDate"] as String,
-                    bookingData["bookingTime"] as String,
+                    bookingData["bookingDate"] as? String,
+                    bookingData["bookingTime"] as? String,
                     Booking.BookingStatus.valueOf(bookingData["bookingStatus"] as String),
                     bookingData["bookingCost"] as Double,
                     (bookingData["bookingDuration"] as Long).toInt(),
@@ -121,6 +122,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
                     bookingData["comments"] as String,
                     servicesList,
                     User(
+                        (customer["customerId"] as Long).toInt(),
                         customer["customerFirstName"] as String,
                         customer["customerLastName"] as String,
                         customer["customerAddress"] as String,
@@ -128,6 +130,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
                         customer["customerEmail"] as String
                     ),
                     User(
+                        (technician["technicianId"] as Long).toInt(),
                         technician["technicianFirstName"] as? String,
                         technician["technicianLastName"] as? String,
                         technician["technicianAddress"] as? String,
