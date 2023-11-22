@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.example.repairservicesapp.database.DatabaseHelper;
 import com.example.repairservicesapp.model.User;
 import com.example.repairservicesapp.util.KeyboardUtils;
 import com.example.repairservicesapp.view.LoginActivity;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Objects;
 
@@ -111,6 +113,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void logout() {
+        deleteToken();
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
@@ -144,5 +147,15 @@ public class ProfileFragment extends Fragment {
             isValid = false;
         }
         return isValid;
+    }
+
+    private void deleteToken() {
+        FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.d("TOKEN", "Token not deleted");
+                return;
+            }
+            Log.d("TOKEN", "Token deleted");
+        });
     }
 }

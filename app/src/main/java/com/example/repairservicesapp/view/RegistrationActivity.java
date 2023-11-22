@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import com.example.repairservicesapp.R;
 import com.example.repairservicesapp.app.AppManager;
 import com.example.repairservicesapp.database.DatabaseHelper;
+import com.example.repairservicesapp.database.FirebaseUtils;
 import com.example.repairservicesapp.model.User;
 import com.example.repairservicesapp.util.StatusBarUtils;
 
@@ -55,7 +56,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 String phone = editPhone.getText().toString();
                 String email = editRegEmail.getText().toString();
                 String password = editRegPass.getText().toString();
-
                 dbHelper = new DatabaseHelper(getApplicationContext());
                 try {
                     user = dbHelper.getUserByEmail(email);
@@ -65,7 +65,8 @@ public class RegistrationActivity extends AppCompatActivity {
                     } else {
                         txtErrorAccountExists.setVisibility(TextView.GONE);
                         // Adding a new user
-                        User newUser = new User(fName,lName,address,phone,email,password, User.UserType.CUSTOMER);
+                        User newUser = new User(fName, lName, address, phone, email, password, User.UserType.CUSTOMER);
+                        FirebaseUtils.INSTANCE.addUser(newUser);
                         dbHelper = new DatabaseHelper(getApplicationContext());
                         dbHelper.addUser(newUser);
                         AppManager.instance.setUser(dbHelper.getUserByEmail(newUser.email));

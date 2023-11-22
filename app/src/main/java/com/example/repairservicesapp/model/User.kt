@@ -26,6 +26,8 @@ class User() : Parcelable {
     var userType: UserType? = null
     @JvmField
     var userAvailability = 1
+    @JvmField
+    var token: String? = null
 
     constructor(
         firstName: String?,
@@ -74,6 +76,7 @@ class User() : Parcelable {
         email: String?,
         password: String?,
         userType: String?,
+        token: String?,
         userAvailability: Int
     ) : this() {
         this.userId = userId
@@ -84,6 +87,7 @@ class User() : Parcelable {
         this.email = email
         this.password = password
         this.userType = UserType.valueOf(userType!!)
+        this.token = token
         this.userAvailability = userAvailability
     }
 
@@ -133,13 +137,25 @@ class User() : Parcelable {
 
     val userFirstAndLastName: String
         get() = "$firstName $lastName"
+
     val isCustomer: Boolean
         get() = userType == UserType.CUSTOMER
+
     val isTechnician: Boolean
         get() = userType == UserType.TECHNICIAN
+
     val isAdmin: Boolean
         get() = userType == UserType.ADMIN
+
     fun getUserId(): Int {
         return userId
+    }
+
+    fun setToken(token: String?) {
+        this.token = token
+    }
+
+    fun getToken(): String? {
+        return token
     }
 }

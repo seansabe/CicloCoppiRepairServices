@@ -1,6 +1,7 @@
 package com.example.repairservicesapp.view;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -9,6 +10,8 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.repairservicesapp.R;
 import com.example.repairservicesapp.app.AppManager;
+import com.example.repairservicesapp.database.DatabaseHelper;
+import com.example.repairservicesapp.database.FirebaseUtils;
 import com.example.repairservicesapp.model.User;
 import com.example.repairservicesapp.util.StatusBarUtils;
 import com.example.repairservicesapp.view.fragments.AdminFragment;
@@ -18,6 +21,7 @@ import com.example.repairservicesapp.view.fragments.ScheduleFragment;
 import com.example.repairservicesapp.view.fragments.ServiceHistoryCustomerFragment;
 import com.example.repairservicesapp.view.fragments.ServiceHistoryTechnicianFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class NavigationActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -28,6 +32,7 @@ public class NavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         loadUI();
+        getToken();
         User user = AppManager.instance.user;
         if (user.isAdmin()) {
             loadAdminEvents();
@@ -131,12 +136,25 @@ public class NavigationActivity extends AppCompatActivity {
         });
     }
 
-
     // Load fragment
     private void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container_view, fragment)
                 .commit();
+    }
+
+    private void getToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                return;
+            }
+            String token = task.getResult();
+            Log.d("TOKEN", token);
+            AppManager.instance.user.setToken(token);
+            DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+            databaseHelper.updateUserToken(AppManager.instance.user);
+        });
     }
 }

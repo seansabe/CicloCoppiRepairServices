@@ -33,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             U_COLUMN_PASSWORD = "u_password",
             U_COLUMN_TYPE = "user_type",
             U_COLUMN_AVAILABILITY = "availability",
+            U_COLUMN_TOKEN = "token",
             TABLE_SERVICES = "SERVICES",
             S_COLUMN_ID = "service_id",
             S_COLUMN_NAME = "service_name",
@@ -56,7 +57,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         U_COLUMN_EMAIL + " TEXT, " +
                         U_COLUMN_PASSWORD + " TEXT, " +
                         U_COLUMN_TYPE + " TEXT, " +
-                        U_COLUMN_AVAILABILITY + " INTEGER);";
+                        U_COLUMN_AVAILABILITY + " INTEGER, " +
+                        U_COLUMN_TOKEN + " TEXT);";
         db.execSQL(CREATE_USER_TABLE);
         String CREATE_SERVICE_TABLE = "CREATE TABLE " + TABLE_SERVICES +
                 " (" + S_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -87,13 +89,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(U_COLUMN_LNAME, "Bike Shop");
         cv.put(U_COLUMN_ADDRESS, "Carrera 29 # 28 19");
         cv.put(U_COLUMN_PHONE, "3156438709");
-        cv.put(U_COLUMN_EMAIL, "contacto@ciclocoppi.com");
+        cv.put(U_COLUMN_EMAIL, "admin@ciclocoppi.com");
         cv.put(U_COLUMN_PASSWORD, "123");
         cv.put(U_COLUMN_TYPE, "ADMIN");
         cv.put(U_COLUMN_AVAILABILITY, 777);
+        cv.put(U_COLUMN_TOKEN, "");
         db.insert(TABLE_USERS, null, cv);
         cv.clear();
-        Log.d(LOG, "Test user 1 added.");
+        Log.d(LOG, "Admin user added.");
     }
 
     /** USER DB METHODS **/
@@ -118,7 +121,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String password = cursor.getString(6);
                 String userType = cursor.getString(7);
                 int availability = cursor.getInt(8);
-                User user = new User(userId, firstName, lastName, address, phoneNumber, email, password, userType, availability);
+                String token = cursor.getString(9);
+                User user = new User(userId, firstName, lastName, address, phoneNumber, email, password, userType, token, availability);
                 users.add(user);
             }
             cursor.close();
@@ -132,7 +136,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Get a user by name and last name of type Technician
     public User getTechnicianByName(String firstName, String lastName) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = { U_COLUMN_ID, U_COLUMN_ADDRESS, U_COLUMN_PHONE, U_COLUMN_EMAIL, U_COLUMN_PASSWORD, U_COLUMN_TYPE, U_COLUMN_AVAILABILITY };
+        String[] columns = { U_COLUMN_ID, U_COLUMN_ADDRESS, U_COLUMN_PHONE, U_COLUMN_EMAIL, U_COLUMN_PASSWORD, U_COLUMN_TYPE, U_COLUMN_AVAILABILITY, U_COLUMN_TOKEN };
         String selection = U_COLUMN_FNAME + " = ? AND " + U_COLUMN_LNAME + " = ? AND " + U_COLUMN_TYPE + " = ?";
         String[] selectionArgs = { firstName, lastName, "TECHNICIAN" };
         Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
@@ -145,7 +149,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String password = cursor.getString(4);
             String userType = cursor.getString(5);
             int availability = cursor.getInt(6);
-            user = new User(userId, firstName, lastName, address, phoneNumber, email, password, userType, availability);
+            String token = cursor.getString(7);
+            user = new User(userId, firstName, lastName, address, phoneNumber, email, password, userType, token, availability);
         }
         cursor.close();
         //db.close();
@@ -154,7 +159,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public User getUserByEmail(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = { U_COLUMN_ID, U_COLUMN_FNAME, U_COLUMN_LNAME, U_COLUMN_ADDRESS, U_COLUMN_PHONE, U_COLUMN_PASSWORD, U_COLUMN_TYPE, U_COLUMN_AVAILABILITY };
+        String[] columns = { U_COLUMN_ID, U_COLUMN_FNAME, U_COLUMN_LNAME, U_COLUMN_ADDRESS, U_COLUMN_PHONE, U_COLUMN_PASSWORD, U_COLUMN_TYPE, U_COLUMN_AVAILABILITY, U_COLUMN_TOKEN };
         String selection = U_COLUMN_EMAIL + " = ?";
         String[] selectionArgs = { email };
         Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
@@ -168,34 +173,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String password = cursor.getString(5);
             String userType = cursor.getString(6);
             int availability = cursor.getInt(7);
-            user = new User(userId, firstName, lastName, address, phoneNumber, email, password, userType, availability);
+            String token = cursor.getString(8);
+            user = new User(userId, firstName, lastName, address, phoneNumber, email, password, userType, token, availability);
         }
         cursor.close();
-        //db.close();
-        return user;
-    }
-
-    // Get user by user type
-    public User getUserByType(String userType) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = { U_COLUMN_ID, U_COLUMN_FNAME, U_COLUMN_LNAME, U_COLUMN_ADDRESS, U_COLUMN_PHONE, U_COLUMN_EMAIL, U_COLUMN_PASSWORD, U_COLUMN_AVAILABILITY };
-        String selection = U_COLUMN_TYPE + " = ?";
-        String[] selectionArgs = { userType };
-        Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
-        User user = null;
-        if (cursor.moveToFirst()) {
-            int userId = cursor.getInt(0);
-            String firstName = cursor.getString(1);
-            String lastName = cursor.getString(2);
-            String address = cursor.getString(3);
-            String phoneNumber = cursor.getString(4);
-            String email = cursor.getString(5);
-            String password = cursor.getString(6);
-            int availability = cursor.getInt(7);
-            user = new User(userId, firstName, lastName, address, phoneNumber, email, password, userType, availability);
-        }
-        cursor.close();
-        //db.close();
         return user;
     }
 
@@ -209,6 +190,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(U_COLUMN_EMAIL, user.email);
         cv.put(U_COLUMN_PASSWORD, user.password);
         cv.put(U_COLUMN_TYPE, user.userType.toString());
+        cv.put(U_COLUMN_TOKEN, "");
         cv.put(U_COLUMN_AVAILABILITY, user.userAvailability);
         long result = db.insert(TABLE_USERS, null, cv);
         if(result == -1) {
@@ -244,9 +226,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] selectionArgs = { String.valueOf(user.email) };
         long result = db.update(TABLE_USERS, cv, selection, selectionArgs);
         if (result == -1) {
-            Toast.makeText(context, "Unexpected error in updating user password.", Toast.LENGTH_SHORT).show();
+            Log.d("DATABASE", "Unexpected error in updating user password.");
         } else {
-            Toast.makeText(context, "User password has been updated successfully.", Toast.LENGTH_SHORT).show();
+            Log.d("DATABASE", "User password has been updated successfully.");
         }
     }
 
@@ -258,9 +240,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] selectionArgs = { String.valueOf(userId) };
         long result = db.update(TABLE_USERS, cv, selection, selectionArgs);
         if (result == -1) {
-            Toast.makeText(context, "Unexpected error in updating availability.", Toast.LENGTH_SHORT).show();
+            Log.d("DATABASE", "Unexpected error in updating technician availability.");
         } else {
-            Toast.makeText(context, "Availability has been updated successfully.", Toast.LENGTH_SHORT).show();
+            Log.d("DATABASE", "Technician availability has been updated successfully.");
+        }
+    }
+
+    // Update user token
+    public void updateUserToken(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(U_COLUMN_TOKEN, user.token);
+        String selection = U_COLUMN_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(user.getUserId()) };
+        long result = db.update(TABLE_USERS, cv, selection, selectionArgs);
+        if (result == -1) {
+            Log.d("DATABASE", "Unexpected error in updating user token.");
+        } else {
+            Log.d("DATABASE", "User token has been updated successfully.");
         }
     }
 

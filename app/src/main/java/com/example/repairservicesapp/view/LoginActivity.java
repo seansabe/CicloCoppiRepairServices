@@ -89,7 +89,8 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("email", user.email);
                 editor.putString("password", user.password);
                 editor.apply();
-                AppManager.instance.setUser(user); //Singleton class to hold logged user for whole app life cycle
+                //Singleton class to hold logged user for whole app life cycle
+                AppManager.instance.setUser(user);
                 startActivity(new Intent(LoginActivity.this, NavigationActivity.class));
                 txtErrorMessage.setVisibility(TextView.GONE);
                 finish();
