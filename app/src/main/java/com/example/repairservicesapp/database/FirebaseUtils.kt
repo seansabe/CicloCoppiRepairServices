@@ -9,7 +9,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 object FirebaseUtils {
     val fireStoreDatabase = Firebase.firestore
 
-    fun addUser(user: User
+    fun setUser(user: User
     ) {
         val user = hashMapOf(
             "firstName" to user.firstName,

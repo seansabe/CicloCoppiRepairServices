@@ -66,7 +66,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         txtErrorAccountExists.setVisibility(TextView.GONE);
                         // Adding a new user
                         User newUser = new User(fName, lName, address, phone, email, password, User.UserType.CUSTOMER);
-                        FirebaseUtils.INSTANCE.addUser(newUser);
+                        FirebaseUtils.INSTANCE.setUser(newUser);
                         dbHelper = new DatabaseHelper(getApplicationContext());
                         dbHelper.addUser(newUser);
                         AppManager.instance.setUser(dbHelper.getUserByEmail(newUser.email));
