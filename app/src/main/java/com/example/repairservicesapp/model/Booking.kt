@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Parcelable
 import androidx.annotation.StringRes
 import com.example.repairservicesapp.R
+import com.google.firebase.Timestamp
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -53,6 +54,8 @@ class Booking() : Parcelable {
     @JvmField
     var rating = 0.0
 
+    private lateinit var timestamp: Timestamp
+
     constructor(
         dropInTime: String?,
         bookingStatus: BookingStatus?,
@@ -75,6 +78,7 @@ class Booking() : Parcelable {
         this.comments = comments
         this.services = services
         this.customer = customer
+        this.timestamp = Timestamp.now()
     }
 
     constructor(
@@ -105,6 +109,7 @@ class Booking() : Parcelable {
         this.services = services
         this.customer = customer
         this.technician = technician
+        this.timestamp = Timestamp.now()
     }
 
     constructor(
@@ -137,6 +142,7 @@ class Booking() : Parcelable {
         this.services = services
         this.customer = customer
         this.technician = technician
+        this.timestamp = Timestamp.now()
     }
 
     constructor(
@@ -163,6 +169,7 @@ class Booking() : Parcelable {
         this.comments = comments
         this.services = services
         this.customer = customer
+        this.timestamp = Timestamp.now()
     }
 
     val isPending: Boolean
@@ -208,5 +215,13 @@ class Booking() : Parcelable {
 
     fun setBookingRating(rating: Double) {
         this.rating = rating
+    }
+
+    fun getTimestamp(): Timestamp {
+        return timestamp
+    }
+
+    fun setTimestamp(timestamp: Timestamp) {
+        this.timestamp = timestamp
     }
 }

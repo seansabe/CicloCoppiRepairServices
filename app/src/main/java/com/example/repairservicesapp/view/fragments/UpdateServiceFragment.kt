@@ -22,7 +22,7 @@ class UpdateServiceFragment : Fragment() {
     private lateinit var edTxtServiceDuration: EditText
     private lateinit var dbHelper: DatabaseHelper
     private lateinit var view: View
-    private var serviceId = 0
+    private var serviceId = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

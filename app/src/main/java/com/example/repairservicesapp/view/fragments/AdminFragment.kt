@@ -14,13 +14,16 @@ import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
 import com.example.repairservicesapp.database.DatabaseHelper
+import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Service
 import com.example.repairservicesapp.model.User
+import com.example.repairservicesapp.util.MapUtils
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.firebase.firestore.toObject
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -42,8 +45,10 @@ class AdminFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_admin, container, false)
 
         dbHelper = DatabaseHelper(requireContext())
-        technicians = dbHelper.allTechnicians as ArrayList<User>
-        services = dbHelper.allServices as ArrayList<Service>
+        //technicians = dbHelper.allTechnicians as ArrayList<User>
+        technicians = FirebaseUtils.getAllTechnicians()
+        //services = dbHelper.allServices as ArrayList<Service>
+        services = FirebaseUtils.getAllServices()
         val techniciansNames = ArrayList<String>()
         for (technician in technicians) {
             techniciansNames.add(technician.userFirstAndLastName)

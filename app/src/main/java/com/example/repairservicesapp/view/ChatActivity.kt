@@ -122,7 +122,7 @@ class ChatActivity : AppCompatActivity() {
                 chatRoom = documentSnapshot.toObject(ChatRoom::class.java)!!
                 Log.d("ChatActivity", "Chat room exists with ${user.firstName} ${user.lastName} and ${AppManager.instance.user.firstName} ${AppManager.instance.user.lastName}")
             } else {
-                chatRoom = ChatRoom(chatRoomId, arrayListOf(AppManager.instance.user.getUserId(), user.getUserId()), Timestamp.now(), 0)
+                chatRoom = ChatRoom(chatRoomId, arrayListOf(AppManager.instance.user.getUserId(), user.getUserId()), Timestamp.now(), "")
                 FirebaseUtils.getChatRoomReference(chatRoomId).set(chatRoom).addOnSuccessListener {
                     Log.d("ChatActivity", "Chat room created")
                 }

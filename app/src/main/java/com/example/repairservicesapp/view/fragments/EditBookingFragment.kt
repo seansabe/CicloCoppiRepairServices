@@ -20,7 +20,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
-import com.example.repairservicesapp.app.AppManager
 import com.example.repairservicesapp.data.Bicycle
 import com.example.repairservicesapp.database.DatabaseHelper
 import com.example.repairservicesapp.database.FirebaseUtils
@@ -344,7 +343,7 @@ class EditBookingFragment : Fragment() {
         // Use the existing bookingId to update the document in Firebase
         val bookingId = booking.bookingId
         if (bookingId != null) {
-            FirebaseUtils.fireStoreDatabase.collection("bookings").document(bookingId)
+            FirebaseUtils.firestore.collection("bookings").document(bookingId)
                 .update(bookingData)
                 .addOnSuccessListener {
                     Toast.makeText(requireContext(), "Booking updated successfully", Toast.LENGTH_SHORT).show()

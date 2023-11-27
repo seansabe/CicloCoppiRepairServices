@@ -4,12 +4,12 @@ import com.google.firebase.Timestamp
 
 class ChatMessage {
     private var message : String = ""
-    private var senderId : Int = 0
+    private var senderId : String = ""
     private var timestamp : Timestamp = Timestamp.now()
 
     constructor()
 
-    constructor(message: String, senderId: Int, timestamp: Timestamp) {
+    constructor(message: String, senderId: String, timestamp: Timestamp) {
         this.message = message
         this.senderId = senderId
         this.timestamp = timestamp
@@ -23,11 +23,11 @@ class ChatMessage {
         this.message = message
     }
 
-    fun getSenderId() : Int {
+    fun getSenderId() : String {
         return senderId
     }
 
-    fun setSenderId(senderId: Int) {
+    fun setSenderId(senderId: String) {
         this.senderId = senderId
     }
 

@@ -10,15 +10,25 @@ object PassUserAsIntent {
         intent.putExtra("lastName", user.lastName)
         intent.putExtra("address", user.address)
         intent.putExtra("phoneNumber", user.phoneNumber)
+        intent.putExtra("email", user.email)
+        intent.putExtra("password", user.password)
+        intent.putExtra("userType", user.userType)
+        intent.putExtra("userAvailability", user.userAvailability)
+        intent.putExtra("token", user.token)
     }
 
     fun get(intent: Intent) : User {
         return User(
-            intent.getIntExtra("userId", 0),
+            intent.getStringExtra("userId") as String,
             intent.getStringExtra("firstName") as String,
             intent.getStringExtra("lastName") as String,
             intent.getStringExtra("address") as String,
-            intent.getStringExtra("phoneNumber") as String
+            intent.getStringExtra("phoneNumber") as String,
+            intent.getStringExtra("email") as String,
+            intent.getStringExtra("password") as String,
+            intent.getStringExtra("userType") as User.UserType,
+            intent.getStringExtra("token") as String,
+            intent.getIntExtra("userAvailability", 100)
         )
     }
 }

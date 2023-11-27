@@ -53,7 +53,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
 
     private fun getFirebaseData() {
         if (AppManager.instance.user.isTechnician) {
-            FirebaseUtils.fireStoreDatabase.collection("bookings")
+            FirebaseUtils.firestore.collection("bookings")
                 .where(Filter.or(
                     Filter.equalTo("technician", null),
                     Filter.equalTo("technician.technicianId", AppManager.instance.user.getUserId())
@@ -69,7 +69,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     Log.d("Firebase", "Error getting bookings", exception)
                 }
         } else {
-            FirebaseUtils.fireStoreDatabase.collection("bookings")
+            FirebaseUtils.firestore.collection("bookings")
                 .orderBy("bookingDate")
                 .orderBy("bookingTime")
                 .get()
@@ -94,7 +94,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
             val servicesList = ArrayList<Service>()
             for (serviceMap in servicesData) {
                 val service = Service(
-                    (serviceMap["serviceId"] as Long).toInt(),
+                    serviceMap["serviceId"] as String,
                     serviceMap["serviceName"].toString(),
                     serviceMap["serviceDescription"].toString(),
                     (serviceMap["servicePrice"] as? Double) ?: 0.0,
@@ -117,12 +117,16 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     bookingData["comments"] as String,
                     servicesList,
                     User(
-                        (customer["customerId"] as Long).toInt(),
+                        customer["customerId"] as String,
                         customer["customerFirstName"] as String,
                         customer["customerLastName"] as String,
                         customer["customerAddress"] as String,
                         customer["customerPhoneNumber"] as String,
-                        customer["customerEmail"] as String
+                        customer["customerEmail"] as String,
+                        customer["customerPassword"] as String,
+                        User.UserType.valueOf(customer["customerUserType"] as String),
+                        customer["customerToken"] as String,
+                        (customer["customerAvailability"] as Long).toInt()
                     )
                 )
                 bookingsList.add(booking)
@@ -142,20 +146,28 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     bookingData["comments"] as String,
                     servicesList,
                     User(
-                        (customer["customerId"] as Long).toInt(),
+                        customer["customerId"] as String,
                         customer["customerFirstName"] as String,
                         customer["customerLastName"] as String,
                         customer["customerAddress"] as String,
                         customer["customerPhoneNumber"] as String,
-                        customer["customerEmail"] as String
+                        customer["customerEmail"] as String,
+                        customer["customerPassword"] as String,
+                        User.UserType.valueOf(customer["customerUserType"] as String),
+                        customer["customerToken"] as String,
+                        (customer["customerAvailability"] as Long).toInt()
                     ),
                     User(
-                        (technician["technicianId"] as Long).toInt(),
+                        technician["technicianId"] as String,
                         technician["technicianFirstName"] as? String,
                         technician["technicianLastName"] as? String,
                         technician["technicianAddress"] as? String,
                         technician["technicianPhoneNumber"] as? String,
-                        technician["technicianEmail"] as? String
+                        technician["technicianEmail"] as? String,
+                        technician["technicianPassword"] as? String,
+                        User.UserType.valueOf(technician["technicianUserType"] as String),
+                        technician["technicianToken"] as? String,
+                        (technician["technicianAvailability"] as? Long)?.toInt() ?: 0
                     )
                 )
                 bookingsList.add(booking)
@@ -261,7 +273,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
     }
 
     private fun handleBookingCancellation(booking: Booking, cardView: View) {
-        FirebaseUtils.fireStoreDatabase.collection("bookings").document(booking.bookingId!!)
+        FirebaseUtils.firestore.collection("bookings").document(booking.bookingId!!)
             .update("bookingStatus", Booking.BookingStatus.CANCELLED.getStatusValue(requireContext()))
             .addOnSuccessListener {
                 // Remove the canceled booking from container and add it to containerHistory

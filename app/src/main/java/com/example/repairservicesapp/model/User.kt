@@ -1,15 +1,13 @@
 package com.example.repairservicesapp.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import com.google.firebase.Timestamp
 
-@Parcelize
-class User() : Parcelable {
+class User {
     enum class UserType {
         CUSTOMER, TECHNICIAN, ADMIN
     }
 
-    private var userId = 0
+    private var userId: String = ""
     @JvmField
     var firstName: String? = null
     @JvmField
@@ -29,7 +27,12 @@ class User() : Parcelable {
     @JvmField
     var token: String? = null
 
+    private lateinit var timestamp: Timestamp
+
+    constructor()
+
     constructor(
+        userId: String,
         firstName: String?,
         lastName: String?,
         address: String?,
@@ -37,48 +40,9 @@ class User() : Parcelable {
         email: String?,
         password: String?,
         userType: UserType?,
-        userAvailability: Int
-    ) : this() {
-        this.firstName = firstName
-        this.lastName = lastName
-        this.address = address
-        this.phoneNumber = phoneNumber
-        this.email = email
-        this.password = password
-        this.userType = userType
-        this.userAvailability = userAvailability
-    }
-
-    constructor(
-        firstName: String?,
-        lastName: String?,
-        address: String?,
-        phoneNumber: String?,
-        email: String?,
-        password: String?,
-        userType: UserType?,
-    ) : this() {
-        this.firstName = firstName
-        this.lastName = lastName
-        this.address = address
-        this.phoneNumber = phoneNumber
-        this.email = email
-        this.password = password
-        this.userType = userType
-    }
-
-    constructor(
-        userId: Int,
-        firstName: String?,
-        lastName: String?,
-        address: String?,
-        phoneNumber: String?,
-        email: String?,
-        password: String?,
-        userType: String?,
         token: String?,
-        userAvailability: Int
-    ) : this() {
+        userAvailability: Int,
+    ) {
         this.userId = userId
         this.firstName = firstName
         this.lastName = lastName
@@ -86,53 +50,33 @@ class User() : Parcelable {
         this.phoneNumber = phoneNumber
         this.email = email
         this.password = password
-        this.userType = UserType.valueOf(userType!!)
+        this.userType = userType
         this.token = token
         this.userAvailability = userAvailability
+        this.timestamp = Timestamp.now()
     }
 
     constructor(
-        userId: Int,
-        firstName: String?,
-        lastName: String?,
-        address: String?,
-        phoneNumber: String?
-    ) : this() {
-        this.userId = userId
-        this.firstName = firstName
-        this.lastName = lastName
-        this.address = address
-        this.phoneNumber = phoneNumber
-    }
-
-    constructor(
-        userId: Int,
         firstName: String?,
         lastName: String?,
         address: String?,
         phoneNumber: String?,
         email: String?,
-    ) : this() {
-        this.userId = userId
+        password: String?,
+        userType: UserType?,
+        token: String?,
+        userAvailability: Int
+    ) {
         this.firstName = firstName
         this.lastName = lastName
         this.address = address
         this.phoneNumber = phoneNumber
         this.email = email
-    }
-
-    constructor(
-        firstName: String?,
-        lastName: String?,
-        address: String?,
-        phoneNumber: String?,
-        email: String?
-    ) : this() {
-        this.firstName = firstName
-        this.lastName = lastName
-        this.address = address
-        this.phoneNumber = phoneNumber
-        this.email = email
+        this.password = password
+        this.userType = userType
+        this.token = token
+        this.userAvailability = userAvailability
+        this.timestamp = Timestamp.now()
     }
 
     val userFirstAndLastName: String
@@ -147,8 +91,12 @@ class User() : Parcelable {
     val isAdmin: Boolean
         get() = userType == UserType.ADMIN
 
-    fun getUserId(): Int {
+    fun getUserId(): String {
         return userId
+    }
+
+    fun setUserId(userId: String) {
+        this.userId = userId
     }
 
     fun setToken(token: String?) {
@@ -157,5 +105,13 @@ class User() : Parcelable {
 
     fun getToken(): String? {
         return token
+    }
+
+    fun getTimestamp(): Timestamp {
+        return timestamp
+    }
+
+    fun setTimestamp(timestamp: Timestamp) {
+        this.timestamp = timestamp
     }
 }

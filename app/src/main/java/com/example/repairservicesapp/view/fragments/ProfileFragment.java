@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.example.repairservicesapp.R;
 import com.example.repairservicesapp.app.AppManager;
 import com.example.repairservicesapp.database.DatabaseHelper;
+import com.example.repairservicesapp.database.FirebaseUtils;
 import com.example.repairservicesapp.model.User;
 import com.example.repairservicesapp.util.KeyboardUtils;
 import com.example.repairservicesapp.view.LoginActivity;
@@ -32,7 +33,6 @@ public class ProfileFragment extends Fragment {
     Button btnLogOut, btnSave;
     EditText edTxtFirstName, edTxtLastName, edTxtEmail, edTxtPhone, edTxtAddress, edTxtCurrentPass, edTxtNewPass, edTxtConfirmPass;
     User user;
-    DatabaseHelper dbHelper;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -81,13 +81,18 @@ public class ProfileFragment extends Fragment {
             String address = edTxtAddress.getText().toString();
             String phone = edTxtPhone.getText().toString();
             String email = edTxtEmail.getText().toString();
-            dbHelper = new DatabaseHelper(requireContext());
             user.firstName = fName;
             user.lastName = lName;
             user.address = address;
             user.phoneNumber = phone;
             user.email = email;
-            dbHelper.updateUserData(user);
+            FirebaseUtils.INSTANCE.getFirestore().collection("users")
+                    .document(user.getUserId())
+                    .update("firstName", fName,
+                            "lastName", lName,
+                            "address", address,
+                            "phoneNumber", phone,
+                            "email", email);
             editor.putString("email", user.email);
         }
 
@@ -96,7 +101,9 @@ public class ProfileFragment extends Fragment {
             String passwordConf = edTxtConfirmPass.getText().toString();
             if (newPassword.equals(passwordConf)) {
                 user.password = newPassword;
-                dbHelper.updateUserPassword(user);
+                FirebaseUtils.INSTANCE.getFirestore().collection("users")
+                        .document(user.getUserId())
+                        .update("password", newPassword);
                 editor.putString("password", user.password);
                 edTxtCurrentPass.setText(null);
                 edTxtCurrentPass.clearFocus();
@@ -113,7 +120,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void logout() {
-        deleteToken();
+        //deleteToken();
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();

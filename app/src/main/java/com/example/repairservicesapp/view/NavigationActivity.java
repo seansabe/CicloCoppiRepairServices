@@ -21,6 +21,7 @@ import com.example.repairservicesapp.view.fragments.ScheduleFragment;
 import com.example.repairservicesapp.view.fragments.ServiceHistoryCustomerFragment;
 import com.example.repairservicesapp.view.fragments.ServiceHistoryTechnicianFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.Timestamp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class NavigationActivity extends AppCompatActivity {
@@ -32,7 +33,7 @@ public class NavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         loadUI();
-        getToken();
+        //getToken();
         User user = AppManager.instance.user;
         if (user.isAdmin()) {
             loadAdminEvents();
@@ -153,8 +154,9 @@ public class NavigationActivity extends AppCompatActivity {
             String token = task.getResult();
             Log.d("TOKEN", token);
             AppManager.instance.user.setToken(token);
-            DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-            databaseHelper.updateUserToken(AppManager.instance.user);
+            FirebaseUtils.INSTANCE.getFirestore().collection("users")
+                    .document(AppManager.instance.user.getUserId())
+                    .update("token", token, "timestamp", Timestamp.now());
         });
     }
 }

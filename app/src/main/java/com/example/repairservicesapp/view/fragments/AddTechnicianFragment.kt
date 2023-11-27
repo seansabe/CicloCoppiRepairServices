@@ -2,6 +2,7 @@ package com.example.repairservicesapp.view.fragments
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,10 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
-import com.example.repairservicesapp.database.DatabaseHelper
+import com.example.repairservicesapp.database.FirebaseUtils
+import com.example.repairservicesapp.database.FirebaseUtils.setUserId
 import com.example.repairservicesapp.model.User
+import com.example.repairservicesapp.util.MapUtils
 
 class AddTechnicianFragment : Fragment() {
     private lateinit var btnAdd: Button
@@ -22,7 +25,6 @@ class AddTechnicianFragment : Fragment() {
     private lateinit var edTxtAddress: EditText
     private lateinit var edTxtPassword: EditText
     private lateinit var edTxtConfirmPassword: EditText
-    private lateinit var dbhelper: DatabaseHelper
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,8 +57,7 @@ class AddTechnicianFragment : Fragment() {
                 val phone = edTxtPhone.text.toString()
                 val address = edTxtAddress.text.toString()
                 val password = edTxtPassword.text.toString()
-                dbhelper = DatabaseHelper(requireContext())
-                dbhelper.addUser(User(firstName, lastName, address, phone, email, password, userType = User.UserType.TECHNICIAN, 100))
+                addTechnician(User(firstName, lastName, address, phone, email, password, userType = User.UserType.TECHNICIAN, null, 100))
                 val fragment = AdminFragment()
                 val fragmentManager = requireActivity().supportFragmentManager
                 val fragmentTransaction = fragmentManager.beginTransaction()
@@ -120,5 +121,18 @@ class AddTechnicianFragment : Fragment() {
             }
         }
         return isValid
+    }
+
+    private fun addTechnician(user: User) {
+        FirebaseUtils.firestore.collection("users")
+            .add(MapUtils.userToMap(user))
+            .addOnSuccessListener {
+                Log.d("AddTechnicianFragment", "Technician added successfully")
+                // Set userId inside Firebase document based on document id
+                setUserId(it.id)
+            }
+            .addOnFailureListener { e ->
+                Log.d("AddTechnicianFragment", "Error adding technician: ${e.message}")
+            }
     }
 }

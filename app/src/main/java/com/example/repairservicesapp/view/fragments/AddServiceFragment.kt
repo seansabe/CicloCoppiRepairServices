@@ -2,6 +2,7 @@ package com.example.repairservicesapp.view.fragments
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,10 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
 import com.example.repairservicesapp.database.DatabaseHelper
+import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Service
 import com.example.repairservicesapp.model.User
+import com.example.repairservicesapp.util.MapUtils
 
 class AddServiceFragment : Fragment() {
     private lateinit var btnAdd: Button
@@ -20,7 +23,6 @@ class AddServiceFragment : Fragment() {
     private lateinit var edTxtServiceDescription: EditText
     private lateinit var edTxtServicePrice: EditText
     private lateinit var edTxtServiceDuration: EditText
-    private lateinit var dbhelper: DatabaseHelper
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,8 +50,7 @@ class AddServiceFragment : Fragment() {
                 val serviceDescription = edTxtServiceDescription.text.toString()
                 val servicePrice = edTxtServicePrice.text.toString().toDouble()
                 val serviceDuration = edTxtServiceDuration.text.toString().toInt()
-                dbhelper = DatabaseHelper(requireContext())
-                dbhelper.addService(Service(serviceName, serviceDescription, servicePrice, serviceDuration))
+                addService(Service(serviceName, serviceDescription, servicePrice, serviceDuration))
                 val fragment = AdminFragment()
                 val fragmentManager = requireActivity().supportFragmentManager
                 val fragmentTransaction = fragmentManager.beginTransaction()
@@ -87,5 +88,18 @@ class AddServiceFragment : Fragment() {
             isValid = false
         }
         return isValid
+    }
+
+    private fun addService(service: Service) {
+        FirebaseUtils.firestore.collection("services")
+            .add(MapUtils.serviceToMap(service))
+            .addOnSuccessListener {
+                Log.d("AddServiceFragment", "Service added successfully")
+                // Set serviceId inside Firebase document based on document id
+                FirebaseUtils.setServiceId(it.id)
+            }
+            .addOnFailureListener { e ->
+                Log.d("AddServiceFragment", "Error adding service: ${e.message}")
+            }
     }
 }

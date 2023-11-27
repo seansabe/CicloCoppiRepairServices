@@ -255,7 +255,7 @@ class BookingFragment : Fragment() {
     }
 
     private fun saveBookingToFirebase(bookingData: HashMap<String, Any?>) {
-        FirebaseUtils.fireStoreDatabase.collection("bookings")
+        FirebaseUtils.firestore.collection("bookings")
             .add(bookingData)
             .addOnSuccessListener {
                 Toast.makeText(requireContext(), "Booking saved successfully", Toast.LENGTH_SHORT).show()

@@ -112,7 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String[] selectionArgs = {};
             Cursor cursor = db.rawQuery(query, selectionArgs);
             while (cursor.moveToNext()) {
-                int userId = cursor.getInt(0);
+                String userId = cursor.getString(0);
                 String firstName = cursor.getString(1);
                 String lastName = cursor.getString(2);
                 String phoneNumber = cursor.getString(3);
@@ -122,7 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String userType = cursor.getString(7);
                 int availability = cursor.getInt(8);
                 String token = cursor.getString(9);
-                User user = new User(userId, firstName, lastName, address, phoneNumber, email, password, userType, token, availability);
+                User user = new User(userId, firstName, lastName, address, phoneNumber, email, password, User.UserType.valueOf(userType), token, availability);
                 users.add(user);
             }
             cursor.close();
@@ -142,7 +142,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
         User user = null;
         if (cursor.moveToFirst()) {
-            int userId = cursor.getInt(0);
+            String userId = cursor.getString(0);
             String address = cursor.getString(1);
             String phoneNumber = cursor.getString(2);
             String email = cursor.getString(3);
@@ -150,7 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String userType = cursor.getString(5);
             int availability = cursor.getInt(6);
             String token = cursor.getString(7);
-            user = new User(userId, firstName, lastName, address, phoneNumber, email, password, userType, token, availability);
+            user = new User(userId, firstName, lastName, address, phoneNumber, email, password, User.UserType.valueOf(userType), token, availability);
         }
         cursor.close();
         //db.close();
@@ -165,7 +165,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
         User user = null;
         if (cursor.moveToFirst()) {
-            int userId = cursor.getInt(0);
+            String userId = cursor.getString(0);
             String firstName = cursor.getString(1);
             String lastName = cursor.getString(2);
             String address = cursor.getString(3);
@@ -174,7 +174,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String userType = cursor.getString(6);
             int availability = cursor.getInt(7);
             String token = cursor.getString(8);
-            user = new User(userId, firstName, lastName, address, phoneNumber, email, password, userType, token, availability);
+            user = new User(userId, firstName, lastName, address, phoneNumber, email, password, User.UserType.valueOf(userType), token, availability);
         }
         cursor.close();
         return user;
@@ -232,7 +232,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void updateTechnicianAvailability(Integer userId, Integer availability) {
+    public void updateTechnicianAvailability(String userId, Integer availability) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(U_COLUMN_AVAILABILITY, availability);
@@ -287,7 +287,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String[] selectionArgs = {};
             Cursor cursor = db.rawQuery(query, selectionArgs);
             while (cursor.moveToNext()) {
-                int serviceId = cursor.getInt(0);
+                String serviceId = cursor.getString(0);
                 String serviceName = cursor.getString(1);
                 String serviceDescription = cursor.getString(2);
                 int servicePrice = cursor.getInt(3);
@@ -311,7 +311,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_SERVICES, columns, selection, selectionArgs, null, null, null);
         Service service = null;
         if (cursor.moveToFirst()) {
-            int serviceId = cursor.getInt(0);
+            String serviceId = cursor.getString(0);
             String name = cursor.getString(1);
             String description = cursor.getString(2);
             int price = cursor.getInt(3);

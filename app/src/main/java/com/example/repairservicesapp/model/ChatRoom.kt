@@ -4,13 +4,13 @@ import com.google.firebase.Timestamp
 
 class ChatRoom {
     private var chatRoomId: String = ""
-    private var userIds: ArrayList<Int> = ArrayList()
+    private var userIds: ArrayList<String> = ArrayList()
     private var lastMessageTimestamp: Timestamp = Timestamp.now()
-    private var lastMessageSenderId: Int = 0
+    private var lastMessageSenderId: String = ""
 
     constructor()
 
-    constructor(chatRoomId: String, userIds: ArrayList<Int>, lastMessageTimestamp: Timestamp, lastMessageSenderId: Int) {
+    constructor(chatRoomId: String, userIds: ArrayList<String>, lastMessageTimestamp: Timestamp, lastMessageSenderId: String) {
         this.chatRoomId = chatRoomId
         this.userIds = userIds
         this.lastMessageTimestamp = lastMessageTimestamp
@@ -25,11 +25,11 @@ class ChatRoom {
         this.chatRoomId = chatRoomId
     }
 
-    fun getUserIds(): ArrayList<Int> {
+    fun getUserIds(): ArrayList<String> {
         return userIds
     }
 
-    fun setUserIds(userIds: ArrayList<Int>) {
+    fun setUserIds(userIds: ArrayList<String>) {
         this.userIds = userIds
     }
 
@@ -41,11 +41,11 @@ class ChatRoom {
         this.lastMessageTimestamp = lastMessageTimestamp
     }
 
-    fun getLastMessageSenderId(): Int {
+    fun getLastMessageSenderId(): String {
         return lastMessageSenderId
     }
 
-    fun setLastMessageSenderId(lastMessageSenderId: Int) {
+    fun setLastMessageSenderId(lastMessageSenderId: String) {
         this.lastMessageSenderId = lastMessageSenderId
     }
 }
