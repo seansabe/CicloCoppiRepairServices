@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
 import com.example.repairservicesapp.database.FirebaseUtils
@@ -64,6 +65,7 @@ class AddTechnicianFragment : Fragment() {
                 fragmentTransaction.replace(R.id.fragment_container_view, fragment)
                 fragmentTransaction.addToBackStack(null)
                 fragmentTransaction.commit()
+                Toast.makeText(context, "Technician added successfully", Toast.LENGTH_SHORT).show()
             }
         }
         btnCancel.setOnClickListener {
@@ -132,7 +134,7 @@ class AddTechnicianFragment : Fragment() {
                 setUserId(it.id)
             }
             .addOnFailureListener { e ->
-                Log.d("AddTechnicianFragment", "Error adding technician: ${e.message}")
+                Toast.makeText(context, "Error adding technician!", Toast.LENGTH_SHORT).show()
             }
     }
 }

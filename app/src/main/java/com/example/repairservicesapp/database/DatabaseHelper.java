@@ -157,81 +157,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
-    public User getUserByEmail(String email) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = { U_COLUMN_ID, U_COLUMN_FNAME, U_COLUMN_LNAME, U_COLUMN_ADDRESS, U_COLUMN_PHONE, U_COLUMN_PASSWORD, U_COLUMN_TYPE, U_COLUMN_AVAILABILITY, U_COLUMN_TOKEN };
-        String selection = U_COLUMN_EMAIL + " = ?";
-        String[] selectionArgs = { email };
-        Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
-        User user = null;
-        if (cursor.moveToFirst()) {
-            String userId = cursor.getString(0);
-            String firstName = cursor.getString(1);
-            String lastName = cursor.getString(2);
-            String address = cursor.getString(3);
-            String phoneNumber = cursor.getString(4);
-            String password = cursor.getString(5);
-            String userType = cursor.getString(6);
-            int availability = cursor.getInt(7);
-            String token = cursor.getString(8);
-            user = new User(userId, firstName, lastName, address, phoneNumber, email, password, User.UserType.valueOf(userType), token, availability);
-        }
-        cursor.close();
-        return user;
-    }
-
-    public void addUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(U_COLUMN_FNAME, user.firstName);
-        cv.put(U_COLUMN_LNAME, user.lastName);
-        cv.put(U_COLUMN_ADDRESS, user.address);
-        cv.put(U_COLUMN_PHONE, user.phoneNumber);
-        cv.put(U_COLUMN_EMAIL, user.email);
-        cv.put(U_COLUMN_PASSWORD, user.password);
-        cv.put(U_COLUMN_TYPE, user.userType.toString());
-        cv.put(U_COLUMN_TOKEN, "");
-        cv.put(U_COLUMN_AVAILABILITY, user.userAvailability);
-        long result = db.insert(TABLE_USERS, null, cv);
-        if(result == -1) {
-            Toast.makeText(context, "Unexpected error in adding user.", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "User has been added successfully.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void updateUserData(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(U_COLUMN_FNAME, user.firstName);
-        cv.put(U_COLUMN_LNAME, user.lastName);
-        cv.put(U_COLUMN_ADDRESS, user.address);
-        cv.put(U_COLUMN_PHONE, user.phoneNumber);
-        cv.put(U_COLUMN_EMAIL, user.email);
-        String selection = U_COLUMN_ID + " = ?";
-        String[] selectionArgs = { String.valueOf(user.getUserId()) };
-        long result = db.update(TABLE_USERS, cv, selection, selectionArgs);
-        if (result == -1) {
-            Log.d("DATABASE", "Unexpected error in updating user data.");
-        } else {
-            Log.d("DATABASE", "User data has been updated successfully.");
-        }
-    }
-
-    public void updateUserPassword(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(U_COLUMN_PASSWORD, user.password);
-        String selection = U_COLUMN_EMAIL + " = ?";
-        String[] selectionArgs = { String.valueOf(user.email) };
-        long result = db.update(TABLE_USERS, cv, selection, selectionArgs);
-        if (result == -1) {
-            Log.d("DATABASE", "Unexpected error in updating user password.");
-        } else {
-            Log.d("DATABASE", "User password has been updated successfully.");
-        }
-    }
-
     public void updateTechnicianAvailability(String userId, Integer availability) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -246,35 +171,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    // Update user token
-    public void updateUserToken(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(U_COLUMN_TOKEN, user.token);
-        String selection = U_COLUMN_ID + " = ?";
-        String[] selectionArgs = { String.valueOf(user.getUserId()) };
-        long result = db.update(TABLE_USERS, cv, selection, selectionArgs);
-        if (result == -1) {
-            Log.d("DATABASE", "Unexpected error in updating user token.");
-        } else {
-            Log.d("DATABASE", "User token has been updated successfully.");
-        }
-    }
-
-    public boolean checkUserCredentials (String email, String password) {
-        String userPassword = "";
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String[] column = {U_COLUMN_PASSWORD};
-        String selection = "email = ? ";
-        String[] selectionArgs = { email };
-        Cursor cursor = sqLiteDatabase.query(TABLE_USERS, column, selection, selectionArgs, null,
-                null, null);
-        while (cursor.moveToNext()) {
-            userPassword = cursor.getString(0);
-        }
-        cursor.close();
-        return userPassword.equals(password);
-    }
 
     /** SERVICE DB METHODS **/
 
@@ -301,57 +197,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.e("DatabaseError", "Error on database: " + e.getMessage());
         }
         return services;
-    }
-
-    public Service getServiceByName(String serviceName) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = { S_COLUMN_ID, S_COLUMN_NAME, S_COLUMN_DESCRIPTION, S_COLUMN_PRICE, S_COLUMN_DURATION };
-        String selection = S_COLUMN_NAME + " = ?";
-        String[] selectionArgs = { serviceName };
-        Cursor cursor = db.query(TABLE_SERVICES, columns, selection, selectionArgs, null, null, null);
-        Service service = null;
-        if (cursor.moveToFirst()) {
-            String serviceId = cursor.getString(0);
-            String name = cursor.getString(1);
-            String description = cursor.getString(2);
-            int price = cursor.getInt(3);
-            int duration = cursor.getInt(4);
-            service = new Service(serviceId, name, description, price, duration);
-        }
-        cursor.close();
-        //db.close();
-        return service;
-    }
-
-    public void addService(Service service) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(S_COLUMN_NAME, service.serviceName);
-        cv.put(S_COLUMN_DESCRIPTION, service.serviceDescription);
-        cv.put(S_COLUMN_PRICE, service.serviceCost);
-        cv.put(S_COLUMN_DURATION, service.serviceDuration);
-        long result = db.insert(TABLE_SERVICES, null, cv);
-        if(result == -1) {
-            Toast.makeText(context, "Unexpected error in adding service.", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Service has been added successfully.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void updateService(Service service) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(S_COLUMN_NAME, service.serviceName);
-        cv.put(S_COLUMN_DESCRIPTION, service.serviceDescription);
-        cv.put(S_COLUMN_PRICE, service.serviceCost);
-        cv.put(S_COLUMN_DURATION, service.serviceDuration);
-        String selection = S_COLUMN_ID + " = ?";
-        String[] selectionArgs = { String.valueOf(service.getServiceId()) };
-        long result = db.update(TABLE_SERVICES, cv, selection, selectionArgs);
-        if (result == -1) {
-            Toast.makeText(context, "Unexpected error in updating service.", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Service has been updated successfully.", Toast.LENGTH_SHORT).show();
-        }
     }
 }

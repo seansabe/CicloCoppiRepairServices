@@ -79,7 +79,10 @@
     <string name="txtProfileItem">Profile</string>
     <string name="txtHomeItem">Administration</string>
     <string name="txtBookItem">Book a Service</string>
-    <string name="txtProfileUpdated">Profile Updated</string>
+    <string name="txtProfileUpdated">Profile successfully updated</string>
+    <string name="txtServiceAdded">Service successfully added</string>
+    <string name="txtServiceUpdated">Service successfully updated</string>
+    <string name="txtBookingAdded">Booking successfully added</string>
     <string name="txtAvailability">Availability</string>
     <string name="txtAddServiceHour">Add a date</string>
     <string name="txtSelectTechnician">Select a technician</string>

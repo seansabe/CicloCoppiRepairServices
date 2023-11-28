@@ -19,6 +19,7 @@ import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Booking
 import com.example.repairservicesapp.model.Service
 import com.example.repairservicesapp.model.User
+import com.example.repairservicesapp.util.MapUtils
 import com.example.repairservicesapp.util.UnitsUtils
 import com.example.repairservicesapp.view.ChatActivity
 import com.google.firebase.firestore.QuerySnapshot
@@ -45,12 +46,12 @@ class ServiceHistoryCustomerFragment : Fragment() {
         txtNothingHereYetHistory = view.findViewById(R.id.txtNothingHereYetHistory)
         txtNothingHereYetBookings = view.findViewById(R.id.txtNothingHereYetBookings)
         // Retrieving Bookings from Firebase
-        getFirebaseData()
+        getBookings()
     }
 
-    private fun getFirebaseData() {
+    private fun getBookings() {
         FirebaseUtils.firestore.collection("bookings")
-            .whereEqualTo("customer.customerId", AppManager.instance.user.getUserId())
+            .whereEqualTo("customer.userId", AppManager.instance.user.getUserId())
             .orderBy("bookingDate")
             .orderBy("bookingTime")
             .get()
@@ -73,13 +74,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
             val technician = bookingData["technician"] as? Map<String, Any>
             val servicesList = ArrayList<Service>()
             for (serviceMap in servicesData) {
-                val service = Service(
-                    serviceMap["serviceId"] as String,
-                    serviceMap["serviceName"].toString(),
-                    serviceMap["serviceDescription"].toString(),
-                    (serviceMap["servicePrice"] as? Double) ?: 0.0,
-                    (serviceMap["serviceDuration"] as? Long)?.toInt() ?: 0
-                )
+                val service = MapUtils.mapToServiceObject(serviceMap)
                 servicesList.add(service)
             }
 
@@ -96,18 +91,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
                     bookingData["bikeWheelSize"] as String,
                     bookingData["comments"] as String,
                     servicesList,
-                    User(
-                        customer["customerId"] as String,
-                        customer["customerFirstName"] as String,
-                        customer["customerLastName"] as String,
-                        customer["customerAddress"] as String,
-                        customer["customerPhoneNumber"] as String,
-                        customer["customerEmail"] as String,
-                        customer["customerPassword"] as String,
-                        User.UserType.valueOf(customer["customerUserType"] as String),
-                        customer["customerToken"] as String,
-                        (customer["customerAvailability"] as Long).toInt()
-                    )
+                    MapUtils.mapToUserObject(customer),
                 )
                 bookingsList.add(booking)
             } else {
@@ -125,30 +109,8 @@ class ServiceHistoryCustomerFragment : Fragment() {
                     bookingData["bikeWheelSize"] as String,
                     bookingData["comments"] as String,
                     servicesList,
-                    User(
-                        customer["customerId"] as String,
-                        customer["customerFirstName"] as String,
-                        customer["customerLastName"] as String,
-                        customer["customerAddress"] as String,
-                        customer["customerPhoneNumber"] as String,
-                        customer["customerEmail"] as String,
-                        customer["customerPassword"] as String,
-                        User.UserType.valueOf(customer["customerUserType"] as String),
-                        customer["customerToken"] as String,
-                        (customer["customerAvailability"] as Long).toInt()
-                    ),
-                    User(
-                        technician["technicianId"] as String,
-                        technician["technicianFirstName"] as? String,
-                        technician["technicianLastName"] as? String,
-                        technician["technicianAddress"] as? String,
-                        technician["technicianPhoneNumber"] as? String,
-                        technician["technicianEmail"] as? String,
-                        technician["technicianPassword"] as? String,
-                        User.UserType.valueOf(technician["technicianUserType"] as String),
-                        technician["technicianToken"] as? String,
-                        (technician["technicianAvailability"] as? Long)?.toInt() ?: 0
-                    )
+                    MapUtils.mapToUserObject(customer),
+                    MapUtils.mapToUserObject(technician)
                 )
                 bookingsList.add(booking)
             }

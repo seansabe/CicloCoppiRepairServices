@@ -61,40 +61,4 @@ object FirebaseUtils {
                 )
             }
     }
-
-    // Get all users from Firebase of type TECHNICIAN and return an ArrayList<User>
-    fun getAllTechnicians(): ArrayList<User> {
-        val technicians = ArrayList<User>()
-        firestore.collection("users")
-            .whereEqualTo("userType", User.UserType.TECHNICIAN)
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    val technician = document.toObject<User>()
-                    technicians.add(technician)
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.d("AdminFragment", "Error getting documents: " + e.message)
-            }
-        Log.d("AdminFragment", "getAllTechnicians: ${technicians.size}")
-        return technicians
-    }
-
-    fun getAllServices(): ArrayList<Service> {
-        val services = ArrayList<Service>()
-        firestore.collection("services")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    val service = document.toObject<Service>()
-                    services.add(service)
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.d("AdminFragment", "Error getting documents: " + e.message)
-            }
-        Log.d("AdminFragment", "getAllServices: ${services.size}")
-        return services
-    }
 }

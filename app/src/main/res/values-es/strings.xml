@@ -78,7 +78,10 @@
     <string name="txtProfileItem">Perfil</string>
     <string name="txtHomeItem">Administración</string>
     <string name="txtBookItem">Agendar Servicio</string>
-    <string name="txtProfileUpdated">Perfil Actualizado</string>
+    <string name="txtProfileUpdated">Perfil actualizado</string>
+    <string name="txtServiceAdded">Servicio agregado</string>
+    <string name="txtServiceUpdated">Servicio actualizado</string>
+    <string name="txtBookingAdded">Servicio agendado</string>
     <string name="txtAvailability">Disponibilidad</string>
     <string name="txtAddServiceHour">Agregar una hora</string>
     <string name="txtSelectTechnician">Selecciona un técnico</string>

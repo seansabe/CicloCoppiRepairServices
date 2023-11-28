@@ -6,33 +6,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
-import com.example.repairservicesapp.database.DatabaseHelper
 import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Service
 import com.example.repairservicesapp.model.User
 import com.example.repairservicesapp.util.MapUtils
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointForward
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.firestore.toObject
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+
 
 
 class AdminFragment : Fragment() {
-    private lateinit var technicians : ArrayList<User>
-    private lateinit var services : ArrayList<Service>
-    private lateinit var dbHelper : DatabaseHelper
     private lateinit var btnAddTechnician : Button
     private lateinit var btnAddService : Button
     private lateinit var btnUpdateService : Button
@@ -43,28 +30,6 @@ class AdminFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_admin, container, false)
-
-        dbHelper = DatabaseHelper(requireContext())
-        //technicians = dbHelper.allTechnicians as ArrayList<User>
-        technicians = FirebaseUtils.getAllTechnicians()
-        //services = dbHelper.allServices as ArrayList<Service>
-        services = FirebaseUtils.getAllServices()
-        val techniciansNames = ArrayList<String>()
-        for (technician in technicians) {
-            techniciansNames.add(technician.userFirstAndLastName)
-        }
-
-        for (service in services) {
-            servicesNames.add(service.serviceName!!)
-        }
-
-        spinnerServices = view.findViewById(R.id.custom_spinner_services)
-        val adapterServices = ArrayAdapter(requireContext(), R.layout.custom_spinner_item, servicesNames)
-        spinnerServices.adapter = adapterServices
-
-        val spinnerTechnicians = view.findViewById<Spinner>(R.id.custom_spinner_technicians)
-        val adapterTechnicians = ArrayAdapter(requireContext(), R.layout.custom_spinner_item, techniciansNames)
-        spinnerTechnicians.adapter = adapterTechnicians
         loadUI(view)
         loadEvents()
         return view
@@ -75,14 +40,9 @@ class AdminFragment : Fragment() {
         btnAddService = view.findViewById(R.id.btnAddService)
         btnUpdateService = view.findViewById(R.id.btnUpdateService)
 
-        btnUpdateService.isEnabled = servicesNames.size > 0
-        if (btnUpdateService.isEnabled) {
-            btnUpdateService.setBackgroundResource(R.drawable.button_enabled)
-            context?.let { btnUpdateService.setTextColor(it.getColor(R.color.white)) }
-        } else {
-            btnUpdateService.setBackgroundResource(R.drawable.button_disabled)
-            context?.let { btnUpdateService.setTextColor(it.getColor(R.color.light_gray)) }
-        }
+        // Get all technicians and services
+        getAllTechnicians()
+        getAllServices()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -112,6 +72,56 @@ class AdminFragment : Fragment() {
                 .replace(R.id.fragment_container_view, fragment)
                 .addToBackStack(null)
                 .commit()
+        }
+    }
+
+    private fun getAllTechnicians() {
+        FirebaseUtils.firestore.collection("users")
+            .whereEqualTo("userType", User.UserType.TECHNICIAN)
+            .orderBy("firstName")
+            .get()
+            .addOnSuccessListener { result ->
+                val techniciansNames = ArrayList<String>()
+                for (document in result) {
+                    val technician = MapUtils.snapshotToUserObject(document)
+                    techniciansNames.add(technician.userFirstAndLastName)
+                }
+                val spinnerTechnicians = view?.findViewById<Spinner>(R.id.custom_spinner_technicians)
+                val adapterTechnicians = ArrayAdapter(requireContext(), R.layout.custom_spinner_item, techniciansNames)
+                spinnerTechnicians?.adapter = adapterTechnicians
+            }
+            .addOnFailureListener { e ->
+                Log.d("AdminFragment", "Error getting documents: " + e.message)
+            }
+    }
+
+    private fun getAllServices() {
+        FirebaseUtils.firestore.collection("services")
+            .orderBy("serviceName")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val service = MapUtils.snapshotServiceObject(document)
+                    servicesNames.add(service.serviceName!!)
+                }
+                spinnerServices = view?.findViewById(R.id.custom_spinner_services)!!
+                val adapterServices = ArrayAdapter(requireContext(), R.layout.custom_spinner_item, servicesNames)
+                spinnerServices.adapter = adapterServices
+                enableUpdateServiceButton()
+            }
+            .addOnFailureListener { e ->
+                Log.d("AdminFragment", "Error getting documents: " + e.message)
+            }
+    }
+
+    private fun enableUpdateServiceButton() {
+        btnUpdateService.isEnabled = servicesNames.size > 0
+        if (btnUpdateService.isEnabled) {
+            btnUpdateService.setBackgroundResource(R.drawable.button_enabled)
+            context?.let { btnUpdateService.setTextColor(it.getColor(R.color.white)) }
+        } else {
+            btnUpdateService.setBackgroundResource(R.drawable.button_disabled)
+            context?.let { btnUpdateService.setTextColor(it.getColor(R.color.light_gray)) }
         }
     }
 }

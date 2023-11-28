@@ -21,8 +21,23 @@ object MapUtils {
         )
     }
 
-    fun mapToUserObject(document: QueryDocumentSnapshot): User {
+    fun snapshotToUserObject(document: QueryDocumentSnapshot): User {
         val data = document.data
+        return User(
+            data["userId"] as String,
+            data["firstName"] as String,
+            data["lastName"] as String,
+            data["address"] as String,
+            data["phoneNumber"] as String,
+            data["email"] as String,
+            data["password"] as String,
+            User.UserType.valueOf(data["userType"] as String),
+            data["token"] as String?,
+            (data["userAvailability"] as Long).toInt()
+        )
+    }
+
+    fun mapToUserObject(data: Map<String, Any>): User {
         return User(
             data["userId"] as String,
             data["firstName"] as String,
@@ -45,6 +60,27 @@ object MapUtils {
             "serviceCost" to service.serviceCost,
             "serviceDuration" to service.serviceDuration,
             "timestamp" to service.getTimestamp()
+        )
+    }
+
+    fun mapToServiceObject(data: Map<String, Any>): Service {
+        return Service(
+            data["serviceId"] as String,
+            data["serviceName"].toString(),
+            data["serviceDescription"].toString(),
+            (data["servicePrice"] as? Double) ?: 0.0,
+            (data["serviceDuration"] as? Long)?.toInt() ?: 0
+        )
+    }
+
+    fun snapshotServiceObject(document: QueryDocumentSnapshot): Service {
+        val data = document.data
+        return Service(
+            data["serviceId"] as String,
+            data["serviceName"] as String,
+            data["serviceDescription"] as String,
+            data["serviceCost"] as Double,
+            (data["serviceDuration"] as Long).toInt()
         )
     }
 }

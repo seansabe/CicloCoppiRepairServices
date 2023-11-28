@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
 import com.example.repairservicesapp.database.DatabaseHelper
@@ -57,6 +58,7 @@ class AddServiceFragment : Fragment() {
                 fragmentTransaction.replace(R.id.fragment_container_view, fragment)
                 fragmentTransaction.addToBackStack(null)
                 fragmentTransaction.commit()
+                Toast.makeText(requireContext(), R.string.txtServiceAdded, Toast.LENGTH_SHORT).show()
             }
         }
         btnCancel.setOnClickListener {

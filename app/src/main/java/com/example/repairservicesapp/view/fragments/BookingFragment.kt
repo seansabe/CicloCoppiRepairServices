@@ -25,13 +25,13 @@ import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Booking
 import com.example.repairservicesapp.model.Service
 import com.example.repairservicesapp.util.UnitsUtils
+import com.google.firebase.firestore.toObject
 
 
 class BookingFragment : Fragment() {
     private lateinit var services : ArrayList<Service>
     private var selectedServices : ArrayList<Service> = ArrayList()
     private var servicesNames : ArrayList<String> = ArrayList()
-    private lateinit var dbHelper : DatabaseHelper
     private lateinit var btnAddService : Button
     private lateinit var btnBook : Button
     private lateinit var btnDelete : Button
@@ -52,12 +52,6 @@ class BookingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_booking, container, false)
-        dbHelper = DatabaseHelper(requireContext())
-        services = dbHelper.allServices as ArrayList<Service>
-
-        for (service in services) {
-            servicesNames.add(service.serviceName!!)
-        }
         loadUI(view)
         loadEvents()
         return view
@@ -82,36 +76,8 @@ class BookingFragment : Fragment() {
         spinnerBikeType.adapter = adapterBikeType
         spinnerBikeColor.adapter = adapterBikeColor
         spinnerBikeWheelSize.adapter = adapterBikeWheelSize
-        addDefaultSpinner(container)
 
-        // Disable the delete button if there's only one spinner
-        btnDelete.isEnabled = container.childCount > 1
-
-        // Check the child count in the container and enable/disable the delete button accordingly
-        container.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-            btnDelete.isEnabled = container.childCount > 1
-            if (btnDelete.isEnabled) {
-                btnDelete.setBackgroundResource(R.drawable.button_enabled)
-                context?.let { btnDelete.setTextColor(it.getColor(R.color.white)) }
-            } else {
-                btnDelete.setBackgroundResource(R.drawable.button_disabled)
-                context?.let { btnDelete.setTextColor(it.getColor(R.color.light_gray)) }
-            }
-        }
-
-        val colorStateList = ColorStateList(
-            arrayOf(
-                intArrayOf(-android.R.attr.state_checked),
-                intArrayOf(android.R.attr.state_checked)
-            ), intArrayOf(
-                view.context.getColor(R.color.gray),  // Unchecked color
-                view.context.getColor(R.color.blue) // Checked color
-            )
-        )
-        rdMorning.buttonTintList = colorStateList
-        rdAfternoon.buttonTintList = colorStateList
-
-        setSpinnerListeners(container)
+        getAllServices()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -224,17 +190,23 @@ class BookingFragment : Fragment() {
                 "serviceName" to it.serviceName!!,
                 "serviceDescription" to it.serviceDescription!!,
                 "servicePrice" to it.serviceCost,
-                "serviceDuration" to it.serviceDuration
+                "serviceDuration" to it.serviceDuration,
+                "timestamp" to it.getTimestamp()
             )
         }
 
         val mappedCustomer = hashMapOf(
-            "customerId" to booking.customer?.getUserId(),
-            "customerFirstName" to booking.customer?.firstName!!,
-            "customerLastName" to booking.customer?.lastName!!,
-            "customerAddress" to booking.customer?.address!!,
-            "customerPhoneNumber" to booking.customer?.phoneNumber!!,
-            "customerEmail" to booking.customer?.email!!
+            "userId" to booking.customer?.getUserId(),
+            "firstName" to booking.customer?.firstName!!,
+            "lastName" to booking.customer?.lastName!!,
+            "address" to booking.customer?.address!!,
+            "phoneNumber" to booking.customer?.phoneNumber!!,
+            "email" to booking.customer?.email!!,
+            "password" to booking.customer?.password!!,
+            "userType" to booking.customer?.userType!!.name,
+            "userAvailability" to booking.customer?.userAvailability!!,
+            "token" to booking.customer?.token,
+            "timestamp" to booking.customer?.getTimestamp()
         )
 
         return hashMapOf(
@@ -250,7 +222,8 @@ class BookingFragment : Fragment() {
             "services" to mappedServices,
             "comments" to booking.comments,
             "customer" to mappedCustomer,
-            "technician" to null
+            "technician" to null,
+            "timestamp" to booking.getTimestamp()
         )
     }
 
@@ -258,7 +231,7 @@ class BookingFragment : Fragment() {
         FirebaseUtils.firestore.collection("bookings")
             .add(bookingData)
             .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Booking saved successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.txtBookingAdded, Toast.LENGTH_SHORT).show()
                 Log.d("BookingFragment", "Booking saved successfully")
                 val fragment = BookingFragment()
                 requireActivity().supportFragmentManager.beginTransaction()
@@ -267,7 +240,6 @@ class BookingFragment : Fragment() {
                     .commit()
             }
             .addOnFailureListener {
-                Toast.makeText(requireContext(), "Error saving booking", Toast.LENGTH_SHORT).show()
                 Log.d("BookingFragment", "Error saving booking")
             }
     }
@@ -307,5 +279,52 @@ class BookingFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun getAllServices() {
+        services = ArrayList()
+        FirebaseUtils.firestore.collection("services")
+            .orderBy("serviceName")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val service = document.toObject<Service>()
+                    servicesNames.add(service.serviceName!!)
+                    services.add(service)
+                }
+                addDefaultSpinner(container)
+
+                // Disable the delete button if there's only one spinner
+                btnDelete.isEnabled = container.childCount > 1
+
+                // Check the child count in the container and enable/disable the delete button accordingly
+                container.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+                    btnDelete.isEnabled = container.childCount > 1
+                    if (btnDelete.isEnabled) {
+                        btnDelete.setBackgroundResource(R.drawable.button_enabled)
+                        context?.let { btnDelete.setTextColor(it.getColor(R.color.white)) }
+                    } else {
+                        btnDelete.setBackgroundResource(R.drawable.button_disabled)
+                        context?.let { btnDelete.setTextColor(it.getColor(R.color.light_gray)) }
+                    }
+                }
+
+                val colorStateList = ColorStateList(
+                    arrayOf(
+                        intArrayOf(-android.R.attr.state_checked),
+                        intArrayOf(android.R.attr.state_checked)
+                    ), intArrayOf(
+                        view?.context?.getColor(R.color.gray)!!,  // Unchecked color
+                        view?.context?.getColor(R.color.blue)!! // Checked color
+                    )
+                )
+                rdMorning.buttonTintList = colorStateList
+                rdAfternoon.buttonTintList = colorStateList
+
+                setSpinnerListeners(container)
+            }
+            .addOnFailureListener { e ->
+                Log.d("AdminFragment", "Error getting documents: " + e.message)
+            }
     }
 }
