@@ -121,6 +121,7 @@
     <string name="txtTechnicianNotAssignedYet">Técnico aún no asignado</string>
     <string name="txtPhoneAppNotAvailable">No es posible llamar</string>
     <string name="txtNote">Nota</string>
+    <string name="txtStats">Estadísticas</string>
     <string name="txtSelectDateAndTime">Selecciona una fecha y hora</string>
     <string name="txtSelectStatus">Debes actualizar el estado</string>
 
@@ -153,5 +154,20 @@
     <string name="txtErrorEmptyNewPassword">Nueva Contraseña Requerida</string>
     <string name="txtErrorEmptyConfirmNewPassword">Confirmar Nueva Contraseña Requerida</string>
     <string name="txtErrorBookingAssigned">No se puede actualizar la disponibilidad. Tienes servicios ya asignados.</string>
+
+    <string name="txtStatPendingBookingsTitle">Servicios\nPendientes</string>
+    <string name="txtStatAssignedBookingsTitle">Servicios\nAsignados</string>
+    <string name="txtStatAwaitingBikeBookingsTitle">Bicicletas\nEsperando</string>
+    <string name="txtStatInProcessBookingsTitle">Servicios en\nProceso</string>
+    <string name="txtStatAcceptedBookingsTitle">Servicios\nAceptados</string>
+    <string name="txtStatCancelledBookingsTitle">Servicios\nCancelados</string>
+    <string name="txtStatCompletedBookingsTitle">Servicios\nCompletados</string>
+    <string name="txtStatTotalBookingsTitle">Servicios Totales</string>
+    <string name="txtStatTotalRevenueTitle">Ingresos Totales</string>
+    <string name="txtStatTotalHoursTitle">Horas de Servicio</string>
+    <string name="txtStatTotalCustomersTitle">Clientes Totales</string>
+    <string name="txtStatTotalTechniciansTitle">Técnicos Totales</string>
+    <string name="txtStatAvailableTechniciansTitle">Técnicos Disponibles</string>
+    <string name="txtStatUnavailableTechniciansTitle">Técnicos No Disponibles</string>
 
 </resources>

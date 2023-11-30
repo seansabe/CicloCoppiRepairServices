@@ -121,6 +121,7 @@
     <string name="txtTechnicianNotAssignedYet">Technician not assigned yet</string>
     <string name="txtPhoneAppNotAvailable">Phone app not available</string>
     <string name="txtNote">Note</string>
+    <string name="txtStats">Statistics</string>
     <string name="txtSelectDateAndTime">Select a date and time</string>
     <string name="txtSelectStatus">Status must be updated</string>
 
@@ -153,5 +154,20 @@
     <string name="txtErrorEmptyNewPassword">New Password Required</string>
     <string name="txtErrorEmptyConfirmNewPassword">Confirm New Password Required</string>
     <string name="txtErrorBookingAssigned">Availability cannot be updated. You have bookings already assigned.</string>
+
+    <string name="txtStatPendingBookingsTitle">Pending\nBookings</string>
+    <string name="txtStatAssignedBookingsTitle">Assigned\nBookings</string>
+    <string name="txtStatAwaitingBikeBookingsTitle">Awaiting\nBikes</string>
+    <string name="txtStatInProcessBookingsTitle">In Process\nBookings</string>
+    <string name="txtStatAcceptedBookingsTitle">Accepted\nBookings</string>
+    <string name="txtStatCancelledBookingsTitle">Cancelled\nBookings</string>
+    <string name="txtStatCompletedBookingsTitle">Completed\nBookings</string>
+    <string name="txtStatTotalBookingsTitle">Total Bookings</string>
+    <string name="txtStatTotalRevenueTitle">Total Revenue</string>
+    <string name="txtStatTotalHoursTitle">Total Hours</string>
+    <string name="txtStatTotalCustomersTitle">Total Customers</string>
+    <string name="txtStatTotalTechniciansTitle">Total Technicians</string>
+    <string name="txtStatAvailableTechniciansTitle">Available Technicians</string>
+    <string name="txtStatUnavailableTechniciansTitle">Unavailable Technicians</string>
 
 </resources>

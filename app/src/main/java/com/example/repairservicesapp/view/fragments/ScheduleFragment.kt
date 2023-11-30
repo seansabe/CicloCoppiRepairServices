@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
 import com.example.repairservicesapp.app.AppManager
 import com.example.repairservicesapp.database.FirebaseUtils
+import com.example.repairservicesapp.model.Stats
 
 
 class ScheduleFragment : Fragment() {
@@ -22,6 +23,14 @@ class ScheduleFragment : Fragment() {
     private lateinit var rdAvailable: RadioButton
     private lateinit var rdUnavailable: RadioButton
     private lateinit var txtErrorAvailability: TextView
+
+    private lateinit var txtPendingBookingsCounter: TextView
+    private lateinit var txtAssignedBookingsCounter: TextView
+    private lateinit var txtAwaitingBikesCounter: TextView
+    private lateinit var txtInProcessBookingsCounter: TextView
+    private lateinit var txtCompletedBookingsCounter: TextView
+    private lateinit var txtCancelledBookingsCounter: TextView
+
     //private lateinit var txtDateTime : EditText
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +47,14 @@ class ScheduleFragment : Fragment() {
         rdAvailable = view.findViewById(R.id.rdAvailable)
         rdUnavailable = view.findViewById(R.id.rdUnavailable)
         txtErrorAvailability = view.findViewById(R.id.txtErrorAvailability)
+
+        txtPendingBookingsCounter = view.findViewById(R.id.txtStatPendingBookingsCounter)
+        txtAssignedBookingsCounter = view.findViewById(R.id.txtStatAssignedBookingsCounter)
+        txtAwaitingBikesCounter = view.findViewById(R.id.txtStatAwaitingBikeBookingsCounter)
+        txtInProcessBookingsCounter = view.findViewById(R.id.txtStatInProcessBookingsCounter)
+        txtCompletedBookingsCounter = view.findViewById(R.id.txtStatCompletedBookingsCounter)
+        txtCancelledBookingsCounter = view.findViewById(R.id.txtStatCancelledBookingsCounter)
+
         // Change the color of the radio buttons to match the theme of the app.
         val colorStateList = ColorStateList(
             arrayOf(
@@ -57,6 +74,7 @@ class ScheduleFragment : Fragment() {
         }
 
         //txtDateTime = view.findViewById(R.id.edTxtDatePicker)
+        getStats()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -151,4 +169,40 @@ class ScheduleFragment : Fragment() {
             txtDateTime.setText(txtDateTime.text.toString() + " - " + formattedTime)
         }
     }*/
+
+    private fun getStats() {
+        FirebaseUtils.firestore.collection("bookings")
+            .whereEqualTo("technician.userId", AppManager.instance.user.getUserId())
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.w("ScheduleFragment", "listen:error", e)
+                    return@addSnapshotListener
+                }
+                if (snapshots != null) {
+                    val stats = Stats()
+                    for (document in snapshots) {
+                        val booking = document.data
+                        when (booking["bookingStatus"]) {
+                            "PENDING" -> stats.pending++
+                            "ASSIGNED" -> stats.assigned++
+                            "AWAITING_BIKE" -> stats.awaitingBikes++
+                            "IN_PROCESS" -> stats.inProcess++
+                            "COMPLETED" -> stats.completed++
+                            "CANCELLED" -> stats.cancelled++
+                        }
+                    }
+                    AppManager.instance.stats = stats
+                    updateStatsUI()
+                }
+            }
+    }
+
+    private fun updateStatsUI() {
+        txtPendingBookingsCounter.text = AppManager.instance.stats.pending.toString()
+        txtAssignedBookingsCounter.text = AppManager.instance.stats.assigned.toString()
+        txtAwaitingBikesCounter.text = AppManager.instance.stats.awaitingBikes.toString()
+        txtInProcessBookingsCounter.text = AppManager.instance.stats.inProcess.toString()
+        txtCompletedBookingsCounter.text = AppManager.instance.stats.completed.toString()
+        txtCancelledBookingsCounter.text = AppManager.instance.stats.cancelled.toString()
+    }
 }
