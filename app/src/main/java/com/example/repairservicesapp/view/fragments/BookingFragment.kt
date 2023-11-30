@@ -20,13 +20,11 @@ import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
 import com.example.repairservicesapp.app.AppManager
 import com.example.repairservicesapp.data.Bicycle
-import com.example.repairservicesapp.database.DatabaseHelper
 import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Booking
 import com.example.repairservicesapp.model.Service
 import com.example.repairservicesapp.util.UnitsUtils
 import com.google.firebase.firestore.toObject
-
 
 class BookingFragment : Fragment() {
     private lateinit var services : ArrayList<Service>

@@ -2,7 +2,6 @@ package com.example.repairservicesapp.view.fragments
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
 import com.example.repairservicesapp.app.AppManager
@@ -20,7 +18,7 @@ import com.example.repairservicesapp.data.PassUserAsIntent
 import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Booking
 import com.example.repairservicesapp.model.Service
-import com.example.repairservicesapp.model.User
+import com.example.repairservicesapp.util.MapUtils
 import com.example.repairservicesapp.util.UnitsUtils
 import com.example.repairservicesapp.view.ChatActivity
 import com.google.firebase.firestore.Filter
@@ -56,7 +54,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
             FirebaseUtils.firestore.collection("bookings")
                 .where(Filter.or(
                     Filter.equalTo("technician", null),
-                    Filter.equalTo("technician.technicianId", AppManager.instance.user.getUserId())
+                    Filter.equalTo("technician.userId", AppManager.instance.user.getUserId())
                 ))
                 .orderBy("bookingDate")
                 .orderBy("bookingTime")
@@ -83,7 +81,6 @@ class ServiceHistoryTechnicianFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun buildCards(result : QuerySnapshot) {
         for (document in result) {
             val bookingId = document.id
@@ -93,13 +90,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
             val technician = bookingData["technician"] as? Map<String, Any>
             val servicesList = ArrayList<Service>()
             for (serviceMap in servicesData) {
-                val service = Service(
-                    serviceMap["serviceId"] as String,
-                    serviceMap["serviceName"].toString(),
-                    serviceMap["serviceDescription"].toString(),
-                    (serviceMap["servicePrice"] as? Double) ?: 0.0,
-                    (serviceMap["serviceDuration"] as? Long)?.toInt() ?: 0
-                )
+                val service = MapUtils.mapToServiceObject(serviceMap)
                 servicesList.add(service)
             }
 
@@ -116,18 +107,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     bookingData["bikeWheelSize"] as String,
                     bookingData["comments"] as String,
                     servicesList,
-                    User(
-                        customer["customerId"] as String,
-                        customer["customerFirstName"] as String,
-                        customer["customerLastName"] as String,
-                        customer["customerAddress"] as String,
-                        customer["customerPhoneNumber"] as String,
-                        customer["customerEmail"] as String,
-                        customer["customerPassword"] as String,
-                        User.UserType.valueOf(customer["customerUserType"] as String),
-                        customer["customerToken"] as String,
-                        (customer["customerAvailability"] as Long).toInt()
-                    )
+                    MapUtils.mapToUserObject(customer),
                 )
                 bookingsList.add(booking)
             } else {
@@ -145,30 +125,8 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     bookingData["bikeWheelSize"] as String,
                     bookingData["comments"] as String,
                     servicesList,
-                    User(
-                        customer["customerId"] as String,
-                        customer["customerFirstName"] as String,
-                        customer["customerLastName"] as String,
-                        customer["customerAddress"] as String,
-                        customer["customerPhoneNumber"] as String,
-                        customer["customerEmail"] as String,
-                        customer["customerPassword"] as String,
-                        User.UserType.valueOf(customer["customerUserType"] as String),
-                        customer["customerToken"] as String,
-                        (customer["customerAvailability"] as Long).toInt()
-                    ),
-                    User(
-                        technician["technicianId"] as String,
-                        technician["technicianFirstName"] as? String,
-                        technician["technicianLastName"] as? String,
-                        technician["technicianAddress"] as? String,
-                        technician["technicianPhoneNumber"] as? String,
-                        technician["technicianEmail"] as? String,
-                        technician["technicianPassword"] as? String,
-                        User.UserType.valueOf(technician["technicianUserType"] as String),
-                        technician["technicianToken"] as? String,
-                        (technician["technicianAvailability"] as? Long)?.toInt() ?: 0
-                    )
+                    MapUtils.mapToUserObject(customer),
+                    MapUtils.mapToUserObject(technician)
                 )
                 bookingsList.add(booking)
             }
@@ -198,7 +156,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
             txtDate.text = if (booking.bookingDate != null) "${booking.bookingDate}, ${booking.bookingTime}" else Booking.BookingStatus.PENDING.getStatusValue(requireContext())
             txtTechnician.text = booking.technician?.let { "${it.firstName} ${it.lastName}" } ?: Booking.BookingStatus.PENDING.getStatusValue(requireContext())
             txtCustomer.text = "${booking.customer?.firstName} ${booking.customer?.lastName}"
-            txtBicycle.text = "${booking.bikeType} ${booking.bikeWheelSize}, ${booking.bikeColor}\n${booking.comments}"
+            txtBicycle.text = "${booking.bikeType} ${booking.bikeWheelSize}, ${booking.bikeColor}\n${getString(R.string.txtNote)}: ${booking.comments}"
             txtServices.text = ""
             for (service in booking.services!!) {
                 txtServices.text = txtServices.text.toString() + "${service.serviceName}, "

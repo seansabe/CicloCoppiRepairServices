@@ -1,17 +1,10 @@
 package com.example.repairservicesapp.database
 
 import android.util.Log
-import com.example.repairservicesapp.model.Service
-import com.example.repairservicesapp.model.User
-import com.example.repairservicesapp.util.MapUtils
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.toObject
-import com.google.firebase.ktx.Firebase
-
 
 object FirebaseUtils {
-    val firestore: FirebaseFirestore get() = Firebase.firestore
+    val firestore: FirebaseFirestore get() = FirebaseFirestore.getInstance()
 
     fun getChatRoomId(userId1: String, userId2: String): String {
         return if (userId1.hashCode() < userId2.hashCode()) {

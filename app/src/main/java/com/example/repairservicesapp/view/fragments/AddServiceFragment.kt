@@ -11,10 +11,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
-import com.example.repairservicesapp.database.DatabaseHelper
 import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Service
-import com.example.repairservicesapp.model.User
 import com.example.repairservicesapp.util.MapUtils
 
 class AddServiceFragment : Fragment() {

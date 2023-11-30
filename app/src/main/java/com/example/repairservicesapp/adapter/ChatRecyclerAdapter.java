@@ -33,7 +33,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull ChatRecyclerAdapter.ViewHolder holder, int position) {
         ChatMessage chatMessage = chatMessages.get(position);
-        if (chatMessage.getSenderId() == (AppManager.instance.user.getUserId())) {
+        if (chatMessage.getSenderId().equals(AppManager.instance.user.getUserId())) {
             holder.layoutLeft.setVisibility(View.GONE);
             holder.layoutRight.setVisibility(View.VISIBLE);
             holder.textRight.setText(chatMessage.getMessage());

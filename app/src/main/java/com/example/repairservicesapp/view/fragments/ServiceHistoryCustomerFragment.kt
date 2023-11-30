@@ -18,7 +18,6 @@ import com.example.repairservicesapp.data.PassUserAsIntent
 import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Booking
 import com.example.repairservicesapp.model.Service
-import com.example.repairservicesapp.model.User
 import com.example.repairservicesapp.util.MapUtils
 import com.example.repairservicesapp.util.UnitsUtils
 import com.example.repairservicesapp.view.ChatActivity
@@ -143,7 +142,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
             txtDate.text = if (booking.bookingDate != null) "${booking.bookingDate}, ${booking.bookingTime}" else Booking.BookingStatus.PENDING.getStatusValue(requireContext())
             txtTechnician.text = booking.technician?.let { "${it.firstName} ${it.lastName}" } ?: Booking.BookingStatus.PENDING.getStatusValue(requireContext())
             //txtCustomer.text = "${booking.customer?.firstName} ${booking.customer?.lastName}"
-            txtBicycle.text = "${booking.bikeType} ${booking.bikeWheelSize}, ${booking.bikeColor}\n${booking.comments}"
+            txtBicycle.text = "${booking.bikeType} ${booking.bikeWheelSize}, ${booking.bikeColor}\n${getString(R.string.txtNote)}: ${booking.comments}"
             txtServices.text = ""
             for (service in booking.services!!) {
                 txtServices.text = txtServices.text.toString() + "${service.serviceName}, "

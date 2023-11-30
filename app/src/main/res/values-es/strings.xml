@@ -82,6 +82,7 @@
     <string name="txtServiceAdded">Servicio agregado</string>
     <string name="txtServiceUpdated">Servicio actualizado</string>
     <string name="txtBookingAdded">Servicio agendado</string>
+    <string name="txtBookingUpdated">Servicio actualizado</string>
     <string name="txtAvailability">Disponibilidad</string>
     <string name="txtAddServiceHour">Agregar una hora</string>
     <string name="txtSelectTechnician">Selecciona un técnico</string>
@@ -116,8 +117,12 @@
     <string name="txtUpcomingBookings">Próximos Servicios</string>
     <string name="txtNothingHereYet">Nada por aquí todavía</string>
     <string name="txtBookingCancelled">Reserva Cancelada</string>
+    <string name="txtAvailabilityUpdated">Disponibilidad actualizada</string>
     <string name="txtTechnicianNotAssignedYet">Técnico aún no asignado</string>
     <string name="txtPhoneAppNotAvailable">No es posible llamar</string>
+    <string name="txtNote">Nota</string>
+    <string name="txtSelectDateAndTime">Selecciona una fecha y hora</string>
+    <string name="txtSelectStatus">Debes actualizar el estado</string>
 
     <string name="txtServiceDropInTimeDesc">Los clientes deben llevar sus bicicletas a la tienda. \n\nUna hora será asignada para la jornada seleccionada disponible más cercano dentro de las próximas 12 horas.</string>
     <string name="txtServiceTimeDesc">Services are only performed during business hours. \n\nEl costo del servicio es estimado. Sin embargo, el costo total es validado al momento de llevar la bicicleta.</string>
@@ -147,5 +152,6 @@
     <string name="txtErrorEmptyCurrentPassword">Contraseña Actual Requerida</string>
     <string name="txtErrorEmptyNewPassword">Nueva Contraseña Requerida</string>
     <string name="txtErrorEmptyConfirmNewPassword">Confirmar Nueva Contraseña Requerida</string>
+    <string name="txtErrorBookingAssigned">No se puede actualizar la disponibilidad. Tienes servicios ya asignados.</string>
 
 </resources>

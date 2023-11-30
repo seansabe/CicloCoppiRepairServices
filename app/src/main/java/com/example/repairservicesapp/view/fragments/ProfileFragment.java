@@ -2,7 +2,6 @@ package com.example.repairservicesapp.view.fragments;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,14 +18,11 @@ import androidx.fragment.app.Fragment;
 
 import com.example.repairservicesapp.R;
 import com.example.repairservicesapp.app.AppManager;
-import com.example.repairservicesapp.database.DatabaseHelper;
 import com.example.repairservicesapp.database.FirebaseUtils;
 import com.example.repairservicesapp.model.User;
 import com.example.repairservicesapp.util.KeyboardUtils;
 import com.example.repairservicesapp.view.LoginActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
     View view;

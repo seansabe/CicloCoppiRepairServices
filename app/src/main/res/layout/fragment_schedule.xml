@@ -48,6 +48,17 @@
                     android:textSize="16sp" />
             </RadioGroup>
 
+            <TextView
+                android:id="@+id/txtErrorAvailability"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/txtErrorBookingAssigned"
+                android:textAlignment="center"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/btnSaveAvailability"
                 style="@style/ButtonTextNoCaps"

@@ -3,22 +3,25 @@ package com.example.repairservicesapp.view.fragments
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RadioButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
 import com.example.repairservicesapp.app.AppManager
-import com.example.repairservicesapp.database.DatabaseHelper
+import com.example.repairservicesapp.database.FirebaseUtils
 
 
 class ScheduleFragment : Fragment() {
-    private lateinit var dbHelper : DatabaseHelper
     private lateinit var btnSave: Button
     private lateinit var rdAvailable: RadioButton
     private lateinit var rdUnavailable: RadioButton
+    private lateinit var txtErrorAvailability: TextView
     //private lateinit var txtDateTime : EditText
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +30,6 @@ class ScheduleFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_schedule, container, false)
         loadUI(view)
         loadEvents()
-        dbHelper = DatabaseHelper(requireContext())
         return view
     }
 
@@ -35,6 +37,7 @@ class ScheduleFragment : Fragment() {
         btnSave = view.findViewById(R.id.btnSaveAvailability)
         rdAvailable = view.findViewById(R.id.rdAvailable)
         rdUnavailable = view.findViewById(R.id.rdUnavailable)
+        txtErrorAvailability = view.findViewById(R.id.txtErrorAvailability)
         // Change the color of the radio buttons to match the theme of the app.
         val colorStateList = ColorStateList(
             arrayOf(
@@ -58,19 +61,41 @@ class ScheduleFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun loadEvents() {
+        txtErrorAvailability.visibility = View.GONE
         btnSave.setOnClickListener {
-            if (rdAvailable.isChecked) {
-                AppManager.instance.user.userAvailability = 100
-            } else {
-                AppManager.instance.user.userAvailability = 0
-            }
-            dbHelper.updateTechnicianAvailability(AppManager.instance.user.getUserId(), AppManager.instance.user.userAvailability)
+            // Check if the technician has booking already assigned.
+            FirebaseUtils.firestore.collection("bookings")
+                .whereEqualTo("technician.userId", AppManager.instance.user.getUserId())
+                .whereNotIn("bookingStatus", listOf("COMPLETED", "CANCELLED"))
+                .get()
+                .addOnSuccessListener { documents ->
+                    if (documents.isEmpty) {
+                        updateAvailability()
+                    } else {
+                        txtErrorAvailability.visibility = View.VISIBLE
+                    }
+                }
         }
+
         /*
         txtDateTime.setOnClickListener {
             showDatePicker()
         }
         */
+    }
+
+    private fun updateAvailability() {
+        val availability = if (rdAvailable.isChecked) 100 else 0
+        FirebaseUtils.firestore.collection("users")
+            .document(AppManager.instance.user.getUserId())
+            .update("userAvailability", availability)
+            .addOnSuccessListener {
+                AppManager.instance.user.userAvailability = availability
+                Toast.makeText(context, R.string.txtAvailabilityUpdated, Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Log.d("ScheduleFragment", "Error updating availability: $it")
+            }
     }
 
     /*

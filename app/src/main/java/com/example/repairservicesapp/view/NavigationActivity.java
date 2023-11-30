@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.repairservicesapp.R;
 import com.example.repairservicesapp.app.AppManager;
-import com.example.repairservicesapp.database.DatabaseHelper;
 import com.example.repairservicesapp.database.FirebaseUtils;
 import com.example.repairservicesapp.model.User;
 import com.example.repairservicesapp.util.StatusBarUtils;

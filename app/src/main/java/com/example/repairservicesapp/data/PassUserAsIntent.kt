@@ -26,8 +26,8 @@ object PassUserAsIntent {
             intent.getStringExtra("phoneNumber") as String,
             intent.getStringExtra("email") as String,
             intent.getStringExtra("password") as String,
-            intent.getStringExtra("userType") as User.UserType,
-            intent.getStringExtra("token") as String,
+            intent.getStringExtra("userType") as User.UserType?,
+            intent.getStringExtra("token"),
             intent.getIntExtra("userAvailability", 100)
         )
     }
