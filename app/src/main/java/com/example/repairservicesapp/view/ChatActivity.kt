@@ -1,5 +1,7 @@
 package com.example.repairservicesapp.view
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
@@ -7,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.repairservicesapp.R
@@ -18,6 +21,8 @@ import com.example.repairservicesapp.model.ChatMessage
 import com.example.repairservicesapp.model.ChatRoom
 import com.example.repairservicesapp.model.User
 import com.example.repairservicesapp.util.StatusBarUtils.setStatusBarColor
+import com.example.repairservicesapp.view.fragments.ServiceHistoryCustomerFragment
+import com.example.repairservicesapp.view.fragments.ServiceHistoryTechnicianFragment
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 
@@ -61,6 +66,9 @@ class ChatActivity : AppCompatActivity() {
 
     private fun createEvents() {
         btnBack.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("read", true)
+            setResult(Activity.RESULT_OK, resultIntent)
             finish()
         }
 
@@ -76,6 +84,7 @@ class ChatActivity : AppCompatActivity() {
     private fun sendMessage(message : String) {
         chatRoom.setLastMessageSenderId(sender.getUserId())
         chatRoom.setLastMessageTimestamp(Timestamp.now())
+        chatRoom.setUnreadMessages(chatRoom.getUnreadMessages() + 1)
         FirebaseUtils.getChatRoomReference(chatRoomId).set(chatRoom).addOnSuccessListener {
             Log.d("ChatActivity", "Chat room updated")
         }
@@ -122,6 +131,15 @@ class ChatActivity : AppCompatActivity() {
             if (documentSnapshot.exists()) {
                 chatRoom = documentSnapshot.toObject(ChatRoom::class.java)!!
                 Log.d("ChatActivity", "Chat room exists with ${receiver.firstName} ${receiver.lastName} and ${sender.firstName} ${sender.lastName}")
+
+                if (chatRoom.getLastMessageSenderId() != sender.getUserId() && chatRoom.getUnreadMessages() > 0) {
+                    chatRoom.setUnreadMessages(0)
+
+                    FirebaseUtils.getChatRoomReference(chatRoomId).set(chatRoom).addOnSuccessListener {
+                        Log.d("ChatActivity", "Chat room updated: messages read")
+                    }
+                }
+
             } else {
                 chatRoom = ChatRoom(chatRoomId, arrayListOf(sender.getUserId(), receiver.getUserId()), Timestamp.now(), "")
                 FirebaseUtils.getChatRoomReference(chatRoomId).set(chatRoom).addOnSuccessListener {

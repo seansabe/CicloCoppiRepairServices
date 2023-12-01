@@ -1,5 +1,6 @@
 package com.example.repairservicesapp.view.fragments
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.example.repairservicesapp.app.AppManager
 import com.example.repairservicesapp.data.PassUserAsIntent
 import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Booking
+import com.example.repairservicesapp.model.ChatRoom
 import com.example.repairservicesapp.model.Service
 import com.example.repairservicesapp.util.MapUtils
 import com.example.repairservicesapp.util.UnitsUtils
@@ -30,6 +32,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
     private lateinit var txtNothingHereYetHistory : TextView
     private lateinit var txtNothingHereYetBookings : TextView
     private var bookingsList = ArrayList<Booking>()
+    private lateinit var cardView : View
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -129,6 +132,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     MapUtils.mapToUserObject(technician)
                 )
                 bookingsList.add(booking)
+                getNewMessagesCounter(booking.customer?.getUserId()!!)
             }
         }
 
@@ -139,8 +143,10 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             layoutParams.setMargins(0, UnitsUtils.dpToPx(10, requireContext()), 0, 0)
-            val cardView = layoutInflater.inflate(R.layout.custom_card, null)
+            cardView = layoutInflater.inflate(R.layout.custom_card, null)
             cardView.layoutParams = layoutParams
+
+            cardView.findViewById<ImageButton>(R.id.btnOpenChatRead).setImageResource(R.drawable.outline_chat_24)
 
             val txtDate = cardView.findViewById<TextView>(R.id.txtDate)
             val txtDropInTime = cardView.findViewById<TextView>(R.id.txtSelectedDropInFrame)
@@ -179,7 +185,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     // Pass the customer object to the ChatActivity and start it
                     val intent = Intent(requireContext(), ChatActivity::class.java)
                     PassUserAsIntent.send(intent, booking.customer!!)
-                    startActivity(intent)
+                    startActivityForResult(intent, REQUEST_CHAT)
                 } else {
                     Toast.makeText(requireContext(), context?.getString(R.string.txtTechnicianNotAssignedYet), Toast.LENGTH_SHORT).show()
                 }
@@ -257,5 +263,38 @@ class ServiceHistoryTechnicianFragment : Fragment() {
         val intent = Intent(Intent.ACTION_DIAL)
         intent.data = Uri.parse("tel:$phoneNumber")
         startActivity(intent)
+    }
+
+    private fun getNewMessagesCounter(receiverId: String) {
+        val chatRoomId = FirebaseUtils.getChatRoomId(AppManager.instance.user.getUserId(), receiverId)
+        // Get the number of unread messages
+        FirebaseUtils.firestore.collection("chatRooms").document(chatRoomId)
+            .get()
+            .addOnSuccessListener { result ->
+                val chatRoom = result.toObject(ChatRoom::class.java)
+                if (chatRoom != null) {
+                    val newMessagesCounter = chatRoom.getUnreadMessages()
+                    if (chatRoom.getLastMessageSenderId() != AppManager.instance.user.getUserId() && newMessagesCounter > 0) {
+                        cardView.findViewById<ImageButton>(R.id.btnOpenChatRead).setImageResource(R.drawable.outline_mark_unread_chat_alt_24)
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("ServiceHistoryTechnician", "Error getting chat room", exception)
+            }
+    }
+
+    companion object {
+        const val REQUEST_CHAT = 8888
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CHAT && resultCode == Activity.RESULT_OK) {
+            // Handle the result data here
+            //val value = data?.getStringExtra("read")
+            cardView.findViewById<ImageButton>(R.id.btnOpenChatRead).setImageResource(R.drawable.outline_chat_24)
+        }
     }
 }

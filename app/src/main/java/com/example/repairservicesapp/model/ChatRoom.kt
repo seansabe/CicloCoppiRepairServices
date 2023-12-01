@@ -7,6 +7,7 @@ class ChatRoom {
     private var userIds: ArrayList<String> = ArrayList()
     private var lastMessageTimestamp: Timestamp = Timestamp.now()
     private var lastMessageSenderId: String = ""
+    private var unreadMessages: Int = 0
 
     constructor()
 
@@ -15,6 +16,7 @@ class ChatRoom {
         this.userIds = userIds
         this.lastMessageTimestamp = lastMessageTimestamp
         this.lastMessageSenderId = lastMessageSenderId
+        this.unreadMessages = 0
     }
 
     fun getChatRoomId(): String {
@@ -47,5 +49,13 @@ class ChatRoom {
 
     fun setLastMessageSenderId(lastMessageSenderId: String) {
         this.lastMessageSenderId = lastMessageSenderId
+    }
+
+    fun getUnreadMessages(): Int {
+        return unreadMessages
+    }
+
+    fun setUnreadMessages(unreadMessages: Int) {
+        this.unreadMessages = unreadMessages
     }
 }
