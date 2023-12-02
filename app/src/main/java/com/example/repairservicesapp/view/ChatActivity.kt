@@ -9,7 +9,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.repairservicesapp.R
@@ -21,8 +20,6 @@ import com.example.repairservicesapp.model.ChatMessage
 import com.example.repairservicesapp.model.ChatRoom
 import com.example.repairservicesapp.model.User
 import com.example.repairservicesapp.util.StatusBarUtils.setStatusBarColor
-import com.example.repairservicesapp.view.fragments.ServiceHistoryCustomerFragment
-import com.example.repairservicesapp.view.fragments.ServiceHistoryTechnicianFragment
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 

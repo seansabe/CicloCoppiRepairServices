@@ -16,6 +16,7 @@ import com.example.repairservicesapp.R
 import com.example.repairservicesapp.app.AppManager
 import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Stats
+import com.google.firebase.firestore.Filter
 
 
 class ScheduleFragment : Fragment() {
@@ -172,7 +173,11 @@ class ScheduleFragment : Fragment() {
 
     private fun getStats() {
         FirebaseUtils.firestore.collection("bookings")
-            .whereEqualTo("technician.userId", AppManager.instance.user.getUserId())
+            .where(
+                Filter.or(
+                Filter.equalTo("technician", null),
+                Filter.equalTo("technician.userId", AppManager.instance.user.getUserId())
+            ))
             .addSnapshotListener { snapshots, e ->
                 if (e != null) {
                     Log.w("ScheduleFragment", "listen:error", e)

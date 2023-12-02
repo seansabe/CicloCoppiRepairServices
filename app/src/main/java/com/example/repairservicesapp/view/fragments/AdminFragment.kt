@@ -160,22 +160,6 @@ class AdminFragment : Fragment() {
     }
 
     private fun getStats() {
-        FirebaseUtils.firestore.collection("bookings")
-            .get()
-            .addOnSuccessListener { result ->
-                val bookings = ArrayList<Booking>()
-                for (document in result) {
-                    val booking = document.toObject<Booking>()
-                    bookings.add(booking)
-                }
-                getStatsFromBookings(bookings)
-            }
-            .addOnFailureListener { e ->
-                Log.d("AdminFragment", "Error getting documents: " + e.message)
-            }
-    }
-
-    private fun getStatsFromBookings(bookings: ArrayList<Booking>) {
         // Get the bookings and only updates the counters in AppManager.instance.stats when there is new data available.
         FirebaseUtils.firestore.collection("bookings")
             .addSnapshotListener { snapshots, e ->
@@ -204,12 +188,12 @@ class AdminFragment : Fragment() {
                         if (!stats.customers.contains(booking.customer?.getUserId())) {
                             stats.customers.add(booking.customer?.getUserId()!!)
                         }
-                        if (!stats.technicians.contains(booking.technician?.getUserId())) {
+                        if (!stats.technicians.contains(booking.technician?.getUserId()) && booking.technician != null) {
                             stats.technicians.add(booking.technician?.getUserId()!!)
                         }
                         if (booking.technician?.userAvailability == 100) {
                             stats.availableTechnicians++
-                        } else {
+                        } else if (booking.technician?.userAvailability == 0) {
                             stats.unavailableTechnicians++
                         }
                     }
