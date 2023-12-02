@@ -2,16 +2,19 @@ package com.example.repairservicesapp.view.fragments
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
-import com.example.repairservicesapp.database.DatabaseHelper
+import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Service
 import com.example.repairservicesapp.util.KeyboardUtils
+import com.google.firebase.firestore.toObject
 
 class UpdateServiceFragment : Fragment() {
     private lateinit var btnSave: Button
@@ -20,9 +23,8 @@ class UpdateServiceFragment : Fragment() {
     private lateinit var edTxtServiceDescription: EditText
     private lateinit var edTxtServicePrice: EditText
     private lateinit var edTxtServiceDuration: EditText
-    private lateinit var dbHelper: DatabaseHelper
     private lateinit var view: View
-    private var serviceId = 0
+    private var serviceId = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,20 +43,15 @@ class UpdateServiceFragment : Fragment() {
         edTxtServiceDuration = view.findViewById(R.id.edTxtServiceDuration)
         btnSave = view.findViewById(R.id.btnSave)
         btnCancel = view.findViewById(R.id.btnCancel)
-        arguments?.getString("selectedService")?.let {selectedService ->
-            dbHelper = DatabaseHelper(requireContext())
-            val service = dbHelper.getServiceByName(selectedService)
-            serviceId = service?.getServiceId()!!
-            edTxtServiceName.setText(service.serviceName)
-            edTxtServiceDescription.setText(service.serviceDescription)
-            edTxtServicePrice.setText(service.serviceCost.toString())
-            edTxtServiceDuration.setText(service.serviceDuration.toString())
-        }
+
+        // Get selected Service
+        getService()
     }
 
     private fun loadEvents() {
         btnSave.setOnClickListener {
             updateService()
+            Toast.makeText(requireContext(), R.string.txtServiceUpdated, Toast.LENGTH_SHORT).show()
         }
         btnCancel.setOnClickListener {
             val fragment = AdminFragment()
@@ -72,8 +69,7 @@ class UpdateServiceFragment : Fragment() {
             val serviceDescription = edTxtServiceDescription.text.toString()
             val servicePrice = edTxtServicePrice.text.toString().toDouble()
             val serviceDuration = edTxtServiceDuration.text.toString().toInt()
-            dbHelper = DatabaseHelper(requireContext())
-            dbHelper.updateService(Service(serviceId, serviceName, serviceDescription, servicePrice, serviceDuration))
+            updateService(Service(serviceId, serviceName, serviceDescription, servicePrice, serviceDuration))
             val fragment = AdminFragment()
             val fragmentManager = requireActivity().supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
@@ -103,5 +99,38 @@ class UpdateServiceFragment : Fragment() {
             isValid = false
         }
         return isValid
+    }
+
+    private fun getService() {
+        var selectedService = arguments?.getString("selectedService")
+        FirebaseUtils.firestore.collection("services")
+            .whereEqualTo("serviceName", selectedService)
+            .limit(1)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    Log.w("UpdateServiceFragment", "Listen failed.", error)
+                    return@addSnapshotListener
+                }
+                for (document in value!!) {
+                    val service = document.toObject<Service>()
+                    serviceId = service.getServiceId()
+                    edTxtServiceName.setText(service.serviceName)
+                    edTxtServiceDescription.setText(service.serviceDescription)
+                    edTxtServicePrice.setText(service.serviceCost.toString())
+                    edTxtServiceDuration.setText(service.serviceDuration.toString())
+                }
+            }
+    }
+
+    private fun updateService(service: Service) {
+        FirebaseUtils.firestore.collection("services")
+            .document(service.getServiceId())
+            .set(service)
+            .addOnSuccessListener {
+                Log.d("UpdateServiceFragment", "Service successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.w("UpdateServiceFragment", "Error updating service", e)
+            }
     }
 }

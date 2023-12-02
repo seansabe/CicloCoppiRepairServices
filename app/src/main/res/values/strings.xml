@@ -30,7 +30,6 @@
     <string name="txtColorMaroon">Maroon</string>
     <string name="txtColorAqua">Aqua</string>
 
-
     <string name="editEmailPlaceholder">Email</string>
     <string name="editPasswordPlaceholder">Password</string>
     <string name="editConfirmPassPlaceholder">Confirm Password</string>
@@ -79,7 +78,11 @@
     <string name="txtProfileItem">Profile</string>
     <string name="txtHomeItem">Administration</string>
     <string name="txtBookItem">Book a Service</string>
-    <string name="txtProfileUpdated">Profile Updated</string>
+    <string name="txtProfileUpdated">Profile successfully updated</string>
+    <string name="txtServiceAdded">Service successfully added</string>
+    <string name="txtServiceUpdated">Service successfully updated</string>
+    <string name="txtBookingAdded">Booking successfully added</string>
+    <string name="txtBookingUpdated">Booking successfully updated</string>
     <string name="txtAvailability">Availability</string>
     <string name="txtAddServiceHour">Add a date</string>
     <string name="txtSelectTechnician">Select a technician</string>
@@ -114,8 +117,13 @@
     <string name="txtUpcomingBookings">Upcoming Bookings</string>
     <string name="txtNothingHereYet">Nothing here yet</string>
     <string name="txtBookingCancelled">Booking Cancelled</string>
+    <string name="txtAvailabilityUpdated">Availability Updated</string>
     <string name="txtTechnicianNotAssignedYet">Technician not assigned yet</string>
     <string name="txtPhoneAppNotAvailable">Phone app not available</string>
+    <string name="txtNote">Note</string>
+    <string name="txtStats">Statistics</string>
+    <string name="txtSelectDateAndTime">Select a date and time</string>
+    <string name="txtSelectStatus">Status must be updated</string>
 
     <string name="txtServiceDropInTimeDesc">Customers must bring the bikes to the store. \n\nA time will be assigned for the closest available space frame you selected within the next 12 hours.</string>
     <string name="txtServiceTimeDesc">All services are validated at the store and only performed during business hours.</string>
@@ -145,7 +153,21 @@
     <string name="txtErrorEmptyCurrentPassword">Current Password Required</string>
     <string name="txtErrorEmptyNewPassword">New Password Required</string>
     <string name="txtErrorEmptyConfirmNewPassword">Confirm New Password Required</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="txtErrorBookingAssigned">Availability cannot be updated. You have bookings already assigned.</string>
+
+    <string name="txtStatPendingBookingsTitle">Pending\nBookings</string>
+    <string name="txtStatAssignedBookingsTitle">Assigned\nBookings</string>
+    <string name="txtStatAwaitingBikeBookingsTitle">Awaiting\nBikes</string>
+    <string name="txtStatInProcessBookingsTitle">In Process\nBookings</string>
+    <string name="txtStatAcceptedBookingsTitle">Accepted\nBookings</string>
+    <string name="txtStatCancelledBookingsTitle">Cancelled\nBookings</string>
+    <string name="txtStatCompletedBookingsTitle">Completed\nBookings</string>
+    <string name="txtStatTotalBookingsTitle">Total Bookings</string>
+    <string name="txtStatTotalRevenueTitle">Total Revenue</string>
+    <string name="txtStatTotalHoursTitle">Total Hours</string>
+    <string name="txtStatTotalCustomersTitle">Total Customers</string>
+    <string name="txtStatTotalTechniciansTitle">Total Technicians</string>
+    <string name="txtStatAvailableTechniciansTitle">Available Technicians</string>
+    <string name="txtStatUnavailableTechniciansTitle">Unavailable Technicians</string>
 
 </resources>

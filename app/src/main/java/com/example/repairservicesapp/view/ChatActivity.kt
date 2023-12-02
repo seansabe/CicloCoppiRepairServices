@@ -1,5 +1,7 @@
 package com.example.repairservicesapp.view
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
@@ -29,7 +31,8 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var recyclerViewChat : RecyclerView
     private lateinit var chatRoomId : String
     private lateinit var chatRoom : ChatRoom
-    private var user = User()
+    private var receiver = User()
+    private var sender = AppManager.instance.user
     private var chatMessages = arrayListOf<ChatMessage>()
     private lateinit var chatRecyclerAdapter : ChatRecyclerAdapter
 
@@ -52,14 +55,17 @@ class ChatActivity : AppCompatActivity() {
         txtChatTitle = findViewById(R.id.txtChatTitle)
         edTxtMessage = findViewById(R.id.edTxtMessage)
         // Get intent data
-        user = PassUserAsIntent.get(intent)
-        txtChatTitle.text = if (AppManager.instance.user.isCustomer) ("${user.firstName} (${getString(R.string.txtTechnicianTitle)})") else ("${user.firstName} (${getString(R.string.txtCustomerTitle)})")
+        receiver = PassUserAsIntent.get(intent)
+        txtChatTitle.text = if (sender.isCustomer) ("${receiver.firstName} (${getString(R.string.txtTechnicianTitle)})") else ("${receiver.firstName} (${getString(R.string.txtCustomerTitle)})")
         btnBack = findViewById(R.id.btnBack)
         btnSend = findViewById(R.id.btnSend)
     }
 
     private fun createEvents() {
         btnBack.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("read", true)
+            setResult(Activity.RESULT_OK, resultIntent)
             finish()
         }
 
@@ -73,12 +79,13 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun sendMessage(message : String) {
-        chatRoom.setLastMessageSenderId(AppManager.instance.user.getUserId())
+        chatRoom.setLastMessageSenderId(sender.getUserId())
         chatRoom.setLastMessageTimestamp(Timestamp.now())
+        chatRoom.setUnreadMessages(chatRoom.getUnreadMessages() + 1)
         FirebaseUtils.getChatRoomReference(chatRoomId).set(chatRoom).addOnSuccessListener {
             Log.d("ChatActivity", "Chat room updated")
         }
-        val chatMessage = ChatMessage(message, AppManager.instance.user.getUserId(), Timestamp.now())
+        val chatMessage = ChatMessage(message, sender.getUserId(), Timestamp.now())
         FirebaseUtils.getChatRoomMessageReference(chatRoomId).add(chatMessage).addOnCompleteListener(
             this
         ) { task ->
@@ -115,14 +122,23 @@ class ChatActivity : AppCompatActivity() {
 
     private fun initChatRoom() {
         // Get chat room id
-        chatRoomId = FirebaseUtils.getChatRoomId(AppManager.instance.user.getUserId(), user.getUserId())
+        chatRoomId = FirebaseUtils.getChatRoomId(sender.getUserId(), receiver.getUserId())
         // Get chat room
         FirebaseUtils.getChatRoomReference(chatRoomId).get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
                 chatRoom = documentSnapshot.toObject(ChatRoom::class.java)!!
-                Log.d("ChatActivity", "Chat room exists with ${user.firstName} ${user.lastName} and ${AppManager.instance.user.firstName} ${AppManager.instance.user.lastName}")
+                Log.d("ChatActivity", "Chat room exists with ${receiver.firstName} ${receiver.lastName} and ${sender.firstName} ${sender.lastName}")
+
+                if (chatRoom.getLastMessageSenderId() != sender.getUserId() && chatRoom.getUnreadMessages() > 0) {
+                    chatRoom.setUnreadMessages(0)
+
+                    FirebaseUtils.getChatRoomReference(chatRoomId).set(chatRoom).addOnSuccessListener {
+                        Log.d("ChatActivity", "Chat room updated: messages read")
+                    }
+                }
+
             } else {
-                chatRoom = ChatRoom(chatRoomId, arrayListOf(AppManager.instance.user.getUserId(), user.getUserId()), Timestamp.now(), 0)
+                chatRoom = ChatRoom(chatRoomId, arrayListOf(sender.getUserId(), receiver.getUserId()), Timestamp.now(), "")
                 FirebaseUtils.getChatRoomReference(chatRoomId).set(chatRoom).addOnSuccessListener {
                     Log.d("ChatActivity", "Chat room created")
                 }

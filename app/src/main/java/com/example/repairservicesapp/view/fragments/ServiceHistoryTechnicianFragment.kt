@@ -1,8 +1,8 @@
 package com.example.repairservicesapp.view.fragments
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,15 +12,15 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.repairservicesapp.R
 import com.example.repairservicesapp.app.AppManager
 import com.example.repairservicesapp.data.PassUserAsIntent
 import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Booking
+import com.example.repairservicesapp.model.ChatRoom
 import com.example.repairservicesapp.model.Service
-import com.example.repairservicesapp.model.User
+import com.example.repairservicesapp.util.MapUtils
 import com.example.repairservicesapp.util.UnitsUtils
 import com.example.repairservicesapp.view.ChatActivity
 import com.google.firebase.firestore.Filter
@@ -32,6 +32,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
     private lateinit var txtNothingHereYetHistory : TextView
     private lateinit var txtNothingHereYetBookings : TextView
     private var bookingsList = ArrayList<Booking>()
+    private lateinit var cardView : View
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,10 +54,10 @@ class ServiceHistoryTechnicianFragment : Fragment() {
 
     private fun getFirebaseData() {
         if (AppManager.instance.user.isTechnician) {
-            FirebaseUtils.fireStoreDatabase.collection("bookings")
+            FirebaseUtils.firestore.collection("bookings")
                 .where(Filter.or(
                     Filter.equalTo("technician", null),
-                    Filter.equalTo("technician.technicianId", AppManager.instance.user.getUserId())
+                    Filter.equalTo("technician.userId", AppManager.instance.user.getUserId())
                 ))
                 .orderBy("bookingDate")
                 .orderBy("bookingTime")
@@ -69,7 +70,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     Log.d("Firebase", "Error getting bookings", exception)
                 }
         } else {
-            FirebaseUtils.fireStoreDatabase.collection("bookings")
+            FirebaseUtils.firestore.collection("bookings")
                 .orderBy("bookingDate")
                 .orderBy("bookingTime")
                 .get()
@@ -83,7 +84,6 @@ class ServiceHistoryTechnicianFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun buildCards(result : QuerySnapshot) {
         for (document in result) {
             val bookingId = document.id
@@ -93,13 +93,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
             val technician = bookingData["technician"] as? Map<String, Any>
             val servicesList = ArrayList<Service>()
             for (serviceMap in servicesData) {
-                val service = Service(
-                    (serviceMap["serviceId"] as Long).toInt(),
-                    serviceMap["serviceName"].toString(),
-                    serviceMap["serviceDescription"].toString(),
-                    (serviceMap["servicePrice"] as? Double) ?: 0.0,
-                    (serviceMap["serviceDuration"] as? Long)?.toInt() ?: 0
-                )
+                val service = MapUtils.mapToServiceObject(serviceMap)
                 servicesList.add(service)
             }
 
@@ -116,14 +110,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     bookingData["bikeWheelSize"] as String,
                     bookingData["comments"] as String,
                     servicesList,
-                    User(
-                        (customer["customerId"] as Long).toInt(),
-                        customer["customerFirstName"] as String,
-                        customer["customerLastName"] as String,
-                        customer["customerAddress"] as String,
-                        customer["customerPhoneNumber"] as String,
-                        customer["customerEmail"] as String
-                    )
+                    MapUtils.mapToUserObject(customer),
                 )
                 bookingsList.add(booking)
             } else {
@@ -141,24 +128,11 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     bookingData["bikeWheelSize"] as String,
                     bookingData["comments"] as String,
                     servicesList,
-                    User(
-                        (customer["customerId"] as Long).toInt(),
-                        customer["customerFirstName"] as String,
-                        customer["customerLastName"] as String,
-                        customer["customerAddress"] as String,
-                        customer["customerPhoneNumber"] as String,
-                        customer["customerEmail"] as String
-                    ),
-                    User(
-                        (technician["technicianId"] as Long).toInt(),
-                        technician["technicianFirstName"] as? String,
-                        technician["technicianLastName"] as? String,
-                        technician["technicianAddress"] as? String,
-                        technician["technicianPhoneNumber"] as? String,
-                        technician["technicianEmail"] as? String
-                    )
+                    MapUtils.mapToUserObject(customer),
+                    MapUtils.mapToUserObject(technician)
                 )
                 bookingsList.add(booking)
+                getNewMessagesCounter(booking.customer?.getUserId()!!)
             }
         }
 
@@ -169,8 +143,10 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             layoutParams.setMargins(0, UnitsUtils.dpToPx(10, requireContext()), 0, 0)
-            val cardView = layoutInflater.inflate(R.layout.custom_card, null)
+            cardView = layoutInflater.inflate(R.layout.custom_card, null)
             cardView.layoutParams = layoutParams
+
+            cardView.findViewById<ImageButton>(R.id.btnOpenChatRead).setImageResource(R.drawable.outline_chat_24)
 
             val txtDate = cardView.findViewById<TextView>(R.id.txtDate)
             val txtDropInTime = cardView.findViewById<TextView>(R.id.txtSelectedDropInFrame)
@@ -186,7 +162,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
             txtDate.text = if (booking.bookingDate != null) "${booking.bookingDate}, ${booking.bookingTime}" else Booking.BookingStatus.PENDING.getStatusValue(requireContext())
             txtTechnician.text = booking.technician?.let { "${it.firstName} ${it.lastName}" } ?: Booking.BookingStatus.PENDING.getStatusValue(requireContext())
             txtCustomer.text = "${booking.customer?.firstName} ${booking.customer?.lastName}"
-            txtBicycle.text = "${booking.bikeType} ${booking.bikeWheelSize}, ${booking.bikeColor}\n${booking.comments}"
+            txtBicycle.text = "${booking.bikeType} ${booking.bikeWheelSize}, ${booking.bikeColor}\n${getString(R.string.txtNote)}: ${booking.comments}"
             txtServices.text = ""
             for (service in booking.services!!) {
                 txtServices.text = txtServices.text.toString() + "${service.serviceName}, "
@@ -209,7 +185,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
                     // Pass the customer object to the ChatActivity and start it
                     val intent = Intent(requireContext(), ChatActivity::class.java)
                     PassUserAsIntent.send(intent, booking.customer!!)
-                    startActivity(intent)
+                    startActivityForResult(intent, REQUEST_CHAT)
                 } else {
                     Toast.makeText(requireContext(), context?.getString(R.string.txtTechnicianNotAssignedYet), Toast.LENGTH_SHORT).show()
                 }
@@ -261,7 +237,7 @@ class ServiceHistoryTechnicianFragment : Fragment() {
     }
 
     private fun handleBookingCancellation(booking: Booking, cardView: View) {
-        FirebaseUtils.fireStoreDatabase.collection("bookings").document(booking.bookingId!!)
+        FirebaseUtils.firestore.collection("bookings").document(booking.bookingId!!)
             .update("bookingStatus", Booking.BookingStatus.CANCELLED.getStatusValue(requireContext()))
             .addOnSuccessListener {
                 // Remove the canceled booking from container and add it to containerHistory
@@ -287,5 +263,38 @@ class ServiceHistoryTechnicianFragment : Fragment() {
         val intent = Intent(Intent.ACTION_DIAL)
         intent.data = Uri.parse("tel:$phoneNumber")
         startActivity(intent)
+    }
+
+    private fun getNewMessagesCounter(receiverId: String) {
+        val chatRoomId = FirebaseUtils.getChatRoomId(AppManager.instance.user.getUserId(), receiverId)
+        // Get the number of unread messages
+        FirebaseUtils.firestore.collection("chatRooms").document(chatRoomId)
+            .get()
+            .addOnSuccessListener { result ->
+                val chatRoom = result.toObject(ChatRoom::class.java)
+                if (chatRoom != null) {
+                    val newMessagesCounter = chatRoom.getUnreadMessages()
+                    if (chatRoom.getLastMessageSenderId() != AppManager.instance.user.getUserId() && newMessagesCounter > 0) {
+                        cardView.findViewById<ImageButton>(R.id.btnOpenChatRead).setImageResource(R.drawable.outline_mark_unread_chat_alt_24)
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("ServiceHistoryTechnician", "Error getting chat room", exception)
+            }
+    }
+
+    companion object {
+        const val REQUEST_CHAT = 8888
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CHAT && resultCode == Activity.RESULT_OK) {
+            // Handle the result data here
+            //val value = data?.getStringExtra("read")
+            cardView.findViewById<ImageButton>(R.id.btnOpenChatRead).setImageResource(R.drawable.outline_chat_24)
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,14 +14,13 @@ import androidx.core.content.ContextCompat;
 
 import com.example.repairservicesapp.R;
 import com.example.repairservicesapp.app.AppManager;
-import com.example.repairservicesapp.database.DatabaseHelper;
 import com.example.repairservicesapp.database.FirebaseUtils;
 import com.example.repairservicesapp.model.User;
+import com.example.repairservicesapp.util.MapUtils;
 import com.example.repairservicesapp.util.StatusBarUtils;
 
 public class RegistrationActivity extends AppCompatActivity {
     User user;
-    DatabaseHelper dbHelper;
     EditText editFirstName, editLastName, editAddress, editPhone, editRegEmail, editRegPass, editRegPassConf;
     Button btnRegister, btnCancel;
     TextView txtErrorAccountExists;
@@ -48,40 +48,52 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void loadEvents() {
-        btnRegister.setOnClickListener(v -> {
-            if (checkTextUtils()) {
-                String fName = editFirstName.getText().toString();
-                String lName = editLastName.getText().toString();
-                String address = editAddress.getText().toString();
-                String phone = editPhone.getText().toString();
-                String email = editRegEmail.getText().toString();
-                String password = editRegPass.getText().toString();
-                dbHelper = new DatabaseHelper(getApplicationContext());
-                try {
-                    user = dbHelper.getUserByEmail(email);
-                    // Check if the user already exists
-                    if (user != null) {
-                        txtErrorAccountExists.setVisibility(TextView.VISIBLE);
-                    } else {
-                        txtErrorAccountExists.setVisibility(TextView.GONE);
-                        // Adding a new user
-                        User newUser = new User(fName, lName, address, phone, email, password, User.UserType.CUSTOMER);
-                        dbHelper = new DatabaseHelper(getApplicationContext());
-                        dbHelper.addUser(newUser);
-                        AppManager.instance.setUser(dbHelper.getUserByEmail(newUser.email));
-                        startActivity(new Intent(RegistrationActivity.this, NavigationActivity.class));
-                        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("email", newUser.email);
-                        editor.putString("password", newUser.password);
-                        editor.apply();
-                        finish();
-                    }
-                }
-                catch(Exception e) { e.printStackTrace(); }
-            }
-        });
+        btnRegister.setOnClickListener(v -> register());
         btnCancel.setOnClickListener(v -> finish());
+    }
+
+    private void register() {
+        String fName = editFirstName.getText().toString();
+        String lName = editLastName.getText().toString();
+        String address = editAddress.getText().toString();
+        String phone = editPhone.getText().toString();
+        String email = editRegEmail.getText().toString();
+        String password = editRegPass.getText().toString();
+
+        if (checkTextUtils()) {
+            // Check if user doesn't already exist
+            FirebaseUtils.INSTANCE.getFirestore().collection("users")
+                    .whereEqualTo("email", email)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                // Adding a new user
+                                txtErrorAccountExists.setVisibility(TextView.GONE);
+                                user = new User(fName, lName, address, phone, email, password, User.UserType.CUSTOMER, null, 100);
+                                FirebaseUtils.INSTANCE.getFirestore().collection("users")
+                                        .add(MapUtils.INSTANCE.userToMap(user))
+                                        .addOnSuccessListener(documentReference -> {
+                                            user.setUserId(documentReference.getId());
+                                            AppManager.instance.setUser(user);
+                                            Log.d("RegistrationActivity", "documentReference: " + AppManager.instance.user.getUserId());
+                                            SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = preferences.edit();
+                                            editor.putString("email", user.email);
+                                            editor.putString("password", user.password);
+                                            editor.apply();
+                                            startActivity(new Intent(RegistrationActivity.this, NavigationActivity.class));
+                                            finish();
+                                            // Set userId inside Firebase document based on AppManager userId
+                                            FirebaseUtils.INSTANCE.setUserId(AppManager.instance.user.getUserId());
+                                        })
+                                        .addOnFailureListener(e -> Log.d("RegistrationActivity", "register error: " + e.getMessage()));
+                            } else {
+                                txtErrorAccountExists.setVisibility(TextView.VISIBLE);
+                            }
+                        }
+                    });
+        }
     }
 
     private boolean checkTextUtils() {

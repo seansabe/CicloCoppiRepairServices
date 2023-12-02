@@ -62,7 +62,7 @@
             android:autofillHints=""
             android:background="@drawable/edit_field"
             android:hint="@string/editMessagePlaceholder"
-            android:inputType="text"
+            android:inputType="text|textMultiLine"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:textColor="@color/blue"

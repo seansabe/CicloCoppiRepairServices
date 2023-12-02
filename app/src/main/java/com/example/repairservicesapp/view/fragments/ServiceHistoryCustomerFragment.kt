@@ -1,5 +1,6 @@
 package com.example.repairservicesapp.view.fragments
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,8 +18,9 @@ import com.example.repairservicesapp.app.AppManager
 import com.example.repairservicesapp.data.PassUserAsIntent
 import com.example.repairservicesapp.database.FirebaseUtils
 import com.example.repairservicesapp.model.Booking
+import com.example.repairservicesapp.model.ChatRoom
 import com.example.repairservicesapp.model.Service
-import com.example.repairservicesapp.model.User
+import com.example.repairservicesapp.util.MapUtils
 import com.example.repairservicesapp.util.UnitsUtils
 import com.example.repairservicesapp.view.ChatActivity
 import com.google.firebase.firestore.QuerySnapshot
@@ -29,6 +31,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
     private lateinit var txtNothingHereYetHistory : TextView
     private lateinit var txtNothingHereYetBookings : TextView
     private var bookingsList = ArrayList<Booking>()
+    private lateinit var cardView : View
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,12 +48,12 @@ class ServiceHistoryCustomerFragment : Fragment() {
         txtNothingHereYetHistory = view.findViewById(R.id.txtNothingHereYetHistory)
         txtNothingHereYetBookings = view.findViewById(R.id.txtNothingHereYetBookings)
         // Retrieving Bookings from Firebase
-        getFirebaseData()
+        getBookings()
     }
 
-    private fun getFirebaseData() {
-        FirebaseUtils.fireStoreDatabase.collection("bookings")
-            .whereEqualTo("customer.customerId", AppManager.instance.user.getUserId())
+    private fun getBookings() {
+        FirebaseUtils.firestore.collection("bookings")
+            .whereEqualTo("customer.userId", AppManager.instance.user.getUserId())
             .orderBy("bookingDate")
             .orderBy("bookingTime")
             .get()
@@ -73,13 +76,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
             val technician = bookingData["technician"] as? Map<String, Any>
             val servicesList = ArrayList<Service>()
             for (serviceMap in servicesData) {
-                val service = Service(
-                    (serviceMap["serviceId"] as Long).toInt(),
-                    serviceMap["serviceName"].toString(),
-                    serviceMap["serviceDescription"].toString(),
-                    (serviceMap["servicePrice"] as? Double) ?: 0.0,
-                    (serviceMap["serviceDuration"] as? Long)?.toInt() ?: 0
-                )
+                val service = MapUtils.mapToServiceObject(serviceMap)
                 servicesList.add(service)
             }
 
@@ -96,14 +93,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
                     bookingData["bikeWheelSize"] as String,
                     bookingData["comments"] as String,
                     servicesList,
-                    User(
-                        (customer["customerId"] as Long).toInt(),
-                        customer["customerFirstName"] as String,
-                        customer["customerLastName"] as String,
-                        customer["customerAddress"] as String,
-                        customer["customerPhoneNumber"] as String,
-                        customer["customerEmail"] as String
-                    )
+                    MapUtils.mapToUserObject(customer),
                 )
                 bookingsList.add(booking)
             } else {
@@ -121,24 +111,11 @@ class ServiceHistoryCustomerFragment : Fragment() {
                     bookingData["bikeWheelSize"] as String,
                     bookingData["comments"] as String,
                     servicesList,
-                    User(
-                        (customer["customerId"] as Long).toInt(),
-                        customer["customerFirstName"] as String,
-                        customer["customerLastName"] as String,
-                        customer["customerAddress"] as String,
-                        customer["customerPhoneNumber"] as String,
-                        customer["customerEmail"] as String
-                    ),
-                    User(
-                        (technician["technicianId"] as Long).toInt(),
-                        technician["technicianFirstName"] as? String,
-                        technician["technicianLastName"] as? String,
-                        technician["technicianAddress"] as? String,
-                        technician["technicianPhoneNumber"] as? String,
-                        technician["technicianEmail"] as? String
-                    )
+                    MapUtils.mapToUserObject(customer),
+                    MapUtils.mapToUserObject(technician)
                 )
                 bookingsList.add(booking)
+                getNewMessagesCounter(booking.technician!!.getUserId())
             }
         }
 
@@ -149,8 +126,10 @@ class ServiceHistoryCustomerFragment : Fragment() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             layoutParams.setMargins(0, UnitsUtils.dpToPx(10, requireContext()), 0, 0)
-            val cardView = layoutInflater.inflate(R.layout.custom_card, null)
+            cardView = layoutInflater.inflate(R.layout.custom_card, null)
             cardView.layoutParams = layoutParams
+
+            cardView.findViewById<ImageButton>(R.id.btnOpenChatRead).setImageResource(R.drawable.outline_chat_24)
 
             val txtDate = cardView.findViewById<TextView>(R.id.txtDate)
             val txtDropInTime = cardView.findViewById<TextView>(R.id.txtSelectedDropInFrame)
@@ -169,7 +148,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
             txtDate.text = if (booking.bookingDate != null) "${booking.bookingDate}, ${booking.bookingTime}" else Booking.BookingStatus.PENDING.getStatusValue(requireContext())
             txtTechnician.text = booking.technician?.let { "${it.firstName} ${it.lastName}" } ?: Booking.BookingStatus.PENDING.getStatusValue(requireContext())
             //txtCustomer.text = "${booking.customer?.firstName} ${booking.customer?.lastName}"
-            txtBicycle.text = "${booking.bikeType} ${booking.bikeWheelSize}, ${booking.bikeColor}\n${booking.comments}"
+            txtBicycle.text = "${booking.bikeType} ${booking.bikeWheelSize}, ${booking.bikeColor}\n${getString(R.string.txtNote)}: ${booking.comments}"
             txtServices.text = ""
             for (service in booking.services!!) {
                 txtServices.text = txtServices.text.toString() + "${service.serviceName}, "
@@ -190,7 +169,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
                     // Pass the customer object to the ChatActivity and start it
                     val intent = Intent(requireContext(), ChatActivity::class.java)
                     PassUserAsIntent.send(intent, booking.technician!!)
-                    startActivity(intent)
+                    startActivityForResult(intent, REQUEST_CHAT)
                 } else {
                     Toast.makeText(requireContext(), requireContext().getString(R.string.txtTechnicianNotAssignedYet), Toast.LENGTH_SHORT).show()
                 }
@@ -238,7 +217,7 @@ class ServiceHistoryCustomerFragment : Fragment() {
     }
 
     private fun handleBookingCancellation(booking: Booking, cardView: View) {
-        FirebaseUtils.fireStoreDatabase.collection("bookings").document(booking.bookingId!!)
+        FirebaseUtils.firestore.collection("bookings").document(booking.bookingId!!)
             .update("bookingStatus", Booking.BookingStatus.CANCELLED.getStatusValue(requireContext()))
             .addOnSuccessListener {
                 // Remove the canceled booking from container and add it to containerHistory
@@ -263,5 +242,38 @@ class ServiceHistoryCustomerFragment : Fragment() {
         val intent = Intent(Intent.ACTION_DIAL)
         intent.data = Uri.parse("tel:$phoneNumber")
         startActivity(intent)
+    }
+
+    private fun getNewMessagesCounter(receiverId: String) {
+        val chatRoomId = FirebaseUtils.getChatRoomId(AppManager.instance.user.getUserId(), receiverId)
+        // Get the number of unread messages
+        FirebaseUtils.firestore.collection("chatRooms").document(chatRoomId)
+            .get()
+            .addOnSuccessListener { result ->
+                val chatRoom = result.toObject(ChatRoom::class.java)
+                if (chatRoom != null) {
+                    val newMessagesCounter = chatRoom.getUnreadMessages()
+                    if (chatRoom.getLastMessageSenderId() != AppManager.instance.user.getUserId() && newMessagesCounter > 0) {
+                        cardView.findViewById<ImageButton>(R.id.btnOpenChatRead).setImageResource(R.drawable.outline_mark_unread_chat_alt_24)
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("ServiceHistoryTechnician", "Error getting chat room", exception)
+            }
+    }
+
+    companion object {
+        const val REQUEST_CHAT = 9999
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CHAT && resultCode == Activity.RESULT_OK) {
+            // Handle the result data here
+            //val value = data?.getStringExtra("read")
+            cardView.findViewById<ImageButton>(R.id.btnOpenChatRead).setImageResource(R.drawable.outline_chat_24)
+        }
     }
 }
