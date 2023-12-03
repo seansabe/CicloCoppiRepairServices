@@ -71,4 +71,13 @@ class Stats {
         this.customers = customers
         this.technicians = technicians
     }
+
+    fun setAvailableTechnicians(availableTechnicians: Int) {
+        this.availableTechnicians = availableTechnicians
+    }
+
+    fun setUnavailableTechnicians(unavailableTechnicians: Int) {
+        this.unavailableTechnicians = unavailableTechnicians
+    }
+
 }

@@ -185,21 +185,38 @@ class AdminFragment : Fragment() {
                         }
                         stats.totalRevenue += booking.bookingCost
                         stats.totalHours += booking.bookingDuration
+
                         if (!stats.customers.contains(booking.customer?.getUserId())) {
                             stats.customers.add(booking.customer?.getUserId()!!)
                         }
                         if (!stats.technicians.contains(booking.technician?.getUserId()) && booking.technician != null) {
                             stats.technicians.add(booking.technician?.getUserId()!!)
                         }
-                        if (booking.technician?.userAvailability == 100) {
-                            stats.availableTechnicians++
-                        } else if (booking.technician?.userAvailability == 0) {
-                            stats.unavailableTechnicians++
-                        }
                     }
                     AppManager.instance.stats = stats
                     updateStatsUI()
                 }
+            }
+        FirebaseUtils.firestore.collection("users")
+            .whereEqualTo("userType", User.UserType.TECHNICIAN)
+            .get()
+            .addOnSuccessListener { result ->
+                val stats = Stats()
+                for (document in result) {
+                    val technician = MapUtils.snapshotToUserObject(document)
+                    if (technician.userAvailability == 100) {
+                        stats.availableTechnicians++
+                        Log.d("AdminFragment", "Available technician: " + technician.userAvailability)
+                    } else if (technician.userAvailability == 0) {
+                        stats.unavailableTechnicians++
+                    }
+                }
+                AppManager.instance.stats.setAvailableTechnicians(stats.availableTechnicians)
+                AppManager.instance.stats.setUnavailableTechnicians(stats.unavailableTechnicians)
+                updateStatsUI()
+            }
+            .addOnFailureListener { e ->
+                Log.d("AdminFragment", "Error getting documents: " + e.message)
             }
     }
 
