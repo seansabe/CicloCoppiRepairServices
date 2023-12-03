@@ -131,7 +131,7 @@
                     android:gravity="center"
                     android:text="@string/txtStatTotalBookingsTitle"
                     android:textColor="@color/blue"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -161,7 +161,7 @@
                     android:gravity="center"
                     android:text="@string/txtStatTotalRevenueTitle"
                     android:textColor="@color/blue"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -191,7 +191,7 @@
                     android:gravity="center"
                     android:text="@string/txtStatTotalHoursTitle"
                     android:textColor="@color/blue"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -221,7 +221,7 @@
                     android:gravity="center"
                     android:text="@string/txtStatTotalCustomersTitle"
                     android:textColor="@color/blue"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -251,7 +251,7 @@
                     android:gravity="center"
                     android:text="@string/txtStatTotalTechniciansTitle"
                     android:textColor="@color/blue"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -281,7 +281,7 @@
                     android:gravity="center"
                     android:text="@string/txtStatAvailableTechniciansTitle"
                     android:textColor="@color/blue"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -311,7 +311,7 @@
                     android:gravity="center"
                     android:text="@string/txtStatUnavailableTechniciansTitle"
                     android:textColor="@color/blue"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -347,7 +347,7 @@
                         android:gravity="center"
                         android:text="@string/txtStatPendingBookingsTitle"
                         android:textColor="@color/blue"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -375,7 +375,7 @@
                         android:gravity="center"
                         android:text="@string/txtStatAssignedBookingsTitle"
                         android:textColor="@color/blue"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -403,7 +403,7 @@
                         android:gravity="center"
                         android:text="@string/txtStatAwaitingBikeBookingsTitle"
                         android:textColor="@color/blue"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -440,7 +440,7 @@
                         android:gravity="center"
                         android:text="@string/txtStatInProcessBookingsTitle"
                         android:textColor="@color/blue"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -468,7 +468,7 @@
                         android:gravity="center"
                         android:text="@string/txtStatCancelledBookingsTitle"
                         android:textColor="@color/blue"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -496,7 +496,7 @@
                         android:gravity="center"
                         android:text="@string/txtStatCompletedBookingsTitle"
                         android:textColor="@color/blue"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView

@@ -47,7 +47,7 @@
                         android:gravity="center"
                         android:text="@string/txtStatPendingBookingsTitle"
                         android:textColor="@color/blue"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -75,7 +75,7 @@
                         android:gravity="center"
                         android:text="@string/txtStatAssignedBookingsTitle"
                         android:textColor="@color/blue"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -103,7 +103,7 @@
                         android:gravity="center"
                         android:text="@string/txtStatAwaitingBikeBookingsTitle"
                         android:textColor="@color/blue"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -140,7 +140,7 @@
                         android:gravity="center"
                         android:text="@string/txtStatInProcessBookingsTitle"
                         android:textColor="@color/blue"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -168,7 +168,7 @@
                         android:gravity="center"
                         android:text="@string/txtStatCancelledBookingsTitle"
                         android:textColor="@color/blue"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -196,7 +196,7 @@
                         android:gravity="center"
                         android:text="@string/txtStatCompletedBookingsTitle"
                         android:textColor="@color/blue"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
